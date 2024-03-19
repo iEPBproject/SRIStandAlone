@@ -6,15 +6,14 @@ from ckeditor_uploader.widgets import CKEditorUploadingWidget
 from django import forms
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
-from django.db import models
-from django.db.models.fields import , FloatField, BooleanField
+from django.db import models 
 from django.utils.translation import gettext_lazy as _
 from tabulate import tabulate
 
 import pandas as pd
 
 
-from librerias.miDjangoModel3.models import Model,CharField
+from librerias.miDjangoModel3.models import Model, CharField, FloatField, BooleanField, ForeignKey
 
 
 class BuildingType(Model):
@@ -25,7 +24,6 @@ class BuildingType(Model):
     def __str__(self):
         ''' 
         Clase BuildindgType
-        
         '''
         
         return f"{_(self.description)}"
@@ -34,7 +32,7 @@ class BuildingType(Model):
         verbose_name = _('Buiding Type')
         verbose_name_plural = _('11. Buiding Type')
 
-class Country(models.Model):
+class Country(Model):
     name = CharField(default = '',
                        max_length = 1000,
                        verbose_name = _("Name"))
@@ -50,7 +48,7 @@ class Country(models.Model):
     ElectricVehicleChargingMandatory = BooleanField(default = True, verbose_name = _("Mandatory Electric Vehicle Charging Domain"), help_text = _("Is Electric Vehicle Charging  a mandatory domain?"))
     MonitoringAndControlMandatory = BooleanField(default = True, verbose_name = _("Mandatory Monitoring And Control Domain"), help_text = _("Is Monitoring and Control  a mandatory domain?"))    
     
-    domainClassNames = models.CharField(default = 'A,B,C,D,E,F,G',
+    domainClassNames = CharField(default = 'A,B,C,D,E,F,G',
                                                         max_length = 1000,
                                                         verbose_name = _("Class names list (separated by comma) with 7 class names"))
     
@@ -70,23 +68,23 @@ class Country(models.Model):
         ordering = ('id',)
 
 
-class Catalogo(models.Model):
+class Catalogo(Model):
     
-    description = models.CharField(default = '',
+    description = CharField(default = '',
                                   max_length = 1000,
                                   verbose_name = _("Description"))
     
-    country = models.ManyToManyField(Country,
-                                     blank = True,
-                                     verbose_name = _('Country'),
-                                     related_name = 'catalogos',
-                                     help_text = _('Multiple selection/deselection: use the CTRL key'),)
+    country = ForeignKey(Country,
+                         blank = True,
+                         verbose_name = _('Country'),
+                         related_name = 'catalogos',
+                         help_text = _('Multiple selection/deselection: use the CTRL key'),)
                                      
-    buildingType = models.ManyToManyField(BuildindgType,
-                                          blank = True,
-                                          verbose_name = _('Building Types'),
-                                          related_name = 'catalogos',
-                                          help_text = _('Multiple selection/deselection: use the CTRL key'),)
+    buildingType = ForeignKey(BuildindgType,
+                              blank = True,
+                              verbose_name = _('Building Types'),
+                              related_name = 'catalogos',
+                              help_text = _('Multiple selection/deselection: use the CTRL key'),)
                   
     class Meta:
         verbose_name = _('Catalogue')
@@ -265,15 +263,15 @@ class Catalogo(models.Model):
         impactoMaximo = sum([dominio.impactMaxInformationOccupants for dominio in self.dominios.all()])
         return impactoMaximo
 
-class Climate(models.Model):
+class Climate(Model):
     description = CharField(default = '',
                             max_length = 1000,
                             verbose_name = _("Description"))
-    country = models.ManyToManyField(Country,
-                                     blank = True,
-                                     verbose_name = _('Countries'),
-                                     related_name = 'climates',
-                                     help_text = _('Multiple selection/deselection: use the CTRL key'),)
+    country = ForeignKey(Country,
+                         blank = True,
+                         verbose_name = _('Countries'),
+                         related_name = 'climates',
+                         help_text = _('Multiple selection/deselection: use the CTRL key'),)
 
     def __str__(self):
         ''' 
@@ -287,20 +285,20 @@ class Climate(models.Model):
         verbose_name_plural = _('9. Climate')
         ordering = ('id',)
     
-class Dominio(models.Model):
+class Dominio(Model):
     
-    catalogo = models.ForeignKey(Catalogo,
-                                  verbose_name = _('Catalogue'),
-                                  related_name = 'dominios',
-                                  on_delete = models.CASCADE)
+    catalogo = ForeignKey(Catalogo,
+                          verbose_name = _('Catalogue'),
+                          related_name = 'dominios',
+                          on_delete = models.CASCADE)
     
-    description = models.CharField(default = '',
-                                  max_length = 1000,
-                                  verbose_name = _("Description"))
+    description = CharField(default = '',
+                            max_length = 1000,
+                            verbose_name = _("Description"))
     
-    nameAttr = models.CharField(default = '',  # Este campo se va a utilizar para los getatt() de los campos.
-                                max_length = 1000,
-                                verbose_name = _("Name Attribute"))
+    nameAttr = CharField(default = '',  # Este campo se va a utilizar para los getatt() de los campos.
+                         max_length = 1000,
+                         verbose_name = _("Name Attribute"))
                   
     class Meta:
         verbose_name = _('Domain')
@@ -536,18 +534,18 @@ class Dominio(models.Model):
         return DynamicDominionForm
 
     
-class Servicio(models.Model):
+class Servicio(Model):
     
-    dominio = models.ForeignKey(Dominio,
+    dominio = ForeignKey(Dominio,
                               verbose_name = _('Domain'),
                               related_name = 'servicios',
                               on_delete = models.CASCADE)
     
-    description = models.CharField(default = '',
+    description = CharField(default = '',
                                   max_length = 1000,
                                   verbose_name = _("Description"))
 
-    reference = models.CharField(default = '',
+    reference = CharField(default = '',
                                   max_length = 20,
                                   verbose_name = _("Reference code"))    
                   
@@ -811,36 +809,36 @@ class Servicio(models.Model):
         return impactoMaximo
 
     
-class Funcionalidad(models.Model):
+class Funcionalidad(Model):
     
-    service = models.ForeignKey(Servicio,
+    service = ForeignKey(Servicio,
                                 verbose_name = _('Service'),
                                 related_name = 'funcionalidades',
                                 on_delete = models.CASCADE)
     
-    description = models.CharField(default = '',
+    description = CharField(default = '',
                                   max_length = 1000,
                                   verbose_name = _("Description"))
 
-    reference = models.CharField(default = '',
+    reference = CharField(default = '',
                                   max_length = 20,
                                   verbose_name = _("Reference code"))        
     
-    energyEfficiencyImpact = models.FloatField(default = 0.0,
+    energyEfficiencyImpact = FloatField(default = 0.0,
                                         verbose_name = _('Energy efficiency'))
     
-    energyFlexibilityImpact = models.FloatField(default = 0.0,
+    energyFlexibilityImpact = FloatField(default = 0.0,
                                           verbose_name = _('Energy flexibility and storage'))
     
-    comfortImpact = models.FloatField(default = 0.0,
+    comfortImpact = FloatField(default = 0.0,
                                       verbose_name = _('Comfort'))
-    convenienceImpact = models.FloatField(default = 0.0,
+    convenienceImpact = FloatField(default = 0.0,
                                          verbose_name = _('Convenience'))
-    healthAccesibilityImpact = models.FloatField(default = 0.0,
+    healthAccesibilityImpact = FloatField(default = 0.0,
                                           verbose_name = _('Health, well-being and accessibility'))
-    maintenanceFaultPredictionImpact = models.FloatField(default = 0.0,
+    maintenanceFaultPredictionImpact = FloatField(default = 0.0,
                                           verbose_name = _('Maintenance and fault prediction'))
-    informationOccupantsImpact = models.FloatField(default = 0.0,
+    informationOccupantsImpact = FloatField(default = 0.0,
                                           verbose_name = _('Information to occupants'))
                                           
     en15232Residential = CharField(choices = [('-', '-'),('A', _('A')), ('B', _('B')), ('C', _('C')), ('D', _('D'))],
@@ -883,7 +881,7 @@ class Funcionalidad(models.Model):
         return self
 
     
-class ImpactWeightings (models.Model):
+class ImpactWeightings (Model):
     
     energyEfficiency = FloatField(verbose_name = _('Energy Efficiency'),
                                   default = 0.0)
@@ -950,7 +948,7 @@ class ImpactWeightings (models.Model):
         '''
         return 'Id: {}'.format(self.id)
         
-class CustomImpactWeightings(models.Model):
+class CustomImpactWeightings(Model):
     
     energyEfficiency = FloatField(verbose_name = _('Energy Efficiency'),
                                   default = 0.0)
@@ -1016,42 +1014,42 @@ class CustomImpactWeightings(models.Model):
         '''
         return 'Id: {}'.format(self.id)
 
-class DomainWeigthing(models.Model):
+class DomainWeigthing(Model):
 
-    name = models.CharField(default = '',
+    name = CharField(default = '',
                               max_length = 1000,
                               verbose_name = _("Name"))
                               
-    country = models.ManyToManyField(Country,
-                                     blank = True,
-                                     verbose_name = _('Countries'),
-                                     related_name = 'domaingWeightings',
-                                     help_text = _('Multiple selection/deselection: use the CTRL key'),)
+    country = ForeignKey(Country,
+                         blank = True,
+                         verbose_name = _('Countries'),
+                         related_name = 'domaingWeightings',
+                         help_text = _('Multiple selection/deselection: use the CTRL key'),)
                                      
-    catalogo = models.ManyToManyField(Catalogo,
-                                      blank = True,
-                                      verbose_name = _('Catalogue'),
-                                      related_name = 'domaingWeightings',
-                                      help_text = _('Multiple selection/deselection: use the CTRL key'),)
+    catalogo = ForeignKey(Catalogo,
+                          blank = True,
+                          verbose_name = _('Catalogue'),
+                          related_name = 'domaingWeightings',
+                          help_text = _('Multiple selection/deselection: use the CTRL key'),)
     
-    climate = models.ManyToManyField(Climate,
-                                   blank = True,
-                                   verbose_name = _('Climates'),
-                                   related_name = 'domaingWeightings',
-                                   help_text = _('Multiple selection/deselection: use the CTRL key'),)
+    climate = ForeignKey(Climate,
+                         blank = True,
+                         verbose_name = _('Climates'),
+                         related_name = 'domaingWeightings',
+                         help_text = _('Multiple selection/deselection: use the CTRL key'),)
     
-    impactWeighting = models.ForeignKey(ImpactWeightings,
+    impactWeighting = ForeignKey(ImpactWeightings,
                          verbose_name = _('Impact Weightings'),
                          related_name = 'impact_weigthing',
                          blank = True,
                          null = True,
                          on_delete = models.DO_NOTHING)
                          
-    buildingType = models.ManyToManyField(BuildindgType,
-                                          blank = True,
-                                          verbose_name = _('Building Types'),
-                                          related_name = 'domaingWeightings',
-                                          help_text = _('Multiple selection/deselection: use the CTRL key'),)
+    buildingType = ForeignKey(BuildindgType,
+                              blank = True,
+                              verbose_name = _('Building Types'),
+                              related_name = 'domaingWeightings',
+                              help_text = _('Multiple selection/deselection: use the CTRL key'),)
     
     energyEfficiencyHeating = FloatField(verbose_name = _('Energy efficiency heating'),
                                          default = 0.0)
@@ -1262,43 +1260,43 @@ class DomainWeigthing(models.Model):
         self.save()
         return self
 
-class CustomDomainWeighting(models.Model):
+class CustomDomainWeighting(Model):
     
-    customImpactWeighting = models.ForeignKey(CustomImpactWeightings,
-                         verbose_name = _('Custom Impact Weightings'),
-                         related_name = 'customDomainWeigthing',
-                         blank = True,
-                         null = True,
-                         on_delete = models.DO_NOTHING)
+    customImpactWeighting = ForeignKey(CustomImpactWeightings,
+                                       verbose_name = _('Custom Impact Weightings'),
+                                       related_name = 'customDomainWeigthing',
+                                       blank = True,
+                                       null = True,
+                                       on_delete = models.DO_NOTHING)
                          
-    user = models.ForeignKey(User,
-                             verbose_name = _(u"User"),
-                             related_name = 'customDomainWeigthing',
-                             blank = True,
-                             null = True,
-                             on_delete = models.DO_NOTHING)
+    user = ForeignKey(User,
+                      verbose_name = _(u"User"),
+                      related_name = 'customDomainWeigthing',
+                      blank = True,
+                      null = True,
+                      on_delete = models.DO_NOTHING)
         
-    name = models.CharField(default = '',
-                              max_length = 1000,
-                              verbose_name = _("Name"))
+    name = CharField(default = '',
+                     max_length = 1000,
+                     verbose_name = _("Name"))
                               
-    country = models.ManyToManyField(Country,
-                                     blank = True,
-                                     verbose_name = _('Countries'),
-                                     related_name = 'customDomainWeigthing',
-                                     help_text = _('Multiple selection/deselection: use the CTRL key'),)
+    country = ForeignKey(Country,
+                         blank = True,
+                         verbose_name = _('Countries'),
+                         related_name = 'customDomainWeigthing',
+                         help_text = _('Multiple selection/deselection: use the CTRL key'),)
     
-    climate = models.ManyToManyField(Climate,
-                                   blank = True,
-                                   verbose_name = _('Climates'),
-                                   related_name = 'customDomainWeigthing',
-                                   help_text = _('Multiple selection/deselection: use the CTRL key'),)
+    climate = ForeignKey(Climate,
+                         blank = True,
+                         verbose_name = _('Climates'),
+                         related_name = 'customDomainWeigthing',
+                         help_text = _('Multiple selection/deselection: use the CTRL key'),)
                          
-    buildingType = models.ManyToManyField(BuildindgType,
-                                          blank = True,
-                                          verbose_name = _('Building Types'),
-                                          related_name = 'customDomainWeigthing',
-                                          help_text = _('Multiple selection/unselection: use the CTRL key'),)
+    buildingType = ForeignKey(BuildindgType,
+                              blank = True,
+                              verbose_name = _('Building Types'),
+                              related_name = 'customDomainWeigthing',
+                              help_text = _('Multiple selection/unselection: use the CTRL key'),)
     
     energyEfficiencyHeating = FloatField(verbose_name = _('Energy efficiency heating'),
                                          )
@@ -1510,7 +1508,7 @@ class CustomDomainWeighting(models.Model):
         self.save()
         return self
         
-class UserDefineDomainWeightings(models.Model):
+class UserDefineDomainWeightings(Model):
     
     def __str__(self):
         ''' 
@@ -1524,49 +1522,49 @@ class UserDefineDomainWeightings(models.Model):
         ordering = ('id',)
 
         
-class Proyecto(models.Model):
+class Proyecto(Model):
     
-    user = models.ForeignKey(User,
-                                    verbose_name = _(u"User"),
-                                    related_name = 'proyectos',
-                                    on_delete = models.DO_NOTHING)
+    user = ForeignKey(User,
+                      verbose_name = _(u"User"),
+                      related_name = 'proyectos',
+                      on_delete = models.DO_NOTHING)
     
-    country = models.ForeignKey(Country,
-                                verbose_name = _('Country'),
-                                related_name = 'proyectos',
-                                blank = True,
-                                null = True,
-                                on_delete = models.DO_NOTHING)
+    country = ForeignKey(Country,
+                         verbose_name = _('Country'),
+                         related_name = 'proyectos',
+                         blank = True,
+                         null = True,
+                         on_delete = models.DO_NOTHING)
     
-    catalogo = models.ForeignKey(Catalogo,
-                                 verbose_name = _('Catalogue'),
-                                 related_name = 'proyectos',
-                                 blank = True,
-                                null = True,
-                                 on_delete = models.DO_NOTHING)
+    catalogo = ForeignKey(Catalogo,
+                          verbose_name = _('Catalogue'),
+                          related_name = 'proyectos',
+                          blank = True,
+                          null = True,
+                          on_delete = models.DO_NOTHING)
     
-    climate = models.ForeignKey(Climate,
+    climate = ForeignKey(Climate,
                                 verbose_name = _('Climate'),
                                 related_name = 'proyectos',
                                 blank = True,
                                 null = True,
                                 on_delete = models.DO_NOTHING)
     
-    domainWeigthing = models.ForeignKey(DomainWeigthing,
+    domainWeigthing = ForeignKey(DomainWeigthing,
                                 verbose_name = _('Default weighting factors'),
                                 related_name = 'proyectos',
                                 blank = True,
                                 null = True,
                                 on_delete = models.DO_NOTHING)
                                 
-    customDomainWeigthings = models.ForeignKey(CustomDomainWeighting,
+    customDomainWeigthings = ForeignKey(CustomDomainWeighting,
                                 verbose_name = _('Custom Domain Weighting'),
                                 related_name = 'proyecto',
                                 blank = True,
                                 null = True,
                                 on_delete = models.DO_NOTHING)
                                 
-    buildingType = models.ForeignKey(BuildindgType,
+    buildingType = ForeignKey(BuildindgType,
                                 verbose_name = _('Building Type'),
                                 related_name = 'proyectos',
                                 blank = True,
@@ -2499,19 +2497,19 @@ class Proyecto(models.Model):
             return [calculado, ]
 
     
-class Dato(models.Model):
+class Dato(Model):
     
-    chosenFuncionality = models.ForeignKey(Funcionalidad,
-                                             verbose_name = _('Functionality'),
-                                             related_name = 'datos',
-                                             on_delete = models.CASCADE)
+    chosenFuncionality = ForeignKey(Funcionalidad,
+                                    verbose_name = _('Functionality'),
+                                    related_name = 'datos',
+                                    on_delete = models.CASCADE)
     
-    proyect = models.ForeignKey(Proyecto,
-                                verbose_name = _('Project'),
-                                related_name = 'datos',
-                                null = True,
-                                blank = True,
-                                on_delete = models.CASCADE)
+    proyect = ForeignKey(Proyecto,
+                         verbose_name = _('Project'),
+                         related_name = 'datos',
+                         null = True,
+                         blank = True,
+                         on_delete = models.CASCADE)
     
     comments = RichTextUploadingField(verbose_name = _("Comment"),
                              blank = True,
@@ -2522,8 +2520,9 @@ class Dato(models.Model):
                                   default = '')
     
     percentage = FloatField(verbose_name = _('Percentage'),                            
-                                       default = 100.0,
-                                       validators = [MinValueValidator(0.0),MaxValueValidator(100)])
+                            default = 100.0,
+                            min = 0.0,
+                            max = 100)
     
     class Meta:
         verbose_name = _('Datum')
