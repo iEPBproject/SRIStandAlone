@@ -1,13 +1,13 @@
 # # -\*- coding: utf-8 -\*-
 import copy
 
-from ckeditor_uploader.fields import RichTextUploadingField
-from ckeditor_uploader.widgets import CKEditorUploadingWidget
-from django import forms
-from django.contrib.auth.models import User
-from django.core.validators import MaxValueValidator, MinValueValidator
-from django.db import models 
-from django.utils.translation import gettext_lazy as _
+# from ckeditor_uploader.fields import RichTextUploadingField
+# from ckeditor_uploader.widgets import CKEditorUploadingWidget
+# from django import forms
+# from django.contrib.auth.models import User
+# from django.core.validators import MaxValueValidator, MinValueValidator
+# from django.db import models 
+# from django.utils.translation import gettext_lazy as _
 from tabulate import tabulate
 
 import pandas as pd
@@ -1565,7 +1565,7 @@ class Proyecto(Model):
                                 null = True,
                                 on_delete = models.DO_NOTHING)
                                 
-    buildingType = ForeignKey(BuildindgType,
+    buildingType = ForeignKey(BuildingType,
                                 verbose_name = _('Building Type'),
                                 related_name = 'proyectos',
                                 blank = True,
@@ -1700,6 +1700,26 @@ class Proyecto(Model):
     ElectricVehicleCharging = BooleanField(default = True, verbose_name = _("Electric Vehicle Charging"), help_text = _("Is Electric Vehicle Charging domain assessable?"))
     MonitoringAndControl = BooleanField(default = True, verbose_name = _("Monitoring And Control"), help_text = _("Is Monitoring and Control domain assessable?"))
     customDomain = BooleanField(default = False, verbose_name = _("Custom Domain Weighting"), help_text = _("Prefer to customize domain weightings?"))
+    
+    @classmethod
+    def creaDesdeXML(cls,projectElement):
+        ns = {'d':"http://www.gbxml.org/schema"}
+        nuevaInstancia = cls()
+        nameElement = projectElement.find('d:name',ns)
+        nuevaInstancia.name = nameElement.text         
+        
+        print(projectElement,projectElement.attrib)
+        for catalogueElement in projectElement.findall('.//d:Catalogue',ns):
+            print("\t",catalogueElement,catalogueElement.attrib)
+            description = catalogueElement.find('.//d:description',ns)
+            print("\t\t",description.text)
+            for domainElement in catalogueElement.findall('.//d:Domain',ns):
+                print("\t\t\t",domainElement,domainElement.attrib)
+                description = domainElement.find('.//d:description',ns)
+                print("\t\t\t\t",description.text)        
+        
+               
+        return nuevaInstancia
     
     class Meta:
         verbose_name = _('Project')
