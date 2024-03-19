@@ -13,10 +13,11 @@ from tabulate import tabulate
 import pandas as pd
 
 
-from librerias.miDjangoModel3.models import Model, CharField, FloatField, BooleanField, ForeignKey
+from librerias.miDjangoModel3.models import Model, CharField, FloatField, BooleanField, ForeignKey,Manager
 
 
 class BuildingType(Model):
+    objects = Manager()
     description = CharField(default = '',
                             max_length = 100,
                             verbose_name = _('Description'))
@@ -80,7 +81,7 @@ class Catalogo(Model):
                          related_name = 'catalogos',
                          help_text = _('Multiple selection/deselection: use the CTRL key'),)
                                      
-    buildingType = ForeignKey(BuildindgType,
+    buildingType = ForeignKey(BuildingType,
                               blank = True,
                               verbose_name = _('Building Types'),
                               related_name = 'catalogos',
