@@ -289,8 +289,7 @@ class Dominio(Model):
     
     catalogo = ForeignKey(Catalogo,
                           verbose_name = _('Catalogue'),
-                          related_name = 'dominios',
-                          on_delete = models.CASCADE)
+                          related_name = 'dominios')
     
     description = CharField(default = '',
                             max_length = 1000,
@@ -538,8 +537,7 @@ class Servicio(Model):
     
     dominio = ForeignKey(Dominio,
                               verbose_name = _('Domain'),
-                              related_name = 'servicios',
-                              on_delete = models.CASCADE)
+                              related_name = 'servicios')
     
     description = CharField(default = '',
                                   max_length = 1000,
@@ -813,8 +811,7 @@ class Funcionalidad(Model):
     
     service = ForeignKey(Servicio,
                                 verbose_name = _('Service'),
-                                related_name = 'funcionalidades',
-                                on_delete = models.CASCADE)
+                                related_name = 'funcionalidades')
     
     description = CharField(default = '',
                                   max_length = 1000,
@@ -1266,15 +1263,13 @@ class CustomDomainWeighting(Model):
                                        verbose_name = _('Custom Impact Weightings'),
                                        related_name = 'customDomainWeigthing',
                                        blank = True,
-                                       null = True,
-                                       on_delete = models.DO_NOTHING)
+                                       null = True)
                          
     user = ForeignKey(User,
                       verbose_name = _(u"User"),
                       related_name = 'customDomainWeigthing',
                       blank = True,
-                      null = True,
-                      on_delete = models.DO_NOTHING)
+                      null = True)
         
     name = CharField(default = '',
                      max_length = 1000,
@@ -1526,50 +1521,43 @@ class Proyecto(Model):
     
     user = ForeignKey(User,
                       verbose_name = _(u"User"),
-                      related_name = 'proyectos',
-                      on_delete = models.DO_NOTHING)
+                      related_name = 'proyectos')
     
     country = ForeignKey(Country,
                          verbose_name = _('Country'),
                          related_name = 'proyectos',
                          blank = True,
-                         null = True,
-                         on_delete = models.DO_NOTHING)
+                         null = True)
     
     catalogo = ForeignKey(Catalogo,
                           verbose_name = _('Catalogue'),
                           related_name = 'proyectos',
                           blank = True,
-                          null = True,
-                          on_delete = models.DO_NOTHING)
+                          null = True)
     
     climate = ForeignKey(Climate,
                                 verbose_name = _('Climate'),
                                 related_name = 'proyectos',
                                 blank = True,
-                                null = True,
-                                on_delete = models.DO_NOTHING)
+                                null = True)
     
     domainWeigthing = ForeignKey(DomainWeigthing,
                                 verbose_name = _('Default weighting factors'),
                                 related_name = 'proyectos',
                                 blank = True,
-                                null = True,
-                                on_delete = models.DO_NOTHING)
+                                null = True)
                                 
     customDomainWeigthings = ForeignKey(CustomDomainWeighting,
                                 verbose_name = _('Custom Domain Weighting'),
                                 related_name = 'proyecto',
                                 blank = True,
-                                null = True,
-                                on_delete = models.DO_NOTHING)
+                                null = True)
                                 
     buildingType = ForeignKey(BuildindgType,
                                 verbose_name = _('Building Type'),
                                 related_name = 'proyectos',
                                 blank = True,
-                                null = True,
-                                on_delete = models.DO_NOTHING)
+                                null = True)
       
     name = CharField(default = '',
                      max_length = 1000,
@@ -2501,15 +2489,13 @@ class Dato(Model):
     
     chosenFuncionality = ForeignKey(Funcionalidad,
                                     verbose_name = _('Functionality'),
-                                    related_name = 'datos',
-                                    on_delete = models.CASCADE)
+                                    related_name = 'datos')
     
     proyect = ForeignKey(Proyecto,
                          verbose_name = _('Project'),
                          related_name = 'datos',
                          null = True,
-                         blank = True,
-                         on_delete = models.CASCADE)
+                         blank = True)
     
     comments = RichTextUploadingField(verbose_name = _("Comment"),
                              blank = True,
