@@ -1,13 +1,10 @@
 # # -\*- coding: utf-8 -\*-
 import copy
 
-# from ckeditor_uploader.fields import RichTextUploadingField
 # from ckeditor_uploader.widgets import CKEditorUploadingWidget
 # from django import forms
 # from django.contrib.auth.models import User
 # from django.core.validators import MaxValueValidator, MinValueValidator
-# from django.db import models 
-# from django.utils.translation import gettext_lazy as _
 from tabulate import tabulate
 
 import pandas as pd
@@ -20,76 +17,81 @@ class BuildingType(Model):
     objects = Manager()
     description = CharField(default = '',
                             max_length = 100,
-                            verbose_name = _('Description'))
+                            verbose_name = 'Description')
                             
     def __str__(self):
         ''' 
         Clase BuildindgType
         '''
         
-        return f"{_(self.description)}"
+        return f"{self.description}"
         
     class Meta:
-        verbose_name = _('Buiding Type')
-        verbose_name_plural = _('11. Buiding Type')
+        verbose_name = 'Buiding Type'
+        verbose_name_plural = '11. Buiding Type'
 
 class Country(Model):
+    
+    objects = Manager()
+    
     name = CharField(default = '',
                        max_length = 1000,
-                       verbose_name = _("Name"))
+                       verbose_name = "Name")
     
-    heatingMandatory = BooleanField(default = True, verbose_name = _("Mandatory Heating Domain"), help_text = _("Is heating a mandatory domain?"))
-    dhwMandatoryForResidential = BooleanField(default = True, verbose_name = _("Mandatory DWH for residential Domain"), help_text = _("Is DHW  a mandatory domain?"))
-    dhwMandatoryForTertiary = BooleanField(default = True, verbose_name = _("Mandatory DWH for tertiary Domain"), help_text = _("Is DHW  a mandatory domain?"))
-    CoolingMandatory = BooleanField(default = True, verbose_name = _("Mandatory Cooling Domain"), help_text = _("Is Cooling a mandatory domain?"))
-    VentilationMandatory = BooleanField(default = True, verbose_name = _("Mandatory Ventilation Domain"), help_text = _("Is Ventilation  a mandatory domain?"))
-    LightingMandatory = BooleanField(default = True, verbose_name = _("Mandatory Lighting Domain"), help_text = _("Is Lighting  a mandatory domain?"))
-    DynamicBuildingEnvelopeMandatory = BooleanField(default = True, verbose_name = _("Mandatory Dynamic Building Envelope Domain"), help_text = _("Is Dynamic Building Envelope  a mandatory domain?"))
-    ElectricityMandatory = BooleanField(default = True, verbose_name = _("Mandatory Electricity Domain"), help_text = _("Is Electricity a mandatory domain?"))
-    ElectricVehicleChargingMandatory = BooleanField(default = True, verbose_name = _("Mandatory Electric Vehicle Charging Domain"), help_text = _("Is Electric Vehicle Charging  a mandatory domain?"))
-    MonitoringAndControlMandatory = BooleanField(default = True, verbose_name = _("Mandatory Monitoring And Control Domain"), help_text = _("Is Monitoring and Control  a mandatory domain?"))    
+    heatingMandatory = BooleanField(default = True, verbose_name = "Mandatory Heating Domain", help_text = "Is heating a mandatory domain?")
+    dhwMandatoryForResidential = BooleanField(default = True, verbose_name = "Mandatory DWH for residential Domain", help_text = "Is DHW  a mandatory domain?")
+    dhwMandatoryForTertiary = BooleanField(default = True, verbose_name = "Mandatory DWH for tertiary Domain", help_text = "Is DHW  a mandatory domain?")
+    CoolingMandatory = BooleanField(default = True, verbose_name = "Mandatory Cooling Domain", help_text = "Is Cooling a mandatory domain?")
+    VentilationMandatory = BooleanField(default = True, verbose_name = "Mandatory Ventilation Domain", help_text = "Is Ventilation  a mandatory domain?")
+    LightingMandatory = BooleanField(default = True, verbose_name = "Mandatory Lighting Domain", help_text = "Is Lighting  a mandatory domain?")
+    DynamicBuildingEnvelopeMandatory = BooleanField(default = True, verbose_name = "Mandatory Dynamic Building Envelope Domain", help_text = "Is Dynamic Building Envelope  a mandatory domain?")
+    ElectricityMandatory = BooleanField(default = True, verbose_name = "Mandatory Electricity Domain", help_text = "Is Electricity a mandatory domain?")
+    ElectricVehicleChargingMandatory = BooleanField(default = True, verbose_name = "Mandatory Electric Vehicle Charging Domain", help_text = "Is Electric Vehicle Charging  a mandatory domain?")
+    MonitoringAndControlMandatory = BooleanField(default = True, verbose_name = "Mandatory Monitoring And Control Domain", help_text = "Is Monitoring and Control  a mandatory domain?")    
     
     domainClassNames = CharField(default = 'A,B,C,D,E,F,G',
                                                         max_length = 1000,
-                                                        verbose_name = _("Class names list (separated by comma) with 7 class names"))
+                                                        verbose_name = "Class names list (separated by comma) with 7 class names")
     
     
-    allowUserDefineDomainWeightings = BooleanField(default = False, verbose_name = _("Allow user defined domain weightings"), )
+    allowUserDefineDomainWeightings = BooleanField(default = False, verbose_name = "Allow user defined domain weightings", )
 
     def __str__(self):
         ''' 
         Clase Country
         
         '''
-        return 'Id: {} - {} '.format(self.id, _(self.name))
+        return 'Id: {} - {} '.format(self.id, self.name)
 
     class Meta:
-        verbose_name = _('Country')
-        verbose_name_plural = _('6. Country')
+        verbose_name = 'Country'
+        verbose_name_plural = '6. Country'
         ordering = ('id',)
 
 
 class Catalogo(Model):
     
+    objects = Manager()
+    
     description = CharField(default = '',
-                                  max_length = 1000,
-                                  verbose_name = _("Description"))
+                            max_length = 1000,
+                            verbose_name = "Description")
     
     country = ForeignKey(Country,
                          blank = True,
-                         verbose_name = _('Country'),
+                         verbose_name = 'Country',
                          related_name = 'catalogos',
-                         help_text = _('Multiple selection/deselection: use the CTRL key'),)
+                         help_text = 'Multiple selection/deselection: use the CTRL key',)
                                      
     buildingType = ForeignKey(BuildingType,
                               blank = True,
-                              verbose_name = _('Building Types'),
+                              verbose_name = 'Building Types',
                               related_name = 'catalogos',
-                              help_text = _('Multiple selection/deselection: use the CTRL key'),)
+                              help_text = 'Multiple selection/deselection: use the CTRL key',)
                   
     class Meta:
-        verbose_name = _('Catalogue')
-        verbose_name_plural = _('1.Catalogue')
+        verbose_name = 'Catalogue'
+        verbose_name_plural = '1.Catalogue'
         ordering = ('id',)
 
     def __str__(self):
@@ -97,7 +99,7 @@ class Catalogo(Model):
         Clase Catalogo
         
         '''
-        return str(_(self.description))
+        return str(self.description)
 
     @property
     def tieneDatos(self):
@@ -115,7 +117,7 @@ class Catalogo(Model):
         copyId = copy.deepcopy(self.id) 
         
         if hasattr(self, 'description'):
-            self.description = self.description + _(' copy')
+            self.description = self.description + ' copy'
         
         listadoDominios = Dominio.objects.filter(catalogo_id = copyId)
         
@@ -265,44 +267,49 @@ class Catalogo(Model):
         return impactoMaximo
 
 class Climate(Model):
+    
+    objects = Manager()
+    
     description = CharField(default = '',
                             max_length = 1000,
-                            verbose_name = _("Description"))
+                            verbose_name = "Description")
     country = ForeignKey(Country,
                          blank = True,
-                         verbose_name = _('Countries'),
+                         verbose_name = 'Countries',
                          related_name = 'climates',
-                         help_text = _('Multiple selection/deselection: use the CTRL key'),)
+                         help_text = 'Multiple selection/deselection: use the CTRL key',)
 
     def __str__(self):
         ''' 
         Clase Climate
         
         '''
-        return 'Id: {} - {} '.format(self.id, _(self.description))
+        return 'Id: {} - {} '.format(self.id, self.description)
 
     class Meta:
-        verbose_name = _('Climate')
-        verbose_name_plural = _('9. Climate')
+        verbose_name = 'Climate'
+        verbose_name_plural = '9. Climate'
         ordering = ('id',)
     
 class Dominio(Model):
     
+    objects = Manager()
+    
     catalogo = ForeignKey(Catalogo,
-                          verbose_name = _('Catalogue'),
+                          verbose_name = 'Catalogue',
                           related_name = 'dominios')
     
     description = CharField(default = '',
                             max_length = 1000,
-                            verbose_name = _("Description"))
+                            verbose_name = "Description")
     
     nameAttr = CharField(default = '',  # Este campo se va a utilizar para los getatt() de los campos.
                          max_length = 1000,
-                         verbose_name = _("Name Attribute"))
+                         verbose_name = "Name Attribute")
                   
     class Meta:
-        verbose_name = _('Domain')
-        verbose_name_plural = _('2.Domain')
+        verbose_name = 'Domain'
+        verbose_name_plural = '2.Domain'
         ordering = ('id',)
 
     def __str__(self):
@@ -310,7 +317,7 @@ class Dominio(Model):
         Clase Dominio
         
         '''
-        return f"{_(self.description)}"
+        return f"{self.description}"
     
     def duplicar(self, padre = None):
         ''' 
@@ -482,27 +489,27 @@ class Dominio(Model):
         for servicio in self.servicios.all():
             choices1 = [] 
             cont = 0
-            for x in servicio.funcionalidades.all(): choices1.append((x.id, _(x.description)))
+            for x in servicio.funcionalidades.all(): choices1.append((x.id, x.description))
             listadoDatos = Dato.objects.filter(chosenFuncionality__service__id = servicio.id, proyect = proyectoId)
             porcTotal = 0
             # if len(listadoDatos) == 0:
-            new_fields['{0}--{1}--{2}'.format(servicio.id, 'Choice', cont) ] = forms.ChoiceField(label = _(servicio.description),
-                                                                                                help_text = _(servicio.description),
-                                                                                                choices = choices1)
+            new_fields['{0}--{1}--{2}'.format(servicio.id, 'Choice', cont) ] = forms.ChoiceField(label = servicio.description,
+                                                                                                 help_text = servicio.description,
+                                                                                                 choices = choices1)
     
-            new_fields['{0}--{1}--{2}'.format(servicio.id, 'Percentage', cont) ] = forms.FloatField(label = _('Percentage'),
-                                                                                                   help_text = _(servicio.description),
-                                                                                                   initial = 100.0,
-                                                                                                   validators=[MinValueValidator(0.0),MaxValueValidator(100.0, u"Please introduce a lower value")])
+            new_fields['{0}--{1}--{2}'.format(servicio.id, 'Percentage', cont) ] = forms.FloatField(label = 'Percentage',
+                                                                                                    help_text = servicio.description,
+                                                                                                    initial = 100.0,
+                                                                                                    validators=[MinValueValidator(0.0),MaxValueValidator(100.0, u"Please introduce a lower value")])
                 
             new_fields['{0}--{1}--{2}'.format(servicio.id, 'Justificacion', cont) ] = forms.CharField(widget = CKEditorUploadingWidget(),
-                                                                                                      label = _('Justification'),
-                                                                                                      help_text = _(servicio.description),
+                                                                                                      label = 'Justification',
+                                                                                                      help_text = servicio.description,
                                                                                                       required = False)
             
             new_fields['{0}--{1}--{2}'.format(servicio.id, 'Comentario', cont) ] = forms.CharField(widget = CKEditorUploadingWidget(),
-                                                                                                   label = _('Comments'),
-                                                                                                   help_text = _(servicio.description),
+                                                                                                   label = 'Comments',
+                                                                                                   help_text = servicio.description,
                                                                                                    required = False)
             # else:
                 
@@ -511,23 +518,23 @@ class Dominio(Model):
                 if porcTotal < 100.: 
                     cont += 1
                                    
-                    new_fields['{0}--{1}--{2}'.format(servicio.id, 'Choice', cont) ] = forms.ChoiceField(label = _(servicio.description),
-                                                                         help_text = _(servicio.description),
-                                                                         choices = choices1)
+                    new_fields['{0}--{1}--{2}'.format(servicio.id, 'Choice', cont) ] = forms.ChoiceField(label = servicio.description,
+                                                                                                         help_text = servicio.description,
+                                                                                                         choices = choices1)
                     
-                    new_fields['{0}--{1}--{2}'.format(servicio.id, 'Percentage', cont) ] = forms.FloatField(label = _('Percentage'),
-                                                                                           help_text = _(servicio.description),
-                                                                                           initial = 100 - porcTotal)
+                    new_fields['{0}--{1}--{2}'.format(servicio.id, 'Percentage', cont) ] = forms.FloatField(label = 'Percentage',
+                                                                                                            help_text = servicio.description,
+                                                                                                            initial = 100 - porcTotal)
                     
                     new_fields['{0}--{1}--{2}'.format(servicio.id, 'Justificacion', cont) ] = forms.CharField(widget = CKEditorUploadingWidget(),
-                                                                                            label = _('Justification'),
-                                                                                            help_text = _(servicio.description),
-                                                                                            required = False)
+                                                                                                              label = 'Justification',
+                                                                                                              help_text = servicio.description,
+                                                                                                              required = False)
                     
                     new_fields['{0}--{1}--{2}'.format(servicio.id, 'Comentario', cont) ] = forms.CharField(widget = CKEditorUploadingWidget(),
-                                                                                            label = _('Comments'),
-                                                                                            help_text = _(servicio.description),
-                                                                                            required = False)
+                                                                                                           label = 'Comments',
+                                                                                                           help_text = servicio.description,
+                                                                                                           required = False)
         
         DynamicDominionForm = type('DynamicDominionForm', (DominioForm,), new_fields)
         
@@ -536,21 +543,23 @@ class Dominio(Model):
     
 class Servicio(Model):
     
+    objects = Manager()
+    
     dominio = ForeignKey(Dominio,
-                              verbose_name = _('Domain'),
-                              related_name = 'servicios')
+                         verbose_name = 'Domain',
+                         related_name = 'servicios')
     
     description = CharField(default = '',
-                                  max_length = 1000,
-                                  verbose_name = _("Description"))
+                            max_length = 1000,
+                            verbose_name = "Description")
 
     reference = CharField(default = '',
-                                  max_length = 20,
-                                  verbose_name = _("Reference code"))    
+                          max_length = 20,
+                          verbose_name = "Reference code")    
                   
     class Meta:
-        verbose_name = _('Service')
-        verbose_name_plural = _('3.Service')
+        verbose_name = 'Service'
+        verbose_name_plural = '3.Service'
         ordering = ('id',)
 
     def __str__(self):
@@ -558,7 +567,7 @@ class Servicio(Model):
         Clase Servicio
         
         '''
-        return str(_(self.description))
+        return str(self.description)
     
     def duplicar(self, padre = None):
         ''' 
@@ -810,48 +819,54 @@ class Servicio(Model):
     
 class Funcionalidad(Model):
     
+    objects = Manager()
+    
     service = ForeignKey(Servicio,
-                                verbose_name = _('Service'),
-                                related_name = 'funcionalidades')
+                         verbose_name = 'Service',
+                         related_name = 'funcionalidades')
     
     description = CharField(default = '',
-                                  max_length = 1000,
-                                  verbose_name = _("Description"))
+                            max_length = 1000,
+                            verbose_name = "Description")
 
     reference = CharField(default = '',
-                                  max_length = 20,
-                                  verbose_name = _("Reference code"))        
+                          max_length = 20,
+                          verbose_name = "Reference code")        
     
     energyEfficiencyImpact = FloatField(default = 0.0,
-                                        verbose_name = _('Energy efficiency'))
+                                        verbose_name = 'Energy efficiency')
     
     energyFlexibilityImpact = FloatField(default = 0.0,
-                                          verbose_name = _('Energy flexibility and storage'))
+                                         verbose_name = 'Energy flexibility and storage')
     
     comfortImpact = FloatField(default = 0.0,
-                                      verbose_name = _('Comfort'))
+                               verbose_name = 'Comfort')
+                               
     convenienceImpact = FloatField(default = 0.0,
-                                         verbose_name = _('Convenience'))
+                                   verbose_name = 'Convenience')
+                                   
     healthAccesibilityImpact = FloatField(default = 0.0,
-                                          verbose_name = _('Health, well-being and accessibility'))
-    maintenanceFaultPredictionImpact = FloatField(default = 0.0,
-                                          verbose_name = _('Maintenance and fault prediction'))
-    informationOccupantsImpact = FloatField(default = 0.0,
-                                          verbose_name = _('Information to occupants'))
+                                          verbose_name = 'Health, well-being and accessibility')
                                           
-    en15232Residential = CharField(choices = [('-', '-'),('A', _('A')), ('B', _('B')), ('C', _('C')), ('D', _('D'))],
+    maintenanceFaultPredictionImpact = FloatField(default = 0.0,
+                                                  verbose_name = 'Maintenance and fault prediction')
+                                          
+    informationOccupantsImpact = FloatField(default = 0.0,
+                                            verbose_name = 'Information to occupants')
+                                          
+    en15232Residential = CharField(choices = [('-', '-'),('A', 'A'), ('B', 'B'), ('C', 'C'), ('D', 'D')],
                                        max_length = 1000,
-                                       verbose_name = _(u"ISO 52120-1:2021 (Residential)"),
+                                       verbose_name = u"ISO 52120-1:2021 (Residential)",
                                        default = '-')
                                        
-    en15232NonResidential = CharField(choices = [('-', '-'),('A', _('A')), ('B', _('B')), ('C', _('C')), ('D', _('D'))],
+    en15232NonResidential = CharField(choices = [('-', '-'),('A', 'A'), ('B', 'B'), ('C', 'C'), ('D', 'D')],
                                        max_length = 1000,
-                                       verbose_name = _(u"ISO 52120-1:2021 (Non-residential)"),
+                                       verbose_name = u"ISO 52120-1:2021 (Non-residential)",
                                        default = '-')
                   
     class Meta:
-        verbose_name = _('Functionality')
-        verbose_name_plural = _('4.Functionality')
+        verbose_name = 'Functionality'
+        verbose_name_plural = '4.Functionality'
         ordering = ('id',)
 
     def __str__(self):
@@ -881,37 +896,39 @@ class Funcionalidad(Model):
     
 class ImpactWeightings (Model):
     
-    energyEfficiency = FloatField(verbose_name = _('Energy Efficiency'),
+    objects = Manager()
+    
+    energyEfficiency = FloatField(verbose_name = 'Energy Efficiency',
                                   default = 0.0)
     
-    energyFlexibility = FloatField(verbose_name = _('Energy flexibility and storage'),
+    energyFlexibility = FloatField(verbose_name = 'Energy flexibility and storage',
                                    default = 0.0)
     
-    comfort = FloatField(verbose_name = _('Comfort'),
+    comfort = FloatField(verbose_name = 'Comfort',
                          default = 0.0)
     
-    convenience = FloatField(verbose_name = _('Convenience'),
+    convenience = FloatField(verbose_name = 'Convenience',
                              default = 0.0)
     
-    healthAccesibility = FloatField(verbose_name = _('Health, well-being and accessibility'),
+    healthAccesibility = FloatField(verbose_name = 'Health, well-being and accessibility',
                                     default = 0.0)
     
-    maintenanceFaultPrediction = FloatField(verbose_name = _('Maintenance and fault prediction'),
-                                           default = 0.0)
-    informationOccupants = FloatField(verbose_name = _('Information to occupants'),
+    maintenanceFaultPrediction = FloatField(verbose_name = 'Maintenance and fault prediction',
+                                            default = 0.0)
+    informationOccupants = FloatField(verbose_name = 'Information to occupants',
                                       default = 0.0)
     
-    kF1_energyPerformanceAndOperation = FloatField(verbose_name = _('KF1: Energy performance'),
-                                                                            help_text = "Key functionality 1: Energy performance and operation",
-                                                                            default = 1.0 / 3.0)
+    kF1_energyPerformanceAndOperation = FloatField(verbose_name = 'KF1: Energy performance',
+                                                   help_text = "Key functionality 1: Energy performance and operation",
+                                                   default = 1.0 / 3.0)
     
-    kF2_responseToUserNeeds = FloatField(verbose_name = _('KF2: Response to user needs'),
-                                                                            help_text = "Key functionality 1: Response to user needs",
-                                                                            default = 1.0 / 3.0)
+    kF2_responseToUserNeeds = FloatField(verbose_name = 'KF2: Response to user needs',
+                                         help_text = "Key functionality 1: Response to user needs",
+                                         default = 1.0 / 3.0)
     
-    kF3_energyFlexibility = FloatField(verbose_name = _('KF3: Energy flexibility'),
-                                                                            help_text = "Key functionality 3: Energy flexibility",
-                                                                            default = 1.0 / 3.0)        
+    kF3_energyFlexibility = FloatField(verbose_name = 'KF3: Energy flexibility',
+                                       help_text = "Key functionality 3: Energy flexibility",
+                                       default = 1.0 / 3.0)        
     
     def getLista(self):
         return [self.energyEfficiency,
@@ -923,8 +940,8 @@ class ImpactWeightings (Model):
                 self.informationOccupants]
 
     class Meta:
-        verbose_name = _('Impact Weighting')
-        verbose_name_plural = _('8.Impact Weighting')
+        verbose_name = 'Impact Weighting'
+        verbose_name_plural = '8.Impact Weighting'
         ordering = ('id',)
         
     def duplicar(self, padre = None):
@@ -948,37 +965,40 @@ class ImpactWeightings (Model):
         
 class CustomImpactWeightings(Model):
     
-    energyEfficiency = FloatField(verbose_name = _('Energy Efficiency'),
+    objects = Manager()
+    
+    energyEfficiency = FloatField(verbose_name = 'Energy Efficiency',
                                   default = 0.0)
     
-    energyFlexibility = FloatField(verbose_name = _('Energy flexibility and storage'),
+    energyFlexibility = FloatField(verbose_name = 'Energy flexibility and storage',
                                    default = 0.0)
     
-    comfort = FloatField(verbose_name = _('Comfort'),
+    comfort = FloatField(verbose_name = 'Comfort',
                          default = 0.0)
     
-    convenience = FloatField(verbose_name = _('Convenience'),
+    convenience = FloatField(verbose_name = 'Convenience',
                              default = 0.0)
     
-    healthAccesibility = FloatField(verbose_name = _('Health, well-being and accessibility'),
+    healthAccesibility = FloatField(verbose_name = 'Health, well-being and accessibility',
                                     default = 0.0)
     
-    maintenanceFaultPrediction = FloatField(verbose_name = _('Maintenance and fault prediction'),
+    maintenanceFaultPrediction = FloatField(verbose_name = 'Maintenance and fault prediction',
                                            default = 0.0)
-    informationOccupants = FloatField(verbose_name = _('Information to occupants'),
+                                           
+    informationOccupants = FloatField(verbose_name = 'Information to occupants',
                                       default = 0.0)
     
-    kF1_energyPerformanceAndOperation = FloatField(verbose_name = _('KF1: Energy performance'),
-                                                                            help_text = "Key functionality 1: Energy performance and operation",
-                                                                            default = 1.0 / 3.0)
+    kF1_energyPerformanceAndOperation = FloatField(verbose_name = 'KF1: Energy performance',
+                                                   help_text = "Key functionality 1: Energy performance and operation",
+                                                   default = 1.0 / 3.0)
     
-    kF2_responseToUserNeeds = FloatField(verbose_name = _('KF2: Response to user needs'),
-                                                                            help_text = "Key functionality 1: Response to user needs",
-                                                                            default = 1.0 / 3.0)
+    kF2_responseToUserNeeds = FloatField(verbose_name = 'KF2: Response to user needs',
+                                         help_text = "Key functionality 1: Response to user needs",
+                                         default = 1.0 / 3.0)
     
-    kF3_energyFlexibility = FloatField(verbose_name = _('KF3: Energy flexibility'),
-                                                                            help_text = "Key functionality 3: Energy flexibility",
-                                                                            default = 1.0 / 3.0)        
+    kF3_energyFlexibility = FloatField(verbose_name = 'KF3: Energy flexibility',
+                                       help_text = "Key functionality 3: Energy flexibility",
+                                       default = 1.0 / 3.0)        
     
     def getLista(self):
         return [self.energyEfficiency,
@@ -1013,31 +1033,33 @@ class CustomImpactWeightings(Model):
         return 'Id: {}'.format(self.id)
 
 class DomainWeigthing(Model):
+    
+    objects = Manager()
 
     name = CharField(default = '',
                               max_length = 1000,
-                              verbose_name = _("Name"))
+                              verbose_name = "Name")
                               
     country = ForeignKey(Country,
                          blank = True,
-                         verbose_name = _('Countries'),
+                         verbose_name = 'Countries',
                          related_name = 'domaingWeightings',
-                         help_text = _('Multiple selection/deselection: use the CTRL key'),)
+                         help_text = 'Multiple selection/deselection: use the CTRL key',)
                                      
     catalogo = ForeignKey(Catalogo,
                           blank = True,
-                          verbose_name = _('Catalogue'),
+                          verbose_name = 'Catalogue',
                           related_name = 'domaingWeightings',
-                          help_text = _('Multiple selection/deselection: use the CTRL key'),)
+                          help_text = 'Multiple selection/deselection: use the CTRL key',)
     
     climate = ForeignKey(Climate,
                          blank = True,
-                         verbose_name = _('Climates'),
+                         verbose_name = 'Climates',
                          related_name = 'domaingWeightings',
-                         help_text = _('Multiple selection/deselection: use the CTRL key'),)
+                         help_text = 'Multiple selection/deselection: use the CTRL key',)
     
     impactWeighting = ForeignKey(ImpactWeightings,
-                         verbose_name = _('Impact Weightings'),
+                         verbose_name = 'Impact Weightings',
                          related_name = 'impact_weigthing',
                          blank = True,
                          null = True,
@@ -1045,192 +1067,192 @@ class DomainWeigthing(Model):
                          
     buildingType = ForeignKey(BuildindgType,
                               blank = True,
-                              verbose_name = _('Building Types'),
+                              verbose_name = 'Building Types',
                               related_name = 'domaingWeightings',
-                              help_text = _('Multiple selection/deselection: use the CTRL key'),)
+                              help_text = 'Multiple selection/deselection: use the CTRL key',)
     
-    energyEfficiencyHeating = FloatField(verbose_name = _('Energy efficiency heating'),
+    energyEfficiencyHeating = FloatField(verbose_name = 'Energy efficiency heating',
                                          default = 0.0)
 
-    energyFlexibilityHeating = FloatField(verbose_name = _('Energy flexibility heating'),
+    energyFlexibilityHeating = FloatField(verbose_name = 'Energy flexibility heating',
                                          default = 0.0)
 
-    comfortHeating = FloatField(verbose_name = _('Comfort heating'),
+    comfortHeating = FloatField(verbose_name = 'Comfort heating',
                                 default = 0.0)
 
-    convenienceHeating = FloatField(verbose_name = _('Convenience heating'),
+    convenienceHeating = FloatField(verbose_name = 'Convenience heating',
                                     default = 0.0)
 
-    healthAccesibilityHeating = FloatField(verbose_name = _('Health, well-being and accessibility heating'),
+    healthAccesibilityHeating = FloatField(verbose_name = 'Health, well-being and accessibility heating',
                                            default = 0.0)
 
-    maintenanceFaultPredictionHeating = FloatField(verbose_name = _('Maintenance and fault prediction heating'),
+    maintenanceFaultPredictionHeating = FloatField(verbose_name = 'Maintenance and fault prediction heating',
                                                    default = 0.0)
     
-    informationOccupantsHeating = FloatField(verbose_name = _('Information to occupants heating'),
+    informationOccupantsHeating = FloatField(verbose_name = 'Information to occupants heating',
                                              default = 0.0)
     
-    energyEfficiencyCooling = FloatField(verbose_name = _('Energy efficiency Cooling'),
+    energyEfficiencyCooling = FloatField(verbose_name = 'Energy efficiency Cooling',
                                          default = 0.0)
 
-    energyFlexibilityCooling = FloatField(verbose_name = _('Energy flexibility Cooling'),
+    energyFlexibilityCooling = FloatField(verbose_name = 'Energy flexibility Cooling',
                                           default = 0.0)
 
-    comfortCooling = FloatField(verbose_name = _('Comfort Cooling'),
+    comfortCooling = FloatField(verbose_name = 'Comfort Cooling',
                                 default = 0.0)
 
-    convenienceCooling = FloatField(verbose_name = _('Convenience Cooling'),
+    convenienceCooling = FloatField(verbose_name = 'Convenience Cooling',
                                     default = 0.0)
 
-    healthAccesibilityCooling = FloatField(verbose_name = _('Health, well-being and accessibility Cooling'),
+    healthAccesibilityCooling = FloatField(verbose_name = 'Health, well-being and accessibility Cooling',
                                            default = 0.0)
 
-    maintenanceFaultPredictionCooling = FloatField(verbose_name = _('Maintenance and fault prediction Cooling'),
+    maintenanceFaultPredictionCooling = FloatField(verbose_name = 'Maintenance and fault prediction Cooling',
                                                    default = 0.0)
     
-    informationOccupantsCooling = FloatField(verbose_name = _('Information to occupants Cooling'),
+    informationOccupantsCooling = FloatField(verbose_name = 'Information to occupants Cooling',
                                              default = 0.0)
     
-    energyEfficiencyDhw = FloatField(verbose_name = _('Energy efficiency DHW'),
+    energyEfficiencyDhw = FloatField(verbose_name = 'Energy efficiency DHW',
                                      default = 0.0)
 
-    energyFlexibilityDhw = FloatField(verbose_name = _('Energy flexibility DHW'),
+    energyFlexibilityDhw = FloatField(verbose_name = 'Energy flexibility DHW',
                                       default = 0.0)
 
-    comfortDhw = FloatField(verbose_name = _('Comfort DHW'),
+    comfortDhw = FloatField(verbose_name = 'Comfort DHW',
                            default = 0.0)
 
-    convenienceDhw = FloatField(verbose_name = _('Convenience DHW'),
+    convenienceDhw = FloatField(verbose_name = 'Convenience DHW',
                                   default = 0.0)
 
-    healthAccesibilityDhw = FloatField(verbose_name = _('Health, well-being and accessibility DHW'),
+    healthAccesibilityDhw = FloatField(verbose_name = 'Health, well-being and accessibility DHW',
                                        default = 0.0)
 
-    maintenanceFaultPredictionDhw = FloatField(verbose_name = _('Maintenance and fault prediction DHW'),
+    maintenanceFaultPredictionDhw = FloatField(verbose_name = 'Maintenance and fault prediction DHW',
                                                default = 0.0)
     
-    informationOccupantsDhw = FloatField(verbose_name = _('Information to occupants DHW'),
+    informationOccupantsDhw = FloatField(verbose_name = 'Information to occupants DHW',
                                          default = 0.0)
     
-    energyEfficiencyVentilation = FloatField(verbose_name = _('Energy efficiency Ventilation'),
+    energyEfficiencyVentilation = FloatField(verbose_name = 'Energy efficiency Ventilation',
                                              default = 0.0)
 
-    energyFlexibilityVentilation = FloatField(verbose_name = _('Energy flexibility Ventilation'),
+    energyFlexibilityVentilation = FloatField(verbose_name = 'Energy flexibility Ventilation',
                                               default = 0.0)
 
-    comfortVentilation = FloatField(verbose_name = _('Comfort Ventilation'),
+    comfortVentilation = FloatField(verbose_name = 'Comfort Ventilation',
                                     default = 0.0)
 
-    convenienceVentilation = FloatField(verbose_name = _('Convenience Ventilation'),
+    convenienceVentilation = FloatField(verbose_name = 'Convenience Ventilation',
                                        default = 0.0)
 
-    healthAccesibilityVentilation = FloatField(verbose_name = _('Health, well-being and accessibility Ventilation'),
+    healthAccesibilityVentilation = FloatField(verbose_name = 'Health, well-being and accessibility Ventilation',
                                                default = 0.0)
 
-    maintenanceFaultPredictionVentilation = FloatField(verbose_name = _('Maintenance and fault prediction Ventilation'),
+    maintenanceFaultPredictionVentilation = FloatField(verbose_name = 'Maintenance and fault prediction Ventilation',
                                                        default = 0.0)
     
-    informationOccupantsVentilation = FloatField(verbose_name = _('Information to occupants Ventilation'),
+    informationOccupantsVentilation = FloatField(verbose_name = 'Information to occupants Ventilation',
                                                  default = 0.0)
     
-    energyEfficiencyLighting = FloatField(verbose_name = _('Energy efficiency Lighting'),
+    energyEfficiencyLighting = FloatField(verbose_name = 'Energy efficiency Lighting',
                                           default = 0.0)
 
-    energyFlexibilityLighting = FloatField(verbose_name = _('Energy flexibility Lighting'),
+    energyFlexibilityLighting = FloatField(verbose_name = 'Energy flexibility Lighting',
                                            default = 0.0)
-    comfortLighting = FloatField(verbose_name = _('Comfort Lighting'),
+    comfortLighting = FloatField(verbose_name = 'Comfort Lighting',
                                  default = 0.0)
 
-    convenienceLighting = FloatField(verbose_name = _('Convenience Lighting'),
+    convenienceLighting = FloatField(verbose_name = 'Convenience Lighting',
                                      default = 0.0)
 
-    healthAccesibilityLighting = FloatField(verbose_name = _('Health, well-being and accessibility Lighting'),
+    healthAccesibilityLighting = FloatField(verbose_name = 'Health, well-being and accessibility Lighting',
                                             default = 0.0)
 
-    maintenanceFaultPredictionLighting = FloatField(verbose_name = _('Maintenance and fault prediction Lighting'),
+    maintenanceFaultPredictionLighting = FloatField(verbose_name = 'Maintenance and fault prediction Lighting',
                                                     default = 0.0)
     
-    informationOccupantsLighting = FloatField(verbose_name = _('Information to occupants Lighting'),
+    informationOccupantsLighting = FloatField(verbose_name = 'Information to occupants Lighting',
                                               default = 0.0)
     
-    energyEfficiencyElectricity = FloatField(verbose_name = _('Energy efficiency Electricity'),
+    energyEfficiencyElectricity = FloatField(verbose_name = 'Energy efficiency Electricity',
                                              default = 0.0)
 
-    energyFlexibilityElectricity = FloatField(verbose_name = _('Energy flexibility Electricity'),
+    energyFlexibilityElectricity = FloatField(verbose_name = 'Energy flexibility Electricity',
                                               default = 0.0)
-    comfortElectricity = FloatField(verbose_name = _('Comfort Electricity'),
+    comfortElectricity = FloatField(verbose_name = 'Comfort Electricity',
                                     default = 0.0)
 
-    convenienceElectricity = FloatField(verbose_name = _('Convenience Electricity'),
+    convenienceElectricity = FloatField(verbose_name = 'Convenience Electricity',
                                        default = 0.0)
 
-    healthAccesibilityElectricity = FloatField(verbose_name = _('Health, well-being and accessibility Electricity'),
+    healthAccesibilityElectricity = FloatField(verbose_name = 'Health, well-being and accessibility Electricity',
                                                default = 0.0)
 
-    maintenanceFaultPredictionElectricity = FloatField(verbose_name = _('Maintenance and fault prediction Electricity'),
+    maintenanceFaultPredictionElectricity = FloatField(verbose_name = 'Maintenance and fault prediction Electricity',
                                                        default = 0.0)
     
-    informationOccupantsElectricity = FloatField(verbose_name = _('Information to occupants Electricity'),
+    informationOccupantsElectricity = FloatField(verbose_name = 'Information to occupants Electricity',
                                                  default = 0.0)
     
-    energyEfficiencyDynamicBuildingEnvelope = FloatField(verbose_name = _('Energy efficiency Dynamic Building Envelope'),
+    energyEfficiencyDynamicBuildingEnvelope = FloatField(verbose_name = 'Energy efficiency Dynamic Building Envelope',
                                                          default = 0.0)
 
-    energyFlexibilityDynamicBuildingEnvelope = FloatField(verbose_name = _('Energy flexibility Dynamic Building Envelope'),
+    energyFlexibilityDynamicBuildingEnvelope = FloatField(verbose_name = 'Energy flexibility Dynamic Building Envelope',
                                                           default = 0.0)
-    comfortDynamicBuildingEnvelope = FloatField(verbose_name = _('Comfort Dynamic Building Envelope'),
+    comfortDynamicBuildingEnvelope = FloatField(verbose_name = 'Comfort Dynamic Building Envelope',
                                                 default = 0.0)
 
-    convenienceDynamicBuildingEnvelope = FloatField(verbose_name = _('Convenience Dynamic Building Envelope'),
+    convenienceDynamicBuildingEnvelope = FloatField(verbose_name = 'Convenience Dynamic Building Envelope',
                                                    default = 0.0)
 
-    healthAccesibilityDynamicBuildingEnvelope = FloatField(verbose_name = _('Health, well-being and accessibility Dynamic Building Envelope'),
+    healthAccesibilityDynamicBuildingEnvelope = FloatField(verbose_name = 'Health, well-being and accessibility Dynamic Building Envelope',
                                                            default = 0.0)
 
-    maintenanceFaultPredictionDynamicBuildingEnvelope = FloatField(verbose_name = _('Maintenance and fault prediction Dynamic Building Envelope'),
+    maintenanceFaultPredictionDynamicBuildingEnvelope = FloatField(verbose_name = 'Maintenance and fault prediction Dynamic Building Envelope',
                                                                    default = 0.0)
     
-    informationOccupantsDynamicBuildingEnvelope = FloatField(verbose_name = _('Information to occupants Dynamic Building Envelope'),
+    informationOccupantsDynamicBuildingEnvelope = FloatField(verbose_name = 'Information to occupants Dynamic Building Envelope',
                                                              default = 0.0)
     
-    energyEfficiencyElectricVehicleCharging = FloatField(verbose_name = _('Energy efficiency Electric Vehicle Charging'),
+    energyEfficiencyElectricVehicleCharging = FloatField(verbose_name = 'Energy efficiency Electric Vehicle Charging',
                                                          default = 0.0)
 
-    energyFlexibilityElectricVehicleCharging = FloatField(verbose_name = _('Energy flexibility Electric Vehicle Charging'),
+    energyFlexibilityElectricVehicleCharging = FloatField(verbose_name = 'Energy flexibility Electric Vehicle Charging',
                                                           default = 0.0)
-    comfortElectricVehicleCharging = FloatField(verbose_name = _('Comfort Electric Vehicle Charging'),
+    comfortElectricVehicleCharging = FloatField(verbose_name = 'Comfort Electric Vehicle Charging',
                                                 default = 0.0)
 
-    convenienceElectricVehicleCharging = FloatField(verbose_name = _('Convenience Electric Vehicle Charging'),
+    convenienceElectricVehicleCharging = FloatField(verbose_name = 'Convenience Electric Vehicle Charging',
                                                     default = 0.0)
 
-    healthAccesibilityElectricVehicleCharging = FloatField(verbose_name = _('Health, well-being and accessibility Electric Vehicle Charging'),
+    healthAccesibilityElectricVehicleCharging = FloatField(verbose_name = 'Health, well-being and accessibility Electric Vehicle Charging',
                                                            default = 0.0)
 
-    maintenanceFaultPredictionElectricVehicleCharging = FloatField(verbose_name = _('Maintenance and fault prediction Electric Vehicle Charging'),
+    maintenanceFaultPredictionElectricVehicleCharging = FloatField(verbose_name = 'Maintenance and fault prediction Electric Vehicle Charging',
                                                                    default = 0.0)
     
-    informationOccupantsElectricVehicleCharging = FloatField(verbose_name = _('Information to occupants Electric Vehicle Charging'),
+    informationOccupantsElectricVehicleCharging = FloatField(verbose_name = 'Information to occupants Electric Vehicle Charging',
                                                              default = 0.0)
     
-    energyEfficiencyMonitoringAndControl = FloatField(verbose_name = _('Energy efficiency Monitoring and Control'),
+    energyEfficiencyMonitoringAndControl = FloatField(verbose_name = 'Energy efficiency Monitoring and Control',
                                                       default = 0.0)
 
-    energyFlexibilityMonitoringAndControl = FloatField(verbose_name = _('Energy flexibility Monitoring and Control'),
+    energyFlexibilityMonitoringAndControl = FloatField(verbose_name = 'Energy flexibility Monitoring and Control',
                                                        default = 0.0)
-    comfortMonitoringAndControl = FloatField(verbose_name = _('Comfort Monitoring and Control'),
+    comfortMonitoringAndControl = FloatField(verbose_name = 'Comfort Monitoring and Control',
                                              default = 0.0)
 
-    convenienceMonitoringAndControl = FloatField(verbose_name = _('Convenience Monitoring and Control'),
+    convenienceMonitoringAndControl = FloatField(verbose_name = 'Convenience Monitoring and Control',
                                                  default = 0.0)
 
-    healthAccesibilityMonitoringAndControl = FloatField(verbose_name = _('Health, well-being and accessibility Monitoring and Control'),
+    healthAccesibilityMonitoringAndControl = FloatField(verbose_name = 'Health, well-being and accessibility Monitoring and Control',
                                                         default = 0.0)
 
-    maintenanceFaultPredictionMonitoringAndControl = FloatField(verbose_name = _('Maintenance and fault prediction Monitoring and Control'),
+    maintenanceFaultPredictionMonitoringAndControl = FloatField(verbose_name = 'Maintenance and fault prediction Monitoring and Control',
                                                                 default = 0.0)
     
-    informationOccupantsMonitoringAndControl = FloatField(verbose_name = _('Information to occupants Monitoring and Control'),
+    informationOccupantsMonitoringAndControl = FloatField(verbose_name = 'Information to occupants Monitoring and Control',
                                                           default = 0.0)
     
     def __str__(self):
@@ -1238,11 +1260,11 @@ class DomainWeigthing(Model):
         Clase DomainWeigthing
         
         '''
-        return 'Id: {} - {} '.format(self.id, _(self.name))
+        return 'Id: {} - {} '.format(self.id, self.name)
     
     class Meta:
-        verbose_name = _('Domain Weighting')
-        verbose_name_plural = _('7. Domain Weighting')
+        verbose_name = 'Domain Weighting'
+        verbose_name_plural = '7. Domain Weighting'
         ordering = ('id',)
         
     def duplicar(self, padre = None):
@@ -1253,235 +1275,225 @@ class DomainWeigthing(Model):
             
         self.id = None
         self.pk = None
-        self.name = self.name + _('_copy')
-
+        self.name = self.name + '_copy'
         self.save()
         return self
 
 class CustomDomainWeighting(Model):
     
+    objects = Manager()
+    
     customImpactWeighting = ForeignKey(CustomImpactWeightings,
-                                       verbose_name = _('Custom Impact Weightings'),
+                                       verbose_name = 'Custom Impact Weightings',
                                        related_name = 'customDomainWeigthing',
                                        blank = True,
                                        null = True)
                          
     user = ForeignKey(User,
-                      verbose_name = _(u"User"),
+                      verbose_name = u"User",
                       related_name = 'customDomainWeigthing',
                       blank = True,
                       null = True)
         
     name = CharField(default = '',
                      max_length = 1000,
-                     verbose_name = _("Name"))
+                     verbose_name = "Name")
                               
     country = ForeignKey(Country,
                          blank = True,
-                         verbose_name = _('Countries'),
+                         verbose_name = 'Countries',
                          related_name = 'customDomainWeigthing',
-                         help_text = _('Multiple selection/deselection: use the CTRL key'),)
+                         help_text = 'Multiple selection/deselection: use the CTRL key',)
     
     climate = ForeignKey(Climate,
                          blank = True,
-                         verbose_name = _('Climates'),
+                         verbose_name = 'Climates',
                          related_name = 'customDomainWeigthing',
-                         help_text = _('Multiple selection/deselection: use the CTRL key'),)
+                         help_text = 'Multiple selection/deselection: use the CTRL key',)
                          
     buildingType = ForeignKey(BuildindgType,
                               blank = True,
-                              verbose_name = _('Building Types'),
+                              verbose_name = 'Building Types',
                               related_name = 'customDomainWeigthing',
-                              help_text = _('Multiple selection/unselection: use the CTRL key'),)
+                              help_text = 'Multiple selection/unselection: use the CTRL key',)
     
-    energyEfficiencyHeating = FloatField(verbose_name = _('Energy efficiency heating'),
-                                         )
+    energyEfficiencyHeating = FloatField(verbose_name = 'Energy efficiency heating',)
 
-    energyFlexibilityHeating = FloatField(verbose_name = _('Energy flexibility heating'),
-                                          )
+    energyFlexibilityHeating = FloatField(verbose_name = 'Energy flexibility heating',)
 
-    comfortHeating = FloatField(verbose_name = _('Comfort heating'),
+    comfortHeating = FloatField(verbose_name = 'Comfort heating',
                                 default = 0.167)
 
-    convenienceHeating = FloatField(verbose_name = _('Convenience heating'),
+    convenienceHeating = FloatField(verbose_name = 'Convenience heating',
                                     default = 0.111)
 
-    healthAccesibilityHeating = FloatField(verbose_name = _('Health, well-being and accessibility heating'),
+    healthAccesibilityHeating = FloatField(verbose_name = 'Health, well-being and accessibility heating',
                                            default = 0.0)
 
-    maintenanceFaultPredictionHeating = FloatField(verbose_name = _('Maintenance and fault prediction heating'),
-                                                   )
+    maintenanceFaultPredictionHeating = FloatField(verbose_name = 'Maintenance and fault prediction heating',)
     
-    informationOccupantsHeating = FloatField(verbose_name = _('Information to occupants heating'),
+    informationOccupantsHeating = FloatField(verbose_name = 'Information to occupants heating',
                                              default = 0.125)
     
-    energyEfficiencyCooling = FloatField(verbose_name = _('Energy efficiency Cooling'),
-                                         )
+    energyEfficiencyCooling = FloatField(verbose_name = 'Energy efficiency Cooling',)
 
-    energyFlexibilityCooling = FloatField(verbose_name = _('Energy flexibility Cooling'),
-                                          )
+    energyFlexibilityCooling = FloatField(verbose_name = 'Energy flexibility Cooling',)
 
-    comfortCooling = FloatField(verbose_name = _('Comfort Cooling'),
+    comfortCooling = FloatField(verbose_name = 'Comfort Cooling',
                                 default = 0.167)
 
-    convenienceCooling = FloatField(verbose_name = _('Convenience Cooling'),
+    convenienceCooling = FloatField(verbose_name = 'Convenience Cooling',
                                     default = 0.111)
 
-    healthAccesibilityCooling = FloatField(verbose_name = _('Health, well-being and accessibility Cooling'),
+    healthAccesibilityCooling = FloatField(verbose_name = 'Health, well-being and accessibility Cooling',
                                            default = 0.0)
 
-    maintenanceFaultPredictionCooling = FloatField(verbose_name = _('Maintenance and fault prediction Cooling'),
+    maintenanceFaultPredictionCooling = FloatField(verbose_name = 'Maintenance and fault prediction Cooling',
                                                    )
     
-    informationOccupantsCooling = FloatField(verbose_name = _('Information to occupants Cooling'),
+    informationOccupantsCooling = FloatField(verbose_name = 'Information to occupants Cooling',
                                              default = 0.125)
     
-    energyEfficiencyDhw = FloatField(verbose_name = _('Energy efficiency DHW'),
-                                     )
+    energyEfficiencyDhw = FloatField(verbose_name = 'Energy efficiency DHW',)
 
-    energyFlexibilityDhw = FloatField(verbose_name = _('Energy flexibility DHW'),
-                                      )
+    energyFlexibilityDhw = FloatField(verbose_name = 'Energy flexibility DHW',)
 
-    comfortDhw = FloatField(verbose_name = _('Comfort DHW'),
+    comfortDhw = FloatField(verbose_name = 'Comfort DHW',
                            default = 0.167)
 
-    convenienceDhw = FloatField(verbose_name = _('Convenience DHW'),
+    convenienceDhw = FloatField(verbose_name = 'Convenience DHW',
                                   default = 0.111)
 
-    healthAccesibilityDhw = FloatField(verbose_name = _('Health, well-being and accessibility DHW'),
+    healthAccesibilityDhw = FloatField(verbose_name = 'Health, well-being and accessibility DHW',
                                        default = 0.0)
 
-    maintenanceFaultPredictionDhw = FloatField(verbose_name = _('Maintenance and fault prediction DHW'),
-                                               )
+    maintenanceFaultPredictionDhw = FloatField(verbose_name = 'Maintenance and fault prediction DHW',)
     
-    informationOccupantsDhw = FloatField(verbose_name = _('Information to occupants DHW'),
+    informationOccupantsDhw = FloatField(verbose_name = 'Information to occupants DHW',
                                          default = 0.0)
     
-    energyEfficiencyVentilation = FloatField(verbose_name = _('Energy efficiency Ventilation'),
+    energyEfficiencyVentilation = FloatField(verbose_name = 'Energy efficiency Ventilation',
                                              )
 
-    energyFlexibilityVentilation = FloatField(verbose_name = _('Energy flexibility Ventilation'),
+    energyFlexibilityVentilation = FloatField(verbose_name = 'Energy flexibility Ventilation',
                                               default = 0.0)
 
-    comfortVentilation = FloatField(verbose_name = _('Comfort Ventilation'),
+    comfortVentilation = FloatField(verbose_name = 'Comfort Ventilation',
                                     default = 0.167)
 
-    convenienceVentilation = FloatField(verbose_name = _('Convenience Ventilation'),
+    convenienceVentilation = FloatField(verbose_name = 'Convenience Ventilation',
                                        default = 0.111)
 
-    healthAccesibilityVentilation = FloatField(verbose_name = _('Health, well-being and accessibility Ventilation'),
+    healthAccesibilityVentilation = FloatField(verbose_name = 'Health, well-being and accessibility Ventilation',
                                                default = 0.4)
 
-    maintenanceFaultPredictionVentilation = FloatField(verbose_name = _('Maintenance and fault prediction Ventilation'),
+    maintenanceFaultPredictionVentilation = FloatField(verbose_name = 'Maintenance and fault prediction Ventilation',
                                                        )
     
-    informationOccupantsVentilation = FloatField(verbose_name = _('Information to occupants Ventilation'),
+    informationOccupantsVentilation = FloatField(verbose_name = 'Information to occupants Ventilation',
                                                  default = 0.125)
     
-    energyEfficiencyLighting = FloatField(verbose_name = _('Energy efficiency Lighting'),
-                                          )
+    energyEfficiencyLighting = FloatField(verbose_name = 'Energy efficiency Lighting',)
 
-    energyFlexibilityLighting = FloatField(verbose_name = _('Energy flexibility Lighting'),
+    energyFlexibilityLighting = FloatField(verbose_name = 'Energy flexibility Lighting',
                                            default = 0.0)
-    comfortLighting = FloatField(verbose_name = _('Comfort Lighting'),
+    comfortLighting = FloatField(verbose_name = 'Comfort Lighting',
                                  default = 0.167)
 
-    convenienceLighting = FloatField(verbose_name = _('Convenience Lighting'),
+    convenienceLighting = FloatField(verbose_name = 'Convenience Lighting',
                                      default = 0.111)
 
-    healthAccesibilityLighting = FloatField(verbose_name = _('Health, well-being and accessibility Lighting'),
+    healthAccesibilityLighting = FloatField(verbose_name = 'Health, well-being and accessibility Lighting',
                                             default = 0.0)
 
-    maintenanceFaultPredictionLighting = FloatField(verbose_name = _('Maintenance and fault prediction Lighting'),
-                                                    )
+    maintenanceFaultPredictionLighting = FloatField(verbose_name = 'Maintenance and fault prediction Lighting',)
     
-    informationOccupantsLighting = FloatField(verbose_name = _('Information to occupants Lighting'),
+    informationOccupantsLighting = FloatField(verbose_name ='Information to occupants Lighting',
                                               default = 0.0)
     
-    energyEfficiencyElectricity = FloatField(verbose_name = _('Energy efficiency Electricity'),
+    energyEfficiencyElectricity = FloatField(verbose_name = 'Energy efficiency Electricity',
                                              default = 0.111)
 
-    energyFlexibilityElectricity = FloatField(verbose_name = _('Energy flexibility Electricity'),
+    energyFlexibilityElectricity = FloatField(verbose_name = 'Energy flexibility Electricity',
                                               default = 0.149)
-    comfortElectricity = FloatField(verbose_name = _('Comfort Electricity'),
+    comfortElectricity = FloatField(verbose_name = 'Comfort Electricity',
                                     default = 0.0)
 
-    convenienceElectricity = FloatField(verbose_name = _('Convenience Electricity'),
+    convenienceElectricity = FloatField(verbose_name = 'Convenience Electricity',
                                        default = 0.111)
 
-    healthAccesibilityElectricity = FloatField(verbose_name = _('Health, well-being and accessibility Electricity'),
+    healthAccesibilityElectricity = FloatField(verbose_name = 'Health, well-being and accessibility Electricity',
                                                default = 0.0)
 
-    maintenanceFaultPredictionElectricity = FloatField(verbose_name = _('Maintenance and fault prediction Electricity'),
+    maintenanceFaultPredictionElectricity = FloatField(verbose_name = 'Maintenance and fault prediction Electricity',
                                                        default = 0.113)
     
-    informationOccupantsElectricity = FloatField(verbose_name = _('Information to occupants Electricity'),
+    informationOccupantsElectricity = FloatField(verbose_name = 'Information to occupants Electricity',
                                                  default = 0.125)
     
-    energyEfficiencyDynamicBuildingEnvelope = FloatField(verbose_name = _('Energy efficiency Dynamic Building Envelope'),
+    energyEfficiencyDynamicBuildingEnvelope = FloatField(verbose_name = 'Energy efficiency Dynamic Building Envelope',
                                                          default = 0.05)
 
-    energyFlexibilityDynamicBuildingEnvelope = FloatField(verbose_name = _('Energy flexibility Dynamic Building Envelope'),
+    energyFlexibilityDynamicBuildingEnvelope = FloatField(verbose_name = 'Energy flexibility Dynamic Building Envelope',
                                                           default = 0.0)
-    comfortDynamicBuildingEnvelope = FloatField(verbose_name = _('Comfort Dynamic Building Envelope'),
+    comfortDynamicBuildingEnvelope = FloatField(verbose_name = 'Comfort Dynamic Building Envelope',
                                                 default = 0.167)
 
-    convenienceDynamicBuildingEnvelope = FloatField(verbose_name = _('Convenience Dynamic Building Envelope'),
+    convenienceDynamicBuildingEnvelope = FloatField(verbose_name = 'Convenience Dynamic Building Envelope',
                                                    default = 0.111)
 
-    healthAccesibilityDynamicBuildingEnvelope = FloatField(verbose_name = _('Health, well-being and accessibility Dynamic Building Envelope'),
+    healthAccesibilityDynamicBuildingEnvelope = FloatField(verbose_name = 'Health, well-being and accessibility Dynamic Building Envelope',
                                                            default = 0.6)
 
-    maintenanceFaultPredictionDynamicBuildingEnvelope = FloatField(verbose_name = _('Maintenance and fault prediction Dynamic Building Envelope'),
+    maintenanceFaultPredictionDynamicBuildingEnvelope = FloatField(verbose_name = 'Maintenance and fault prediction Dynamic Building Envelope',
                                                                    default = 0.05)
     
-    informationOccupantsDynamicBuildingEnvelope = FloatField(verbose_name = _('Information to occupants Dynamic Building Envelope'),
+    informationOccupantsDynamicBuildingEnvelope = FloatField(verbose_name = 'Information to occupants Dynamic Building Envelope',
                                                              default = 0.125)
     
-    energyEfficiencyElectricVehicleCharging = FloatField(verbose_name = _('Energy efficiency Electric Vehicle Charging'),
+    energyEfficiencyElectricVehicleCharging = FloatField(verbose_name = 'Energy efficiency Electric Vehicle Charging',
                                                          default = 0.0)
 
-    energyFlexibilityElectricVehicleCharging = FloatField(verbose_name = _('Energy flexibility Electric Vehicle Charging'),
+    energyFlexibilityElectricVehicleCharging = FloatField(verbose_name = 'Energy flexibility Electric Vehicle Charging',
                                                           default = 0.05)
-    comfortElectricVehicleCharging = FloatField(verbose_name = _('Comfort Electric Vehicle Charging'),
+    comfortElectricVehicleCharging = FloatField(verbose_name = 'Comfort Electric Vehicle Charging',
                                                 default = 0.0)
 
-    convenienceElectricVehicleCharging = FloatField(verbose_name = _('Convenience Electric Vehicle Charging'),
+    convenienceElectricVehicleCharging = FloatField(verbose_name = 'Convenience Electric Vehicle Charging',
                                                     default = 0.111)
 
-    healthAccesibilityElectricVehicleCharging = FloatField(verbose_name = _('Health, well-being and accessibility Electric Vehicle Charging'),
+    healthAccesibilityElectricVehicleCharging = FloatField(verbose_name = 'Health, well-being and accessibility Electric Vehicle Charging',
                                                            default = 0.0)
 
-    maintenanceFaultPredictionElectricVehicleCharging = FloatField(verbose_name = _('Maintenance and fault prediction Electric Vehicle Charging'),
+    maintenanceFaultPredictionElectricVehicleCharging = FloatField(verbose_name = 'Maintenance and fault prediction Electric Vehicle Charging',
                                                                    default = 0.0)
     
-    informationOccupantsElectricVehicleCharging = FloatField(verbose_name = _('Information to occupants Electric Vehicle Charging'),
+    informationOccupantsElectricVehicleCharging = FloatField(verbose_name = 'Information to occupants Electric Vehicle Charging',
                                                              default = 0.125)
     
-    energyEfficiencyMonitoringAndControl = FloatField(verbose_name = _('Energy efficiency Monitoring and Control'),
+    energyEfficiencyMonitoringAndControl = FloatField(verbose_name = 'Energy efficiency Monitoring and Control',
                                                       default = 0.2)
 
-    energyFlexibilityMonitoringAndControl = FloatField(verbose_name = _('Energy flexibility Monitoring and Control'),
-                                                       default = 0.2)
-    comfortMonitoringAndControl = FloatField(verbose_name = _('Comfort Monitoring and Control'),
+    energyFlexibilityMonitoringAndControl = FloatField(verbose_name = 'Energy flexibility Monitoring and Control',                                                       default = 0.2)
+    comfortMonitoringAndControl = FloatField(verbose_name = 'Comfort Monitoring and Control',
                                              default = 0.0)
 
-    convenienceMonitoringAndControl = FloatField(verbose_name = _('Convenience Monitoring and Control'),
+    convenienceMonitoringAndControl = FloatField(verbose_name = 'Convenience Monitoring and Control',
                                                  default = 0.111)
 
-    healthAccesibilityMonitoringAndControl = FloatField(verbose_name = _('Health, well-being and accessibility Monitoring and Control'),
+    healthAccesibilityMonitoringAndControl = FloatField(verbose_name = 'Health, well-being and accessibility Monitoring and Control',
                                                         default = 0.0)
 
-    maintenanceFaultPredictionMonitoringAndControl = FloatField(verbose_name = _('Maintenance and fault prediction Monitoring and Control'),
+    maintenanceFaultPredictionMonitoringAndControl = FloatField(verbose_name = 'Maintenance and fault prediction Monitoring and Control',
                                                                 default = 0.2)
     
-    informationOccupantsMonitoringAndControl = FloatField(verbose_name = _('Information to occupants Monitoring and Control'),
+    informationOccupantsMonitoringAndControl = FloatField(verbose_name = 'Information to occupants Monitoring and Control',
                                                           default = 0.125)
         
     
     class Meta:
-        verbose_name = _('Particular Custom Domain Weighting')
-        verbose_name_plural = _('12. Particular Domain Weighting')
+        verbose_name = 'Particular Custom Domain Weighting'
+        verbose_name_plural = '12. Particular Domain Weighting'
         ordering = ('id',)
         
     def __str__(self):
@@ -1499,12 +1511,14 @@ class CustomDomainWeighting(Model):
             
         self.id = None
         self.pk = None
-        self.name = self.name + _('_copy')
+        self.name = self.name + '_copy'
 
         self.save()
         return self
         
 class UserDefineDomainWeightings(Model):
+    
+    objects = Manager()
     
     def __str__(self):
         ''' 
@@ -1513,181 +1527,183 @@ class UserDefineDomainWeightings(Model):
         return 'Id: {} - {} '.format(self.id, self.description)
 
     class Meta:
-        verbose_name = _('User-defined Domain Weightings')
-        verbose_name_plural = _('11.User-defined Domain Weightings')
+        verbose_name = 'User-defined Domain Weightings'
+        verbose_name_plural = '11.User-defined Domain Weightings'
         ordering = ('id',)
 
         
 class Proyecto(Model):
     
+    objects = Manager()
+    
     user = ForeignKey(User,
-                      verbose_name = _(u"User"),
+                      verbose_name = u"User",
                       related_name = 'proyectos')
     
     country = ForeignKey(Country,
-                         verbose_name = _('Country'),
+                         verbose_name = 'Country',
                          related_name = 'proyectos',
                          blank = True,
                          null = True)
     
     catalogo = ForeignKey(Catalogo,
-                          verbose_name = _('Catalogue'),
+                          verbose_name = 'Catalogue',
                           related_name = 'proyectos',
                           blank = True,
                           null = True)
     
     climate = ForeignKey(Climate,
-                                verbose_name = _('Climate'),
-                                related_name = 'proyectos',
-                                blank = True,
-                                null = True)
+                         verbose_name = 'Climate',
+                         related_name = 'proyectos',
+                         blank = True,
+                         null = True)
     
     domainWeigthing = ForeignKey(DomainWeigthing,
-                                verbose_name = _('Default weighting factors'),
-                                related_name = 'proyectos',
-                                blank = True,
-                                null = True)
+                                 verbose_name = 'Default weighting factors',
+                                 related_name = 'proyectos',
+                                 blank = True,
+                                 null = True)
                                 
     customDomainWeigthings = ForeignKey(CustomDomainWeighting,
-                                verbose_name = _('Custom Domain Weighting'),
-                                related_name = 'proyecto',
-                                blank = True,
-                                null = True)
+                                        verbose_name = 'Custom Domain Weighting',
+                                        related_name = 'proyecto',
+                                        blank = True,
+                                        null = True)
                                 
     buildingType = ForeignKey(BuildingType,
-                                verbose_name = _('Building Type'),
-                                related_name = 'proyectos',
-                                blank = True,
-                                null = True)
+                              verbose_name = 'Building Type',
+                              related_name = 'proyectos',
+                              blank = True,
+                              null = True)
       
     name = CharField(default = '',
                      max_length = 1000,
-                     verbose_name = _("Project-Name"))
+                     verbose_name = "Project-Name")
     
     organisation = CharField(default = '',
                              max_length = 1000,
-                             verbose_name = _("Organisation"))
+                             verbose_name = "Organisation")
     
     email = CharField(default = '',
                       max_length = 1000,
-                      verbose_name = _('E-mail address'))
+                      verbose_name = 'E-mail address')
     
     telephoneNumber = CharField(default = '',
                       max_length = 1000,
-                      verbose_name = _('Telephone Number')) 
+                      verbose_name = 'Telephone Number') 
                       
-    preference = CharField(choices = [('default', _('default')), ('user defined', _('user defined'))],
+    preference = CharField(choices = [('default', 'default'), ('user defined', 'user defined')],
                                        max_length = 1000,
-                                       verbose_name = _(u"Preference"),
+                                       verbose_name = u"Preference",
                                        default = '')
     
     buildingUsage = CharField(choices = [('', ''),
-                                         ('residential - single-family-house', _('residential-single-family-house')),
-                                         ('residential - small multi-family-house', _('residential - small multi-family-house')),
-                                         ('residential - large multi-family-house', _('residential - large multi-family-house')),
-                                         ('residential - other', _('residential - other')),
-                                         ('non-residential - office', _('non-residential - office')),
-                                         ('non-residential - educational', _('non-residential - educational')),
-                                         ('non-residential - healthcare', _('non-residential - healthcare')),                                    
-                                         ('non-residential - other', _('non-residential - other'))],                                         
+                                         ('residential - single-family-house', 'residential-single-family-house'),
+                                         ('residential - small multi-family-house', 'residential - small multi-family-house'),
+                                         ('residential - large multi-family-house', 'residential - large multi-family-house'),
+                                         ('residential - other', 'residential - other'),
+                                         ('non-residential - office', 'non-residential - office'),
+                                         ('non-residential - educational', 'non-residential - educational'),
+                                         ('non-residential - healthcare', 'non-residential - healthcare'),                                    
+                                         ('non-residential - other', 'non-residential - other')],                                         
                               max_length = 1000,
-                              verbose_name = _("Building Usage"),
+                              verbose_name = "Building Usage",
                               default = '')
     
     
     
     netFloorAreaOfTheBuilding = FloatField(null = True,
                                            blank = True,
-                                           verbose_name = _('Net floor area of the building'),
+                                           verbose_name = 'Net floor area of the building',
                                            default = 0.0)
     
     yearOfConstruction = FloatField(null = True,
                                     blank = True,
-                                    verbose_name = _('Year of construction'),
+                                    verbose_name = 'Year of construction',
                                     default = 0.0)
     
     buildingState = CharField(choices = [('', ''),
-                                         ('Original', _('Original')),
-                                         ('Renovated', _('Renovated'))],                                         
+                                         ('Original', 'Original'),
+                                         ('Renovated', 'Renovated')],                                         
                               max_length = 1000,
-                              verbose_name = _(u"Building state"),
+                              verbose_name = u"Building state",
                               default = '')
     
-    assessmentPurpose = CharField(choices = [('Current building state', _('Current building state')),
-                                         ('Improvement package', _('Improvement package'))],                                         
-                              max_length = 1000,
-                              verbose_name = _(u"Assessment purpose"),
-                              help_text = _(u"Data presented in this assessment reflects the current state of the building or a package of measures/recommendations for updating the BACS"),
-                              default = 'Current building state')    
+    assessmentPurpose = CharField(choices = [('Current building state', 'Current building state'),
+                                             ('Improvement package', 'Improvement package')],                                         
+                                  max_length = 1000,
+                                  verbose_name = u"Assessment purpose",
+                                  help_text = u"Data presented in this assessment reflects the current state of the building or a package of measures/recommendations for updating the BACS",
+                                  default = 'Current building state')    
     
     energyClass = CharField(choices = [('-', '-'),
-                                         ('A','A'),
-                                         ('B','B'),
-                                         ('C','C'),
-                                         ('D','D'),
-                                         ('E', 'E'),
-                                         ('F', 'F'),
-                                         ('G','G'),],                                         
-                              max_length = 2,
-                              verbose_name = _(u"Energy class"),
-                              help_text = _(u"Energy Performance Certificate (EPC) label/class"),
-                              default = '-')  
+                                       ('A','A'),
+                                       ('B','B'),
+                                       ('C','C'),
+                                       ('D','D'),
+                                       ('E', 'E'),
+                                       ('F', 'F'),
+                                       ('G','G'),],                                         
+                             max_length = 2,
+                             verbose_name = u"Energy class",
+                             help_text = u"Energy Performance Certificate (EPC) label/class",
+                             default = '-')  
     
     officialTestPhase = BooleanField(default = False, 
-                                                   verbose_name = _("Official test phase"), 
-                                                   help_text = _("Click if this assessment is part of an official Member State test"))      
+                                     verbose_name = "Official test phase", 
+                                     help_text = "Click if this assessment is part of an official Member State test")      
     
     
     descriptionOfBuilding = CharField(default = '',
                                       max_length = 1000,
-                                      verbose_name = _('Description of building'))
+                                      verbose_name = 'Description of building')
     
     address = CharField(default = '',
                         max_length = 1000,
-                        verbose_name = _('Address'))
+                        verbose_name = 'Address')
     
-    combinedHVACPower = CharField(choices = [('>= 290 kW', _('>= 290 kW')),
-                                                                      ('70 - 290 kW', _('70 - 290 kW')),
-                                                                       ('<= 70 kW', _('<= 70 kW')),
-                                                                       ('', '')],
+    combinedHVACPower = CharField(choices = [('>= 290 kW', '>= 290 kW'),
+                                             ('70 - 290 kW', '70 - 290 kW'),
+                                             ('<= 70 kW', '<= 70 kW'),
+                                             ('', '')],
                                          
                               max_length = 1000,
-                              verbose_name = _(u"Effective rated output for HVAC systems"),
+                              verbose_name = u"Effective rated output for HVAC systems",
                               default = '')    
     
     
     # Almacenamos estos valores para que sirvan de cache en el benchmarking
     totalSriScore = FloatField(null = True,
-                                    blank = True,
-                                    verbose_name = _('Total SRI Score'),
-                                    default = 0.0)    
+                               blank = True,
+                               verbose_name = 'Total SRI Score',
+                               default = 0.0)    
     
     scoreKF1 = FloatField(null = True,
-                                    blank = True,
-                                    verbose_name = _('Score KF1'),
-                                    default = 0.0)    
+                          blank = True,
+                          verbose_name = 'Score KF1',
+                          default = 0.0)    
 
     scoreKF2 = FloatField(null = True,
-                                    blank = True,
-                                    verbose_name = _('Score KF2'),
-                                    default = 0.0)    
+                          blank = True,
+                          verbose_name = 'Score KF2',
+                          default = 0.0)    
 
     scoreKF3 = FloatField(null = True,
-                                    blank = True,
-                                    verbose_name = _('Score KF3'),
-                                    default = 0.0)            
+                          blank = True,
+                          verbose_name = 'Score KF3',
+                          default = 0.0)            
     
     
-    Heating = BooleanField(default = True, verbose_name = _("Heating"), help_text = _("Is Heating domain assessable?"))
-    Dhw = BooleanField(default = True, verbose_name = _("DWH"), help_text = _("Is DHW domain assessable?"))
-    Cooling = BooleanField(default = True, verbose_name = _("Cooling"), help_text = _("Is Cooling domain assessable?"))
-    Ventilation = BooleanField(default = True, verbose_name = _("Ventilation"), help_text = _("Is Ventilation domain assessable?"))
-    Lighting = BooleanField(default = True, verbose_name = _("Lighting"), help_text = _("Is Lighting domain assessable?"))
-    DynamicBuildingEnvelope = BooleanField(default = True, verbose_name = _("Dynamic Building Envelope"), help_text = _("Is Dynamic Building Envelope domain assessable?"))
-    Electricity = BooleanField(default = True, verbose_name = _("Electricity"), help_text = _("Is Electricity domain assessable?"))
-    ElectricVehicleCharging = BooleanField(default = True, verbose_name = _("Electric Vehicle Charging"), help_text = _("Is Electric Vehicle Charging domain assessable?"))
-    MonitoringAndControl = BooleanField(default = True, verbose_name = _("Monitoring And Control"), help_text = _("Is Monitoring and Control domain assessable?"))
-    customDomain = BooleanField(default = False, verbose_name = _("Custom Domain Weighting"), help_text = _("Prefer to customize domain weightings?"))
+    Heating = BooleanField(default = True, verbose_name = "Heating", help_text = "Is Heating domain assessable?")
+    Dhw = BooleanField(default = True, verbose_name = "DWH", help_text = "Is DHW domain assessable?")
+    Cooling = BooleanField(default = True, verbose_name = "Cooling", help_text = "Is Cooling domain assessable?")
+    Ventilation = BooleanField(default = True, verbose_name = "Ventilation", help_text = "Is Ventilation domain assessable?")
+    Lighting = BooleanField(default = True, verbose_name = "Lighting", help_text = "Is Lighting domain assessable?")
+    DynamicBuildingEnvelope = BooleanField(default = True, verbose_name = "Dynamic Building Envelope", help_text = "Is Dynamic Building Envelope domain assessable?")
+    Electricity = BooleanField(default = True, verbose_name = "Electricity", help_text = "Is Electricity domain assessable?")
+    ElectricVehicleCharging = BooleanField(default = True, verbose_name = "Electric Vehicle Charging", help_text = "Is Electric Vehicle Charging domain assessable?")
+    MonitoringAndControl = BooleanField(default = True, verbose_name = "Monitoring And Control", help_text = "Is Monitoring and Control domain assessable?")
+    customDomain = BooleanField(default = False, verbose_name = "Custom Domain Weighting", help_text = "Prefer to customize domain weightings?")
     
     @classmethod
     def creaDesdeXML(cls,projectElement):
@@ -1710,8 +1726,8 @@ class Proyecto(Model):
         return nuevaInstancia
     
     class Meta:
-        verbose_name = _('Project')
-        verbose_name_plural = _('10. Project')
+        verbose_name = 'Project'
+        verbose_name_plural = '10. Project'
         ordering = ('id',)
     
     def __str__(self):
@@ -1719,7 +1735,7 @@ class Proyecto(Model):
         Clase Proyecto
         
         '''
-        return _('Project:') + '{}'.format(self.id) + ' - {}'.format(self.name)
+        return 'Project:' + '{}'.format(self.id) + ' - {}'.format(self.name)
     
     def duplicar(self):
         ''' 
@@ -1731,7 +1747,7 @@ class Proyecto(Model):
         self.id = None
         self.pk = None
             
-        self.name += _("_copy")
+        self.name += "_copy"
         
         self.save()
         
@@ -1766,7 +1782,7 @@ class Proyecto(Model):
         
     @property
     def listadoNombreImpactosMostrar(self):
-        return [_('Energy Efficiency'), _('Energy flexibility and storage'), _('Comfort'), _('Convenience'), _('Health, well-being and accessibility'), _('Maintenance and fault prediction'), _('Information to occupants'),]
+        return ['Energy Efficiency', 'Energy flexibility and storage', 'Comfort', 'Convenience', 'Health, well-being and accessibility', 'Maintenance and fault prediction', 'Information to occupants',]
     
     @property
     def listadoNombreDominios(self):
@@ -1781,7 +1797,7 @@ class Proyecto(Model):
         listadoNombreDominios = []
         for dominio in self.catalogo.dominios.all():
             if getattr(self, dominio.nameAttr):
-                listadoNombreDominios.append(_(dominio.description))
+                listadoNombreDominios.append(dominio.description)
         return listadoNombreDominios
         
     @property
@@ -2373,7 +2389,7 @@ class Proyecto(Model):
                     
             tablaFormateada.append(filaFormateada)
         
-        df = pd.DataFrame(tablaFormateada, columns = self.listadoNombreImpactosMostrar + [_('Domain SRI')], index = self.listadoNombreDominiosMostrar)
+        df = pd.DataFrame(tablaFormateada, columns = self.listadoNombreImpactosMostrar + ['Domain SRI'], index = self.listadoNombreDominiosMostrar)
         print(tabulate(df, headers = 'keys', tablefmt = 'psql'))
         return df
         
@@ -2382,7 +2398,7 @@ class Proyecto(Model):
             
         df = pd.DataFrame([self.getListaPuntuacionPonderada(self.calculoMatrizImpacto()),
                             self.getListaPuntuacionPonderadaMaxima(self.calculoMatrizImpacto()),
-                            self.impactWeightings], columns = self.listadoNombreImpactosMostrar, index = [_('Impact scores weighted by domain'), _('Maximum impact scores weighted by domain'), _('Impact Weightings')])
+                            self.impactWeightings], columns = self.listadoNombreImpactosMostrar, index = ['Impact scores weighted by domain', 'Maximum impact scores weighted by domain', 'Impact Weightings'])
         
         print("Auxiliary table with scores weighted by domain")    
         print(tabulate(df, headers = 'keys', tablefmt = 'psql'))
@@ -2508,32 +2524,34 @@ class Proyecto(Model):
     
 class Dato(Model):
     
+    objects = Manager()
+    
     chosenFuncionality = ForeignKey(Funcionalidad,
-                                    verbose_name = _('Functionality'),
+                                    verbose_name = 'Functionality',
                                     related_name = 'datos')
     
     proyect = ForeignKey(Proyecto,
-                         verbose_name = _('Project'),
+                         verbose_name = 'Project',
                          related_name = 'datos',
                          null = True,
                          blank = True)
     
-    comments = RichTextUploadingField(verbose_name = _("Comment"),
-                             blank = True,
-                             default = '')
+    comments = CharField(default = '',
+                         max_length = 5000,
+                         verbose_name = 'Comment')
     
-    justification = RichTextUploadingField(verbose_name = _("Justification"),
-                                  blank = True,
-                                  default = '')
+    justification = CharField(default = '',
+                              max_length = 5000,
+                              verbose_name = 'Justification') 
     
-    percentage = FloatField(verbose_name = _('Percentage'),                            
+    percentage = FloatField(verbose_name = 'Percentage',                            
                             default = 100.0,
                             min = 0.0,
                             max = 100)
     
     class Meta:
-        verbose_name = _('Datum')
-        verbose_name_plural = _('5.Data')
+        verbose_name = 'Datum'
+        verbose_name_plural = '5.Data'
         ordering = ('id',)
         
     def __str__(self):
@@ -2541,7 +2559,7 @@ class Dato(Model):
         Clase Dato
         
         '''
-        return '{2}: {0}, {3}: {1}'.format(self.proyect.id, self.chosenFuncionality.id, _('Project'), _('Functionality'))
+        return '{2}: {0}, {3}: {1}'.format(self.proyect.id, self.chosenFuncionality.id, 'Project', 'Functionality')
         
     def duplicar(self, padre = None):
         ''' 
@@ -2562,7 +2580,7 @@ class Dato(Model):
         return resultado
     
     def impactoMaximo (self, impacto = ''):
-        if _(self.chosenFuncionality.description) == _('Not applicable') or _(self.chosenFuncionality.description.replace(" ","").upper()) == _('N/A') or self.chosenFuncionality.description.replace(" ","").upper() == 'N/A' :
+        if self.chosenFuncionality.description == 'Not applicable' or self.chosenFuncionality.description.replace(" ","").upper() == 'N/A' or self.chosenFuncionality.description.replace(" ","").upper() == 'N/A' :
             return 0.0
         return self.chosenFuncionality.service.getImpactMax(impacto = impacto)
     
@@ -2577,4 +2595,17 @@ class Dato(Model):
         else:
             peso = 0.0
         return peso
+    
+class User(Model):
+    
+    objects = Manager()
+    
+    name = CharField(default = '',
+                     max_length = 1000,
+                     verbose_name = "User-Name")
+                     
+    email = CharField(default = '',
+                      max_length = 1000,
+                      verbose_name = 'User e-mail address')
+                     
     
