@@ -8,7 +8,7 @@ import copy
 from tabulate import tabulate
 
 import pandas as pd
-from miDjangoModel3.models import ChoiceField, Model, CharField, FloatField, BooleanField, ForeignKey, Manager
+from librerias.miDjangoModel3.models import ChoiceField, Model, CharField, FloatField, BooleanField, ForeignKey, Manager
 
 class User(Model):
     
@@ -292,7 +292,7 @@ class Catalogo(Model):
         nuevaInstancia = cls()
         print("\t",catalogoElement,catalogoElement.attrib)
         description = catalogoElement.find('.//d:description',ns)
-        id = catalogoElement.attrib['id']
+        id = int(catalogoElement.attrib['id'])
         nuevaInstancia.description = description.text
         nuevaInstancia.id = id
         
@@ -517,7 +517,7 @@ class Dominio(Model):
         nuevaInstancia = cls()
         print("\t",domainElement,domainElement.attrib)
         description = domainElement.find('.//d:description',ns)
-        id = domainElement.attrib['id']
+        id = int(domainElement.attrib['id'])
         nuevaInstancia.description = description.text
         nuevaInstancia.id = id
         
@@ -865,7 +865,7 @@ class Servicio(Model):
         nuevaInstancia = cls()
         print("\t",serviceElement,serviceElement.attrib)
         description = serviceElement.find('.//d:description',ns)
-        id = serviceElement.attrib['id']
+        id = int(serviceElement.attrib['id'])
         nuevaInstancia.description = description.text
         nuevaInstancia.id = id
         
@@ -952,7 +952,7 @@ class Funcionalidad(Model):
         nuevaInstancia = cls()
         print("\t",funcionalidadElement,funcionalidadElement.attrib)
         description = funcionalidadElement.find('.//d:description',ns)
-        id = funcionalidadElement.attrib['id']
+        id = int(funcionalidadElement.attrib['id'])
         nuevaInstancia.description = description.text
         nuevaInstancia.id = id
         nuevaInstancia.energyEfficiencyImpact = float(funcionalidadElement.find('.//d:energyEfficiencyImpact',ns).text)
@@ -1038,7 +1038,7 @@ class ImpactWeightings (Model):
         ns = {'d':"http://www.gbxml.org/schema"}
         nuevaInstancia = cls()
         print("\t",impactWeightingElement,impactWeightingElement.attrib)
-        id = impactWeightingElement.attrib['id']
+        id = int(impactWeightingElement.attrib['id'])
         nuevaInstancia.id = id
         
         nuevaInstancia.energyEfficiency = float(impactWeightingElement.find('.//d:energyEfficiency',ns).text)
@@ -1364,7 +1364,7 @@ class DomainWeigthing(Model):
         nuevaInstancia = cls()
         print("\t",domainWeigthingElement,domainWeigthingElement.attrib)
         description = domainWeigthingElement.find('.//d:name',ns)
-        id = domainWeigthingElement.attrib['id']
+        id = int(domainWeigthingElement.attrib['id'])
         nuevaInstancia.name = description.text
         nuevaInstancia.id = id
         
