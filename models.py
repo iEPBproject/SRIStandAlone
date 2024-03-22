@@ -8,10 +8,27 @@ import copy
 from tabulate import tabulate
 
 import pandas as pd
+from miDjangoModel3.models import ChoiceField, Model, CharField, FloatField, BooleanField, ForeignKey, Manager
 
-
-from librerias.miDjangoModel3.models import Model, CharField, FloatField, BooleanField, ForeignKey,Manager
-
+class User(Model):
+    
+    objects = Manager()
+    
+    name = CharField(default = '',
+                     max_length = 1000,
+                     verbose_name = "User-Name")
+                     
+    email = CharField(default = '',
+                      max_length = 1000,
+                      verbose_name = 'User e-mail address')
+                      
+    @classmethod    
+    def creaDesdeXML(cls, element):
+        ns = {'d':"http://www.gbxml.org/schema"}
+        nuevaInstancia = cls()
+        nuevaInstancia.id = element.find('.//d:user__id', ns).text
+        nuevaInstancia.name = element.find('.//d:user__name', ns).text
+        return nuevaInstancia
 
 class BuildingType(Model):
     objects = Manager()
@@ -38,16 +55,16 @@ class Country(Model):
                        max_length = 1000,
                        verbose_name = "Name")
     
-    heatingMandatory = BooleanField(default = True, verbose_name = "Mandatory Heating Domain", help_text = "Is heating a mandatory domain?")
-    dhwMandatoryForResidential = BooleanField(default = True, verbose_name = "Mandatory DWH for residential Domain", help_text = "Is DHW  a mandatory domain?")
-    dhwMandatoryForTertiary = BooleanField(default = True, verbose_name = "Mandatory DWH for tertiary Domain", help_text = "Is DHW  a mandatory domain?")
-    CoolingMandatory = BooleanField(default = True, verbose_name = "Mandatory Cooling Domain", help_text = "Is Cooling a mandatory domain?")
-    VentilationMandatory = BooleanField(default = True, verbose_name = "Mandatory Ventilation Domain", help_text = "Is Ventilation  a mandatory domain?")
-    LightingMandatory = BooleanField(default = True, verbose_name = "Mandatory Lighting Domain", help_text = "Is Lighting  a mandatory domain?")
-    DynamicBuildingEnvelopeMandatory = BooleanField(default = True, verbose_name = "Mandatory Dynamic Building Envelope Domain", help_text = "Is Dynamic Building Envelope  a mandatory domain?")
-    ElectricityMandatory = BooleanField(default = True, verbose_name = "Mandatory Electricity Domain", help_text = "Is Electricity a mandatory domain?")
-    ElectricVehicleChargingMandatory = BooleanField(default = True, verbose_name = "Mandatory Electric Vehicle Charging Domain", help_text = "Is Electric Vehicle Charging  a mandatory domain?")
-    MonitoringAndControlMandatory = BooleanField(default = True, verbose_name = "Mandatory Monitoring And Control Domain", help_text = "Is Monitoring and Control  a mandatory domain?")    
+    heatingMandatory = BooleanField(default = True, verbose_name = "Mandatory Heating Domain")
+    dhwMandatoryForResidential = BooleanField(default = True, verbose_name = "Mandatory DWH for residential Domain")
+    dhwMandatoryForTertiary = BooleanField(default = True, verbose_name = "Mandatory DWH for tertiary Domain")
+    CoolingMandatory = BooleanField(default = True, verbose_name = "Mandatory Cooling Domain")
+    VentilationMandatory = BooleanField(default = True, verbose_name = "Mandatory Ventilation Domain")
+    LightingMandatory = BooleanField(default = True, verbose_name = "Mandatory Lighting Domain")
+    DynamicBuildingEnvelopeMandatory = BooleanField(default = True, verbose_name = "Mandatory Dynamic Building Envelope Domain")
+    ElectricityMandatory = BooleanField(default = True, verbose_name = "Mandatory Electricity Domain")
+    ElectricVehicleChargingMandatory = BooleanField(default = True, verbose_name = "Mandatory Electric Vehicle Charging Domain")
+    MonitoringAndControlMandatory = BooleanField(default = True, verbose_name = "Mandatory Monitoring And Control Domain")    
     
     domainClassNames = CharField(default = 'A,B,C,D,E,F,G',
                                                         max_length = 1000,
@@ -67,7 +84,14 @@ class Country(Model):
         verbose_name = 'Country'
         verbose_name_plural = '6. Country'
         ordering = ('id',)
-
+    @classmethod    
+    def creaDesdeXML(cls, element):
+        ns = {'d':"http://www.gbxml.org/schema"}
+        nuevaInstancia = cls()
+        nuevaInstancia.id = element.find('.//d:country__id', ns).text
+        nuevaInstancia.name = element.find('.//d:country__name', ns).text
+        return nuevaInstancia
+        
 
 class Catalogo(Model):
     
@@ -78,16 +102,12 @@ class Catalogo(Model):
                             verbose_name = "Description")
     
     country = ForeignKey(Country,
-                         blank = True,
                          verbose_name = 'Country',
-                         related_name = 'catalogos',
-                         help_text = 'Multiple selection/deselection: use the CTRL key',)
+                         related_name = 'catalogos',)
                                      
     buildingType = ForeignKey(BuildingType,
-                              blank = True,
                               verbose_name = 'Building Types',
-                              related_name = 'catalogos',
-                              help_text = 'Multiple selection/deselection: use the CTRL key',)
+                              related_name = 'catalogos',)
                   
     class Meta:
         verbose_name = 'Catalogue'
@@ -108,7 +128,7 @@ class Catalogo(Model):
     def delete(self, using=None, keep_parents=False):
         if self.tieneDatos:
             return False
-        return models.Model.delete(self, using=using, keep_parents=keep_parents)
+        return Model.delete(self, using=using, keep_parents=keep_parents)
     def duplicar(self, padre = None): 
         ''' 
         Clase Catalogo
@@ -265,6 +285,19 @@ class Catalogo(Model):
         '''
         impactoMaximo = sum([dominio.impactMaxInformationOccupants for dominio in self.dominios.all()])
         return impactoMaximo
+        
+    @classmethod
+    def creaDesdeXML(cls,catalogoElement):
+        ns = {'d':"http://www.gbxml.org/schema"}
+        nuevaInstancia = cls()
+        print("\t",catalogoElement,catalogoElement.attrib)
+        description = catalogoElement.find('.//d:description',ns)
+        id = catalogoElement.attrib['id']
+        nuevaInstancia.description = description.text
+        nuevaInstancia.id = id
+        
+        return nuevaInstancia
+        
 
 class Climate(Model):
     
@@ -274,10 +307,8 @@ class Climate(Model):
                             max_length = 1000,
                             verbose_name = "Description")
     country = ForeignKey(Country,
-                         blank = True,
                          verbose_name = 'Countries',
-                         related_name = 'climates',
-                         help_text = 'Multiple selection/deselection: use the CTRL key',)
+                         related_name = 'climates',)
 
     def __str__(self):
         ''' 
@@ -478,67 +509,79 @@ class Dominio(Model):
         
         '''
         impactoMaximo = sum([servicio.impactMaxInformationOccupants for servicio in self.servicios.all()])
-        return impactoMaximo  
-    
-    def getForm(self, proyectoId = None):
-        '''
-        Clase Dominio
-        '''
-        from sri.forms import DominioForm
-        new_fields = {}
-        for servicio in self.servicios.all():
-            choices1 = [] 
-            cont = 0
-            for x in servicio.funcionalidades.all(): choices1.append((x.id, x.description))
-            listadoDatos = Dato.objects.filter(chosenFuncionality__service__id = servicio.id, proyect = proyectoId)
-            porcTotal = 0
-            # if len(listadoDatos) == 0:
-            new_fields['{0}--{1}--{2}'.format(servicio.id, 'Choice', cont) ] = forms.ChoiceField(label = servicio.description,
-                                                                                                 help_text = servicio.description,
-                                                                                                 choices = choices1)
-    
-            new_fields['{0}--{1}--{2}'.format(servicio.id, 'Percentage', cont) ] = forms.FloatField(label = 'Percentage',
-                                                                                                    help_text = servicio.description,
-                                                                                                    initial = 100.0,
-                                                                                                    validators=[MinValueValidator(0.0),MaxValueValidator(100.0, u"Please introduce a lower value")])
-                
-            new_fields['{0}--{1}--{2}'.format(servicio.id, 'Justificacion', cont) ] = forms.CharField(widget = CKEditorUploadingWidget(),
-                                                                                                      label = 'Justification',
-                                                                                                      help_text = servicio.description,
-                                                                                                      required = False)
-            
-            new_fields['{0}--{1}--{2}'.format(servicio.id, 'Comentario', cont) ] = forms.CharField(widget = CKEditorUploadingWidget(),
-                                                                                                   label = 'Comments',
-                                                                                                   help_text = servicio.description,
-                                                                                                   required = False)
-            # else:
-                
-            for dato in listadoDatos:
-                porcTotal += dato.percentage
-                if porcTotal < 100.: 
-                    cont += 1
-                                   
-                    new_fields['{0}--{1}--{2}'.format(servicio.id, 'Choice', cont) ] = forms.ChoiceField(label = servicio.description,
-                                                                                                         help_text = servicio.description,
-                                                                                                         choices = choices1)
-                    
-                    new_fields['{0}--{1}--{2}'.format(servicio.id, 'Percentage', cont) ] = forms.FloatField(label = 'Percentage',
-                                                                                                            help_text = servicio.description,
-                                                                                                            initial = 100 - porcTotal)
-                    
-                    new_fields['{0}--{1}--{2}'.format(servicio.id, 'Justificacion', cont) ] = forms.CharField(widget = CKEditorUploadingWidget(),
-                                                                                                              label = 'Justification',
-                                                                                                              help_text = servicio.description,
-                                                                                                              required = False)
-                    
-                    new_fields['{0}--{1}--{2}'.format(servicio.id, 'Comentario', cont) ] = forms.CharField(widget = CKEditorUploadingWidget(),
-                                                                                                           label = 'Comments',
-                                                                                                           help_text = servicio.description,
-                                                                                                           required = False)
+        return impactoMaximo
         
-        DynamicDominionForm = type('DynamicDominionForm', (DominioForm,), new_fields)
+    @classmethod
+    def creaDesdeXML(cls,domainElement):
+        ns = {'d':"http://www.gbxml.org/schema"}
+        nuevaInstancia = cls()
+        print("\t",domainElement,domainElement.attrib)
+        description = domainElement.find('.//d:description',ns)
+        id = domainElement.attrib['id']
+        nuevaInstancia.description = description.text
+        nuevaInstancia.id = id
         
-        return DynamicDominionForm
+        return nuevaInstancia  
+    
+    # def getForm(self, proyectoId = None):
+    #     '''
+    #     Clase Dominio
+    #     '''
+    #     from sri.forms import DominioForm
+    #     new_fields = {}
+    #     for servicio in self.servicios.all():
+    #         choices1 = [] 
+    #         cont = 0
+    #         for x in servicio.funcionalidades.all(): choices1.append((x.id, x.description))
+    #         listadoDatos = Dato.objects.filter(chosenFuncionality__service__id = servicio.id, proyect = proyectoId)
+    #         porcTotal = 0
+    #         # if len(listadoDatos) == 0:
+    #         new_fields['{0}--{1}--{2}'.format(servicio.id, 'Choice', cont) ] = forms.ChoiceField(label = servicio.description,
+    #                                                                                              help_text = servicio.description,
+    #                                                                                              choices = choices1)
+    #
+    #         new_fields['{0}--{1}--{2}'.format(servicio.id, 'Percentage', cont) ] = forms.FloatField(label = 'Percentage',
+    #                                                                                                 help_text = servicio.description,
+    #                                                                                                 initial = 100.0,
+    #                                                                                                 validators=[MinValueValidator(0.0),MaxValueValidator(100.0, u"Please introduce a lower value")])
+    #
+    #         new_fields['{0}--{1}--{2}'.format(servicio.id, 'Justificacion', cont) ] = forms.CharField(widget = CKEditorUploadingWidget(),
+    #                                                                                                   label = 'Justification',
+    #                                                                                                   help_text = servicio.description,
+    #                                                                                                   required = False)
+    #
+    #         new_fields['{0}--{1}--{2}'.format(servicio.id, 'Comentario', cont) ] = forms.CharField(widget = CKEditorUploadingWidget(),
+    #                                                                                                label = 'Comments',
+    #                                                                                                help_text = servicio.description,
+    #                                                                                                required = False)
+    #         # else:
+    #
+    #         for dato in listadoDatos:
+    #             porcTotal += dato.percentage
+    #             if porcTotal < 100.: 
+    #                 cont += 1
+    #
+    #                 new_fields['{0}--{1}--{2}'.format(servicio.id, 'Choice', cont) ] = forms.ChoiceField(label = servicio.description,
+    #                                                                                                      help_text = servicio.description,
+    #                                                                                                      choices = choices1)
+    #
+    #                 new_fields['{0}--{1}--{2}'.format(servicio.id, 'Percentage', cont) ] = forms.FloatField(label = 'Percentage',
+    #                                                                                                         help_text = servicio.description,
+    #                                                                                                         initial = 100 - porcTotal)
+    #
+    #                 new_fields['{0}--{1}--{2}'.format(servicio.id, 'Justificacion', cont) ] = forms.CharField(widget = CKEditorUploadingWidget(),
+    #                                                                                                           label = 'Justification',
+    #                                                                                                           help_text = servicio.description,
+    #                                                                                                           required = False)
+    #
+    #                 new_fields['{0}--{1}--{2}'.format(servicio.id, 'Comentario', cont) ] = forms.CharField(widget = CKEditorUploadingWidget(),
+    #                                                                                                        label = 'Comments',
+    #                                                                                                        help_text = servicio.description,
+    #                                                                                                        required = False)
+    #
+    #     DynamicDominionForm = type('DynamicDominionForm', (DominioForm,), new_fields)
+    #
+    #     return DynamicDominionForm
 
     
 class Servicio(Model):
@@ -815,6 +858,18 @@ class Servicio(Model):
         else:
             impactoMaximo = max([funcionalidad.informationOccupantsImpact for funcionalidad in self.funcionalidades.all()])
         return impactoMaximo
+        
+    @classmethod
+    def creaDesdeXML(cls,serviceElement):
+        ns = {'d':"http://www.gbxml.org/schema"}
+        nuevaInstancia = cls()
+        print("\t",serviceElement,serviceElement.attrib)
+        description = serviceElement.find('.//d:description',ns)
+        id = serviceElement.attrib['id']
+        nuevaInstancia.description = description.text
+        nuevaInstancia.id = id
+        
+        return nuevaInstancia
 
     
 class Funcionalidad(Model):
@@ -854,13 +909,11 @@ class Funcionalidad(Model):
     informationOccupantsImpact = FloatField(default = 0.0,
                                             verbose_name = 'Information to occupants')
                                           
-    en15232Residential = CharField(choices = [('-', '-'),('A', 'A'), ('B', 'B'), ('C', 'C'), ('D', 'D')],
-                                       max_length = 1000,
+    en15232Residential = ChoiceField(choices = [('-', '-'),('A', 'A'), ('B', 'B'), ('C', 'C'), ('D', 'D')],
                                        verbose_name = u"ISO 52120-1:2021 (Residential)",
                                        default = '-')
                                        
-    en15232NonResidential = CharField(choices = [('-', '-'),('A', 'A'), ('B', 'B'), ('C', 'C'), ('D', 'D')],
-                                       max_length = 1000,
+    en15232NonResidential = ChoiceField(choices = [('-', '-'),('A', 'A'), ('B', 'B'), ('C', 'C'), ('D', 'D')],
                                        verbose_name = u"ISO 52120-1:2021 (Non-residential)",
                                        default = '-')
                   
@@ -892,6 +945,26 @@ class Funcionalidad(Model):
 
         self.save()
         return self
+        
+    @classmethod
+    def creaDesdeXML(cls,funcionalidadElement):
+        ns = {'d':"http://www.gbxml.org/schema"}
+        nuevaInstancia = cls()
+        print("\t",funcionalidadElement,funcionalidadElement.attrib)
+        description = funcionalidadElement.find('.//d:description',ns)
+        id = funcionalidadElement.attrib['id']
+        nuevaInstancia.description = description.text
+        nuevaInstancia.id = id
+        nuevaInstancia.energyEfficiencyImpact = float(funcionalidadElement.find('.//d:energyEfficiencyImpact',ns).text)
+        nuevaInstancia.energyFlexibilityImpact = float(funcionalidadElement.find('.//d:energyFlexibilityImpact',ns).text)
+        nuevaInstancia.comfortImpact = float(funcionalidadElement.find('.//d:comfortImpact',ns).text)
+        nuevaInstancia.convenienceImpact = float(funcionalidadElement.find('.//d:convenienceImpact',ns).text)
+        nuevaInstancia.healthAccesibilityImpact = float(funcionalidadElement.find('.//d:healthAccesibilityImpact',ns).text)
+        nuevaInstancia.maintenanceFaultPredictionImpact = float(funcionalidadElement.find('.//d:maintenanceFaultPredictionImpact',ns).text)
+        nuevaInstancia.informationOccupantsImpact = float(funcionalidadElement.find('.//d:informationOccupantsImpact',ns).text)
+        nuevaInstancia.en15232Residential = funcionalidadElement.find('.//d:en15232Residential',ns).text
+        nuevaInstancia.en15232NonResidential = funcionalidadElement.find('.//d:en15232NonResidential',ns).text
+        return nuevaInstancia
 
     
 class ImpactWeightings (Model):
@@ -919,15 +992,12 @@ class ImpactWeightings (Model):
                                       default = 0.0)
     
     kF1_energyPerformanceAndOperation = FloatField(verbose_name = 'KF1: Energy performance',
-                                                   help_text = "Key functionality 1: Energy performance and operation",
                                                    default = 1.0 / 3.0)
     
     kF2_responseToUserNeeds = FloatField(verbose_name = 'KF2: Response to user needs',
-                                         help_text = "Key functionality 1: Response to user needs",
                                          default = 1.0 / 3.0)
     
     kF3_energyFlexibility = FloatField(verbose_name = 'KF3: Energy flexibility',
-                                       help_text = "Key functionality 3: Energy flexibility",
                                        default = 1.0 / 3.0)        
     
     def getLista(self):
@@ -963,6 +1033,14 @@ class ImpactWeightings (Model):
         '''
         return 'Id: {}'.format(self.id)
         
+    @classmethod
+    def creaDesdeXML(cls, impactWeightingElement):
+        ns = {'d':"http://www.gbxml.org/schema"}
+        nuevaInstancia = cls()
+        print("\t",impactWeightingElement,impactWeightingElement.attrib)
+        id = impactWeightingElement.attrib['id']
+        nuevaInstancia.id = id
+        
 class CustomImpactWeightings(Model):
     
     objects = Manager()
@@ -989,15 +1067,12 @@ class CustomImpactWeightings(Model):
                                       default = 0.0)
     
     kF1_energyPerformanceAndOperation = FloatField(verbose_name = 'KF1: Energy performance',
-                                                   help_text = "Key functionality 1: Energy performance and operation",
                                                    default = 1.0 / 3.0)
     
     kF2_responseToUserNeeds = FloatField(verbose_name = 'KF2: Response to user needs',
-                                         help_text = "Key functionality 1: Response to user needs",
                                          default = 1.0 / 3.0)
     
     kF3_energyFlexibility = FloatField(verbose_name = 'KF3: Energy flexibility',
-                                       help_text = "Key functionality 3: Energy flexibility",
                                        default = 1.0 / 3.0)        
     
     def getLista(self):
@@ -1010,8 +1085,8 @@ class CustomImpactWeightings(Model):
                 self.informationOccupants]
 
     class Meta:
-        verbose_name = _('Custom Impact Weighting')
-        verbose_name_plural = _('13.Custom Impact Weighting')
+        verbose_name = 'Custom Impact Weighting'
+        verbose_name_plural = '13.Custom Impact Weighting'
         ordering = ('id',)
         
     def duplicar(self, padre = None):
@@ -1041,35 +1116,24 @@ class DomainWeigthing(Model):
                               verbose_name = "Name")
                               
     country = ForeignKey(Country,
-                         blank = True,
                          verbose_name = 'Countries',
-                         related_name = 'domaingWeightings',
-                         help_text = 'Multiple selection/deselection: use the CTRL key',)
+                         related_name = 'domaingWeightings',)
                                      
     catalogo = ForeignKey(Catalogo,
-                          blank = True,
                           verbose_name = 'Catalogue',
-                          related_name = 'domaingWeightings',
-                          help_text = 'Multiple selection/deselection: use the CTRL key',)
+                          related_name = 'domaingWeightings',)
     
     climate = ForeignKey(Climate,
-                         blank = True,
                          verbose_name = 'Climates',
-                         related_name = 'domaingWeightings',
-                         help_text = 'Multiple selection/deselection: use the CTRL key',)
+                         related_name = 'domaingWeightings',)
     
     impactWeighting = ForeignKey(ImpactWeightings,
                          verbose_name = 'Impact Weightings',
-                         related_name = 'impact_weigthing',
-                         blank = True,
-                         null = True,
-                         on_delete = models.DO_NOTHING)
+                         related_name = 'impact_weigthing',)
                          
-    buildingType = ForeignKey(BuildindgType,
-                              blank = True,
+    buildingType = ForeignKey(BuildingType,
                               verbose_name = 'Building Types',
-                              related_name = 'domaingWeightings',
-                              help_text = 'Multiple selection/deselection: use the CTRL key',)
+                              related_name = 'domaingWeightings',)
     
     energyEfficiencyHeating = FloatField(verbose_name = 'Energy efficiency heating',
                                          default = 0.0)
@@ -1254,6 +1318,8 @@ class DomainWeigthing(Model):
     
     informationOccupantsMonitoringAndControl = FloatField(verbose_name = 'Information to occupants Monitoring and Control',
                                                           default = 0.0)
+                                                          
+    
     
     def __str__(self):
         ''' 
@@ -1278,6 +1344,119 @@ class DomainWeigthing(Model):
         self.name = self.name + '_copy'
         self.save()
         return self
+        
+    @classmethod
+    def creaDesdeXML(cls,domainWeigthingElement):
+        ns = {'d':"http://www.gbxml.org/schema"}
+        nuevaInstancia = cls()
+        print("\t",domainWeigthingElement,domainWeigthingElement.attrib)
+        description = domainWeigthingElement.find('.//d:name',ns)
+        id = domainWeigthingElement.attrib['id']
+        nuevaInstancia.name = description.text
+        nuevaInstancia.id = id
+        
+        # Para los atributos de Heating en el XML
+        instanciaHeating = domainWeigthingElement.find('.//d:Heating',ns)
+        nuevaInstancia.energyEfficiencyHeating = float(instanciaHeating.find('.//d:energyEfficiency', ns).text)
+        nuevaInstancia.energyFlexibilityHeating = float(instanciaHeating.find('.//d:energyFlexibility', ns).text)
+        nuevaInstancia.comfortHeating = float(instanciaHeating.find('.//d:comfort', ns).text)
+        nuevaInstancia.convenienceHeating = float(instanciaHeating.find('.//d:convenience', ns).text)
+        nuevaInstancia.healthAccesibilityHeating = float(instanciaHeating.find('.//d:healthAccesibility', ns).text)
+        nuevaInstancia.maintenanceFaultPredictionHeating = float(instanciaHeating.find('.//d:maintenanceFaultPrediction', ns).text)
+        nuevaInstancia.informationOccupantsHeating = float(instanciaHeating.find('.//d:informationOccupants', ns).text)        
+        print(instanciaHeating)
+        
+        # Para los atributos de Heating en el XML
+        instanciaCooling = domainWeigthingElement.find('.//d:Cooling',ns)
+        nuevaInstancia.energyEfficiencyCooling = float(instanciaCooling.find('.//d:energyEfficiency', ns).text)
+        nuevaInstancia.energyFlexibilityCooling = float(instanciaCooling.find('.//d:energyFlexibility', ns).text)
+        nuevaInstancia.comfortCooling = float(instanciaCooling.find('.//d:comfort', ns).text)
+        nuevaInstancia.convenienceCooling = float(instanciaCooling.find('.//d:convenience', ns).text)
+        nuevaInstancia.healthAccesibilityCooling = float(instanciaCooling.find('.//d:healthAccesibility', ns).text)
+        nuevaInstancia.maintenanceFaultPredictionCooling = float(instanciaCooling.find('.//d:maintenanceFaultPrediction', ns).text)
+        nuevaInstancia.informationOccupantsCooling = float(instanciaCooling.find('.//d:informationOccupants', ns).text)        
+        print(instanciaCooling)
+        
+        # Para los atributos de Heating en el XML
+        instanciaDhw = domainWeigthingElement.find('.//d:Dhw',ns)
+        nuevaInstancia.energyEfficiencyDhw = float(instanciaDhw.find('.//d:energyEfficiency', ns).text)
+        nuevaInstancia.energyFlexibilityDhw = float(instanciaDhw.find('.//d:energyFlexibility', ns).text)
+        nuevaInstancia.comfortDhw = float(instanciaDhw.find('.//d:comfort', ns).text)
+        nuevaInstancia.convenienceDhw = float(instanciaDhw.find('.//d:convenience', ns).text)
+        nuevaInstancia.healthAccesibilityDhw = float(instanciaDhw.find('.//d:healthAccesibility', ns).text)
+        nuevaInstancia.maintenanceFaultPredictionDhw = float(instanciaDhw.find('.//d:maintenanceFaultPrediction', ns).text)
+        nuevaInstancia.informationOccupantsDhw = float(instanciaDhw.find('.//d:informationOccupants', ns).text)        
+        print(instanciaDhw)
+        
+        # Para los atributos de Heating en el XML
+        instanciaVentilation = domainWeigthingElement.find('.//d:Ventilation',ns)
+        nuevaInstancia.energyEfficiencyVentilation = float(instanciaVentilation.find('.//d:energyEfficiency', ns).text)
+        nuevaInstancia.energyFlexibilityVentilation = float(instanciaVentilation.find('.//d:energyFlexibility', ns).text)
+        nuevaInstancia.comfortVentilation = float(instanciaVentilation.find('.//d:comfort', ns).text)
+        nuevaInstancia.convenienceVentilation = float(instanciaVentilation.find('.//d:convenience', ns).text)
+        nuevaInstancia.healthAccesibilityVentilation = float(instanciaVentilation.find('.//d:healthAccesibility', ns).text)
+        nuevaInstancia.maintenanceFaultPredictionVentilation = float(instanciaVentilation.find('.//d:maintenanceFaultPrediction', ns).text)
+        nuevaInstancia.informationOccupantsVentilation = float(instanciaVentilation.find('.//d:informationOccupants', ns).text)        
+        print(instanciaVentilation)
+        
+        # Para los atributos de Heating en el XML
+        instanciaLighting = domainWeigthingElement.find('.//d:Lighting',ns)
+        nuevaInstancia.energyEfficiencyLighting = float(instanciaLighting.find('.//d:energyEfficiency', ns).text)
+        nuevaInstancia.energyFlexibilityLighting = float(instanciaLighting.find('.//d:energyFlexibility', ns).text)
+        nuevaInstancia.comfortLighting = float(instanciaLighting.find('.//d:comfort', ns).text)
+        nuevaInstancia.convenienceLighting = float(instanciaLighting.find('.//d:convenience', ns).text)
+        nuevaInstancia.healthAccesibilityLighting = float(instanciaLighting.find('.//d:healthAccesibility', ns).text)
+        nuevaInstancia.maintenanceFaultPredictionLighting = float(instanciaLighting.find('.//d:maintenanceFaultPrediction', ns).text)
+        nuevaInstancia.informationOccupantsLighting = float(instanciaLighting.find('.//d:informationOccupants', ns).text)        
+        print(instanciaLighting)
+        
+        # Para los atributos de Heating en el XML
+        instanciaElectricity = domainWeigthingElement.find('.//d:Electricity',ns)
+        nuevaInstancia.energyEfficiencyElectricity = float(instanciaElectricity.find('.//d:energyEfficiency', ns).text)
+        nuevaInstancia.energyFlexibilityElectricity = float(instanciaElectricity.find('.//d:energyFlexibility', ns).text)
+        nuevaInstancia.comfortElectricity = float(instanciaElectricity.find('.//d:comfort', ns).text)
+        nuevaInstancia.convenienceElectricity = float(instanciaElectricity.find('.//d:convenience', ns).text)
+        nuevaInstancia.healthAccesibilityElectricity = float(instanciaElectricity.find('.//d:healthAccesibility', ns).text)
+        nuevaInstancia.maintenanceFaultPredictionElectricity = float(instanciaElectricity.find('.//d:maintenanceFaultPrediction', ns).text)
+        nuevaInstancia.informationOccupantsElectricity = float(instanciaElectricity.find('.//d:informationOccupants', ns).text)        
+        print(instanciaElectricity)
+        
+        # Para los atributos de Heating en el XML
+        instanciaDynamicBuildingEnvelope = domainWeigthingElement.find('.//d:DynamicBuildingEnvelope',ns)
+        nuevaInstancia.energyEfficiencyDynamicBuildingEnvelope = float(instanciaDynamicBuildingEnvelope.find('.//d:energyEfficiency', ns).text)
+        nuevaInstancia.energyFlexibilityDynamicBuildingEnvelope = float(instanciaDynamicBuildingEnvelope.find('.//d:energyFlexibility', ns).text)
+        nuevaInstancia.comfortDynamicBuildingEnvelope = float(instanciaDynamicBuildingEnvelope.find('.//d:comfort', ns).text)
+        nuevaInstancia.convenienceDynamicBuildingEnvelope = float(instanciaDynamicBuildingEnvelope.find('.//d:convenience', ns).text)
+        nuevaInstancia.healthAccesibilityDynamicBuildingEnvelope = float(instanciaDynamicBuildingEnvelope.find('.//d:healthAccesibility', ns).text)
+        nuevaInstancia.maintenanceFaultPredictionDynamicBuildingEnvelope = float(instanciaDynamicBuildingEnvelope.find('.//d:maintenanceFaultPrediction', ns).text)
+        nuevaInstancia.informationOccupantsDynamicBuildingEnvelope = float(instanciaDynamicBuildingEnvelope.find('.//d:informationOccupants', ns).text)        
+        print(instanciaDynamicBuildingEnvelope)
+        
+        # Para los atributos de Heating en el XML
+        instanciaElectricVehicleCharging = domainWeigthingElement.find('.//d:ElectricVehicleCharging',ns)
+        nuevaInstancia.energyEfficiencyElectricVehicleCharging = float(instanciaElectricVehicleCharging.find('.//d:energyEfficiency', ns).text)
+        nuevaInstancia.energyFlexibilityElectricVehicleCharging = float(instanciaElectricVehicleCharging.find('.//d:energyFlexibility', ns).text)
+        nuevaInstancia.comfortElectricVehicleCharging = float(instanciaElectricVehicleCharging.find('.//d:comfort', ns).text)
+        nuevaInstancia.convenienceElectricVehicleCharging = float(instanciaElectricVehicleCharging.find('.//d:convenience', ns).text)
+        nuevaInstancia.healthAccesibilityElectricVehicleCharging = float(instanciaElectricVehicleCharging.find('.//d:healthAccesibility', ns).text)
+        nuevaInstancia.maintenanceFaultPredictionElectricVehicleCharging = float(instanciaElectricVehicleCharging.find('.//d:maintenanceFaultPrediction', ns).text)
+        nuevaInstancia.informationOccupantsElectricVehicleCharging = float(instanciaElectricVehicleCharging.find('.//d:informationOccupants', ns).text)        
+        print(instanciaElectricVehicleCharging)
+        
+        # Para los atributos de Heating en el XML
+        instanciaMonitoringAndControl = domainWeigthingElement.find('.//d:MonitoringAndControl',ns)
+        nuevaInstancia.energyEfficiencyMonitoringAndControl = float(instanciaMonitoringAndControl.find('.//d:energyEfficiency', ns).text)
+        nuevaInstancia.energyFlexibilityMonitoringAndControl = float(instanciaMonitoringAndControl.find('.//d:energyFlexibility', ns).text)
+        nuevaInstancia.comfortMonitoringAndControl = float(instanciaMonitoringAndControl.find('.//d:comfort', ns).text)
+        nuevaInstancia.convenienceMonitoringAndControl = float(instanciaMonitoringAndControl.find('.//d:convenience', ns).text)
+        nuevaInstancia.healthAccesibilityMonitoringAndControl = float(instanciaMonitoringAndControl.find('.//d:healthAccesibility', ns).text)
+        nuevaInstancia.maintenanceFaultPredictionMonitoringAndControl = float(instanciaMonitoringAndControl.find('.//d:maintenanceFaultPrediction', ns).text)
+        nuevaInstancia.informationOccupantsMonitoringAndControl = float(instanciaMonitoringAndControl.find('.//d:informationOccupants', ns).text)        
+        print(instanciaMonitoringAndControl)
+        
+        instanciaImpactWeighting = ImpactWeightings.creaDesdeXML(domainWeigthingElement.find('.//d:ImpactWeighting', ns))
+        nuevaInstancia.impactWeighting = instanciaImpactWeighting
+        return nuevaInstancia
 
 class CustomDomainWeighting(Model):
     
@@ -1285,37 +1464,27 @@ class CustomDomainWeighting(Model):
     
     customImpactWeighting = ForeignKey(CustomImpactWeightings,
                                        verbose_name = 'Custom Impact Weightings',
-                                       related_name = 'customDomainWeigthing',
-                                       blank = True,
-                                       null = True)
+                                       related_name = 'customDomainWeigthing',)
                          
     user = ForeignKey(User,
                       verbose_name = u"User",
-                      related_name = 'customDomainWeigthing',
-                      blank = True,
-                      null = True)
+                      related_name = 'customDomainWeigthing',)
         
     name = CharField(default = '',
                      max_length = 1000,
                      verbose_name = "Name")
                               
     country = ForeignKey(Country,
-                         blank = True,
                          verbose_name = 'Countries',
-                         related_name = 'customDomainWeigthing',
-                         help_text = 'Multiple selection/deselection: use the CTRL key',)
+                         related_name = 'customDomainWeigthing',)
     
     climate = ForeignKey(Climate,
-                         blank = True,
                          verbose_name = 'Climates',
-                         related_name = 'customDomainWeigthing',
-                         help_text = 'Multiple selection/deselection: use the CTRL key',)
+                         related_name = 'customDomainWeigthing',)
                          
-    buildingType = ForeignKey(BuildindgType,
-                              blank = True,
+    buildingType = ForeignKey(BuildingType,
                               verbose_name = 'Building Types',
-                              related_name = 'customDomainWeigthing',
-                              help_text = 'Multiple selection/unselection: use the CTRL key',)
+                              related_name = 'customDomainWeigthing',)
     
     energyEfficiencyHeating = FloatField(verbose_name = 'Energy efficiency heating',)
 
@@ -1542,39 +1711,27 @@ class Proyecto(Model):
     
     country = ForeignKey(Country,
                          verbose_name = 'Country',
-                         related_name = 'proyectos',
-                         blank = True,
-                         null = True)
+                         related_name = 'proyectos',)
     
     catalogo = ForeignKey(Catalogo,
                           verbose_name = 'Catalogue',
-                          related_name = 'proyectos',
-                          blank = True,
-                          null = True)
+                          related_name = 'proyectos',)
     
     climate = ForeignKey(Climate,
                          verbose_name = 'Climate',
-                         related_name = 'proyectos',
-                         blank = True,
-                         null = True)
+                         related_name = 'proyectos',)
     
     domainWeigthing = ForeignKey(DomainWeigthing,
                                  verbose_name = 'Default weighting factors',
-                                 related_name = 'proyectos',
-                                 blank = True,
-                                 null = True)
+                                 related_name = 'proyectos',)
                                 
     customDomainWeigthings = ForeignKey(CustomDomainWeighting,
                                         verbose_name = 'Custom Domain Weighting',
-                                        related_name = 'proyecto',
-                                        blank = True,
-                                        null = True)
+                                        related_name = 'proyecto',)
                                 
     buildingType = ForeignKey(BuildingType,
                               verbose_name = 'Building Type',
-                              related_name = 'proyectos',
-                              blank = True,
-                              null = True)
+                              related_name = 'proyectos',)
       
     name = CharField(default = '',
                      max_length = 1000,
@@ -1592,12 +1749,11 @@ class Proyecto(Model):
                       max_length = 1000,
                       verbose_name = 'Telephone Number') 
                       
-    preference = CharField(choices = [('default', 'default'), ('user defined', 'user defined')],
-                                       max_length = 1000,
+    preference = ChoiceField(choices = [('default', 'default'), ('user defined', 'user defined')],
                                        verbose_name = u"Preference",
                                        default = '')
     
-    buildingUsage = CharField(choices = [('', ''),
+    buildingUsage = ChoiceField(choices = [('', ''),
                                          ('residential - single-family-house', 'residential-single-family-house'),
                                          ('residential - small multi-family-house', 'residential - small multi-family-house'),
                                          ('residential - large multi-family-house', 'residential - large multi-family-house'),
@@ -1605,53 +1761,42 @@ class Proyecto(Model):
                                          ('non-residential - office', 'non-residential - office'),
                                          ('non-residential - educational', 'non-residential - educational'),
                                          ('non-residential - healthcare', 'non-residential - healthcare'),                                    
-                                         ('non-residential - other', 'non-residential - other')],                                         
-                              max_length = 1000,
-                              verbose_name = "Building Usage",
-                              default = '')
+                                         ('non-residential - other', 'non-residential - other')],
+                                verbose_name = "Building Usage",
+                                default = '')
     
     
     
-    netFloorAreaOfTheBuilding = FloatField(null = True,
-                                           blank = True,
-                                           verbose_name = 'Net floor area of the building',
+    netFloorAreaOfTheBuilding = FloatField(verbose_name = 'Net floor area of the building',
                                            default = 0.0)
     
-    yearOfConstruction = FloatField(null = True,
-                                    blank = True,
-                                    verbose_name = 'Year of construction',
+    yearOfConstruction = FloatField(verbose_name = 'Year of construction',
                                     default = 0.0)
     
-    buildingState = CharField(choices = [('', ''),
+    buildingState = ChoiceField(choices = [('', ''),
                                          ('Original', 'Original'),
-                                         ('Renovated', 'Renovated')],                                         
-                              max_length = 1000,
-                              verbose_name = u"Building state",
-                              default = '')
+                                         ('Renovated', 'Renovated')],
+                                verbose_name = u"Building state",
+                                default = '')
     
-    assessmentPurpose = CharField(choices = [('Current building state', 'Current building state'),
-                                             ('Improvement package', 'Improvement package')],                                         
-                                  max_length = 1000,
-                                  verbose_name = u"Assessment purpose",
-                                  help_text = u"Data presented in this assessment reflects the current state of the building or a package of measures/recommendations for updating the BACS",
-                                  default = 'Current building state')    
+    assessmentPurpose = ChoiceField(choices = [('Current building state', 'Current building state'),
+                                             ('Improvement package', 'Improvement package')],
+                                    verbose_name = u"Assessment purpose",
+                                    default = 'Current building state')    
     
-    energyClass = CharField(choices = [('-', '-'),
+    energyClass = ChoiceField(choices = [('-', '-'),
                                        ('A','A'),
                                        ('B','B'),
                                        ('C','C'),
                                        ('D','D'),
                                        ('E', 'E'),
                                        ('F', 'F'),
-                                       ('G','G'),],                                         
-                             max_length = 2,
-                             verbose_name = u"Energy class",
-                             help_text = u"Energy Performance Certificate (EPC) label/class",
-                             default = '-')  
+                                       ('G','G'),],
+                               verbose_name = u"Energy class",
+                               default = '-')  
     
     officialTestPhase = BooleanField(default = False, 
-                                     verbose_name = "Official test phase", 
-                                     help_text = "Click if this assessment is part of an official Member State test")      
+                                     verbose_name = "Official test phase",)      
     
     
     descriptionOfBuilding = CharField(default = '',
@@ -1662,48 +1807,38 @@ class Proyecto(Model):
                         max_length = 1000,
                         verbose_name = 'Address')
     
-    combinedHVACPower = CharField(choices = [('>= 290 kW', '>= 290 kW'),
+    combinedHVACPower = ChoiceField(choices = [('>= 290 kW', '>= 290 kW'),
                                              ('70 - 290 kW', '70 - 290 kW'),
                                              ('<= 70 kW', '<= 70 kW'),
                                              ('', '')],
-                                         
-                              max_length = 1000,
-                              verbose_name = u"Effective rated output for HVAC systems",
-                              default = '')    
+                                  verbose_name = u"Effective rated output for HVAC systems",
+                                  default = '')    
     
     
     # Almacenamos estos valores para que sirvan de cache en el benchmarking
-    totalSriScore = FloatField(null = True,
-                               blank = True,
-                               verbose_name = 'Total SRI Score',
+    totalSriScore = FloatField(verbose_name = 'Total SRI Score',
                                default = 0.0)    
     
-    scoreKF1 = FloatField(null = True,
-                          blank = True,
-                          verbose_name = 'Score KF1',
+    scoreKF1 = FloatField(verbose_name = 'Score KF1',
                           default = 0.0)    
 
-    scoreKF2 = FloatField(null = True,
-                          blank = True,
-                          verbose_name = 'Score KF2',
+    scoreKF2 = FloatField(verbose_name = 'Score KF2',
                           default = 0.0)    
 
-    scoreKF3 = FloatField(null = True,
-                          blank = True,
-                          verbose_name = 'Score KF3',
+    scoreKF3 = FloatField(verbose_name = 'Score KF3',
                           default = 0.0)            
     
     
-    Heating = BooleanField(default = True, verbose_name = "Heating", help_text = "Is Heating domain assessable?")
-    Dhw = BooleanField(default = True, verbose_name = "DWH", help_text = "Is DHW domain assessable?")
-    Cooling = BooleanField(default = True, verbose_name = "Cooling", help_text = "Is Cooling domain assessable?")
-    Ventilation = BooleanField(default = True, verbose_name = "Ventilation", help_text = "Is Ventilation domain assessable?")
-    Lighting = BooleanField(default = True, verbose_name = "Lighting", help_text = "Is Lighting domain assessable?")
-    DynamicBuildingEnvelope = BooleanField(default = True, verbose_name = "Dynamic Building Envelope", help_text = "Is Dynamic Building Envelope domain assessable?")
-    Electricity = BooleanField(default = True, verbose_name = "Electricity", help_text = "Is Electricity domain assessable?")
-    ElectricVehicleCharging = BooleanField(default = True, verbose_name = "Electric Vehicle Charging", help_text = "Is Electric Vehicle Charging domain assessable?")
-    MonitoringAndControl = BooleanField(default = True, verbose_name = "Monitoring And Control", help_text = "Is Monitoring and Control domain assessable?")
-    customDomain = BooleanField(default = False, verbose_name = "Custom Domain Weighting", help_text = "Prefer to customize domain weightings?")
+    Heating = BooleanField(default = True, verbose_name = "Heating")
+    Dhw = BooleanField(default = True, verbose_name = "DWH")
+    Cooling = BooleanField(default = True, verbose_name = "Cooling")
+    Ventilation = BooleanField(default = True, verbose_name = "Ventilation")
+    Lighting = BooleanField(default = True, verbose_name = "Lighting")
+    DynamicBuildingEnvelope = BooleanField(default = True, verbose_name = "Dynamic Building Envelope")
+    Electricity = BooleanField(default = True, verbose_name = "Electricity")
+    ElectricVehicleCharging = BooleanField(default = True, verbose_name = "Electric Vehicle Charging")
+    MonitoringAndControl = BooleanField(default = True, verbose_name = "Monitoring And Control")
+    customDomain = BooleanField(default = False, verbose_name = "Custom Domain Weighting")
     
     @classmethod
     def creaDesdeXML(cls,projectElement):
@@ -1713,14 +1848,37 @@ class Proyecto(Model):
         nuevaInstancia.name = nameElement.text         
         
         print(projectElement,projectElement.attrib)
+        nuevaInstancia.country = Country.creaDesdeXML(projectElement)
+        nuevaInstancia.user = User.creaDesdeXML(projectElement)
+        
+        for domainWeigthingElement in projectElement.findall('.//d:DomainWeigthing', ns):
+            nuevaInstancia.domainWeigthing = DomainWeigthing.creaDesdeXML(domainWeigthingElement)
+            
+        
         for catalogueElement in projectElement.findall('.//d:Catalogue',ns):
             print("\t",catalogueElement,catalogueElement.attrib)
             description = catalogueElement.find('.//d:description',ns)
+            nuevaInstancia.catalogo = Catalogo.creaDesdeXML(catalogueElement)
+            nuevaInstancia.catalogo.country = nuevaInstancia.country
             print("\t\t",description.text)
             for domainElement in catalogueElement.findall('.//d:Domain',ns):
+                nuevaInstanciaDominio = Dominio.creaDesdeXML(domainElement)
+                nuevaInstanciaDominio.catalogo = nuevaInstancia.catalogo
                 print("\t\t\t",domainElement,domainElement.attrib)
                 description = domainElement.find('.//d:description',ns)
-                print("\t\t\t\t",description.text)        
+                print("\t\t\t\t",description.text)
+                for serviceElement in domainElement.findall('.//d:Service',ns):
+                    nuevaInstanciaService = Servicio.creaDesdeXML(serviceElement)
+                    nuevaInstanciaService.dominio = nuevaInstanciaDominio
+                    print("\t\t\t",serviceElement,serviceElement.attrib)
+                    description = serviceElement.find('.//d:description',ns)
+                    print("\t\t\t\t",description.text)
+                    for funcionalitiesElement in serviceElement.findall('.//d:Functionality', ns):
+                        nuevaInstanciaFunctionality = Funcionalidad.creaDesdeXML(funcionalitiesElement)
+                        nuevaInstanciaFunctionality.service = nuevaInstanciaService
+                        print("\t\t\t",funcionalitiesElement,funcionalitiesElement.attrib)
+                        description = funcionalitiesElement.find('.//d:description',ns)
+                        print("\t\t\t\t",description.text)  
         
                
         return nuevaInstancia
@@ -2532,9 +2690,7 @@ class Dato(Model):
     
     proyect = ForeignKey(Proyecto,
                          verbose_name = 'Project',
-                         related_name = 'datos',
-                         null = True,
-                         blank = True)
+                         related_name = 'datos',)
     
     comments = CharField(default = '',
                          max_length = 5000,
@@ -2595,17 +2751,5 @@ class Dato(Model):
         else:
             peso = 0.0
         return peso
-    
-class User(Model):
-    
-    objects = Manager()
-    
-    name = CharField(default = '',
-                     max_length = 1000,
-                     verbose_name = "User-Name")
-                     
-    email = CharField(default = '',
-                      max_length = 1000,
-                      verbose_name = 'User e-mail address')
                      
     
