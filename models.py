@@ -1041,6 +1041,19 @@ class ImpactWeightings (Model):
         id = impactWeightingElement.attrib['id']
         nuevaInstancia.id = id
         
+        nuevaInstancia.energyEfficiency = float(impactWeightingElement.find('.//d:energyEfficiency',ns).text)
+        nuevaInstancia.energyFlexibility = float(impactWeightingElement.find('.//d:energyFlexibility',ns).text)
+        nuevaInstancia.comfort = float(impactWeightingElement.find('.//d:comfort',ns).text)
+        nuevaInstancia.convenience = float(impactWeightingElement.find('.//d:convenience',ns).text)
+        nuevaInstancia.healthAccesibility = float(impactWeightingElement.find('.//d:healthAccesibility',ns).text)
+        nuevaInstancia.maintenanceFaultPrediction = float(impactWeightingElement.find('.//d:maintenanceFaultPrediction',ns).text)
+        nuevaInstancia.informationOccupants = float(impactWeightingElement.find('.//d:informationOccupants',ns).text)
+        nuevaInstancia.kF1_energyPerformanceAndOperation = float(impactWeightingElement.find('.//d:kF1_energyPerformanceAndOperation',ns).text)
+        nuevaInstancia.kF2_responseToUserNeeds = float(impactWeightingElement.find('.//d:kF2_responseToUserNeeds',ns).text)
+        nuevaInstancia.kF3_energyFlexibility = float(impactWeightingElement.find('.//d:kF3_energyFlexibility',ns).text)
+        
+        return nuevaInstancia
+        
 class CustomImpactWeightings(Model):
     
     objects = Manager()
