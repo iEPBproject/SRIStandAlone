@@ -5,6 +5,21 @@
          <Projects>
             <Project id="12">
                <name>CENER headquarters</name>
+               <country>
+                  <name>Spain</name>
+                  <heatingMandatory>True</heatingMandatory>
+                  <dhwMandatoryForResidential>True</dhwMandatoryForResidential>
+                  <dhwMandatoryForTertiary>False</dhwMandatoryForTertiary>
+                  <CoolingMandatory>False</CoolingMandatory>
+                  <VentilationMandatory>False</VentilationMandatory>
+                  <LightingMandatory>True</LightingMandatory>
+                  <DynamicBuildingEnvelopeMandatory>True</DynamicBuildingEnvelopeMandatory>
+                  <ElectricityMandatory>True</ElectricityMandatory>
+                  <ElectricVehicleChargingMandatory>False</ElectricVehicleChargingMandatory>
+                  <MonitoringAndControlMandatory>True</MonitoringAndControlMandatory>
+                  <domainClassNames>A,B,C,D,E,F,G</domainClassNames>
+                  <allowUserDefineDomainWeightings>False</allowUserDefineDomainWeightings>
+               </country>
                <user__id>2</user__id>
                <user__name>mfboneta</user__name>
                <country__id>6</country__id>

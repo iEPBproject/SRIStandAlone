@@ -12,6 +12,10 @@ if __name__ == '__main__':
     ns = {'d':"http://www.gbxml.org/schema"}
     for projectElement in root.findall('.//d:Project',ns):
         Proyecto.creaDesdeXML(projectElement)
+        
+        
+    p = Proyecto.objects.first()
+    print(p.catalogo)
 
                 
                 
