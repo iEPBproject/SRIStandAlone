@@ -4,66 +4,67 @@
       <SRI2MARKET version="0.1">
          <Projects>
             <Project id="12">
-               <name>CENER headquarters</name>
-               <country>
+               <name>CENER office MFB</name>
+               <country id="6">
                   <name>Spain</name>
                   <heatingMandatory>True</heatingMandatory>
                   <dhwMandatoryForResidential>True</dhwMandatoryForResidential>
                   <dhwMandatoryForTertiary>False</dhwMandatoryForTertiary>
                   <CoolingMandatory>False</CoolingMandatory>
-                  <VentilationMandatory>False</VentilationMandatory>
+                  <VentilationMandatory>True</VentilationMandatory>
                   <LightingMandatory>True</LightingMandatory>
                   <DynamicBuildingEnvelopeMandatory>True</DynamicBuildingEnvelopeMandatory>
                   <ElectricityMandatory>True</ElectricityMandatory>
                   <ElectricVehicleChargingMandatory>False</ElectricVehicleChargingMandatory>
                   <MonitoringAndControlMandatory>True</MonitoringAndControlMandatory>
                   <domainClassNames>A,B,C,D,E,F,G</domainClassNames>
-                  <allowUserDefineDomainWeightings>False</allowUserDefineDomainWeightings>
+                  <allowUserDefineDomainWeightings>True</allowUserDefineDomainWeightings>
                </country>
                <user__id>2</user__id>
                <user__name>mfboneta</user__name>
-               <country__id>6</country__id>
-               <country__name>Spain</country__name>
+               <BuildingType id="2">
+                  <descripcion>No residential</descripcion>
+               </BuildingType>
                <DomainWeigthing id="29">
                   <name>South Europe No Residential B</name>
                   <Heating>
-                     <energyEfficiency>0.301977421739789</energyEfficiency>
-                     <energyFlexibility>0.417460186245778</energyFlexibility>
+                     <energyEfficiency>0.3</energyEfficiency>
+                     <energyFlexibility>0.42</energyFlexibility>
                      <comfort>0.16</comfort>
                      <convenience>0.1</convenience>
                      <healthAccesibility>0.16</healthAccesibility>
-                     <maintenanceFaultPrediction>0.359375228915857</maintenanceFaultPrediction>
+                     <maintenanceFaultPrediction>0.36</maintenanceFaultPrediction>
                      <informationOccupants>0.1142857142857143</informationOccupants>
                   </Heating>
                   <Cooling>
-                     <energyEfficiency>0.117432152913538</energyEfficiency>
-                     <energyFlexibility>0.162340774168114</energyFlexibility>
+                     <energyEfficiency>0.12</energyEfficiency>
+                     <energyFlexibility>0.16</energyFlexibility>
                      <comfort>0.16</comfort>
                      <convenience>0.1</convenience>
                      <healthAccesibility>0.16</healthAccesibility>
-                     <maintenanceFaultPrediction>0.139752855005663</maintenanceFaultPrediction>
+                     <maintenanceFaultPrediction>0.14</maintenanceFaultPrediction>
                      <informationOccupants>0.1142857142857143</informationOccupants>
                   </Cooling>
                   <Dhw>
-                     <energyEfficiency>0.107271979412709</energyEfficiency>
-                     <energyFlexibility>0.148295128313171</energyFlexibility>
+                     <energyEfficiency>0.11</energyEfficiency>
+                     <energyFlexibility>0.15</energyFlexibility>
                      <comfort>0.0</comfort>
                      <convenience>0.1</convenience>
                      <healthAccesibility>0.0</healthAccesibility>
-                     <maintenanceFaultPrediction>0.127661505074105</maintenanceFaultPrediction>
+                     <maintenanceFaultPrediction>0.13</maintenanceFaultPrediction>
                      <informationOccupants>0.1142857142857143</informationOccupants>
                   </Dhw>
                   <Ventilation>
-                     <energyEfficiency>0.0876872014381328</energyEfficiency>
+                     <energyEfficiency>0.09</energyEfficiency>
                      <energyFlexibility>0.0</energyFlexibility>
                      <comfort>0.16</comfort>
                      <convenience>0.1</convenience>
                      <healthAccesibility>0.16</healthAccesibility>
-                     <maintenanceFaultPrediction>0.104354186178111</maintenanceFaultPrediction>
+                     <maintenanceFaultPrediction>0.1</maintenanceFaultPrediction>
                      <informationOccupants>0.1142857142857143</informationOccupants>
                   </Ventilation>
                   <Lighting>
-                     <energyEfficiency>0.119786651717529</energyEfficiency>
+                     <energyEfficiency>0.12</energyEfficiency>
                      <energyFlexibility>0.0</energyFlexibility>
                      <comfort>0.16</comfort>
                      <convenience>0.1</convenience>
@@ -72,12 +73,12 @@
                      <informationOccupants>0.0</informationOccupants>
                   </Lighting>
                   <Electricity>
-                     <energyEfficiency>0.0158445927783021</energyEfficiency>
-                     <energyFlexibility>0.0219039112729367</energyFlexibility>
+                     <energyEfficiency>0.02</energyEfficiency>
+                     <energyFlexibility>0.2</energyFlexibility>
                      <comfort>0.0</comfort>
                      <convenience>0.1</convenience>
                      <healthAccesibility>0.0</healthAccesibility>
-                     <maintenanceFaultPrediction>0.0188562248262636</maintenanceFaultPrediction>
+                     <maintenanceFaultPrediction>0.02</maintenanceFaultPrediction>
                      <informationOccupants>0.1142857142857143</informationOccupants>
                   </Electricity>
                   <DynamicBuildingEnvelope>
@@ -108,13 +109,13 @@
                      <informationOccupants>0.2</informationOccupants>
                   </MonitoringAndControl>
                   <ImpactWeighting id="8">
-                     <energyEfficiency>0.166666666666667</energyEfficiency>
-                     <energyFlexibility>0.333333333333333</energyFlexibility>
-                     <comfort>0.0833333333333333</comfort>
-                     <convenience>0.0833333333333333</convenience>
-                     <healthAccesibility>0.0833333333333333</healthAccesibility>
-                     <maintenanceFaultPrediction>0.166666666666667</maintenanceFaultPrediction>
-                     <informationOccupants>0.0833333333333333</informationOccupants>
+                     <energyEfficiency>0.17</energyEfficiency>
+                     <energyFlexibility>0.33</energyFlexibility>
+                     <comfort>0.08</comfort>
+                     <convenience>0.08</convenience>
+                     <healthAccesibility>0.08</healthAccesibility>
+                     <maintenanceFaultPrediction>0.17</maintenanceFaultPrediction>
+                     <informationOccupants>0.08</informationOccupants>
                      <kF1_energyPerformanceAndOperation>0.3333333333333333</kF1_energyPerformanceAndOperation>
                      <kF2_responseToUserNeeds>0.3333333333333333</kF2_responseToUserNeeds>
                      <kF3_energyFlexibility>0.3333333333333333</kF3_energyFlexibility>
@@ -924,7 +925,7 @@
                               </Functionalities>
                            </Service>
                            <Service id="94">
-                              <description>Control of DHW storage charging (with solar collector and supplementary heat generation)</description>
+                              <description>Control of DHW storage charging (with solar collector and supplymentary heat generation)</description>
                               <Functionalities>
                                  <Functionality id="384">
                                     <description>0 - Manual selected control of solar energy or heat generation</description>
@@ -2090,7 +2091,7 @@
                                     <en15232NonResidential>B</en15232NonResidential>
                                  </Functionality>
                                  <Functionality id="461">
-                                    <description>3 - H,x- directed control: The amount of outside air and recirculation air are modulated during all periods of time to minimize the amount of mechanical cooling. Calculation is performed on the basis of temperatures and humidity(enthalpy)</description>
+                                    <description>3 - H,x- directed control: The amount of outside air and recirculation air are modulated during all periods of time to minimize the amount of mechanical cooling. Calculation is performed on the basis of temperatures and humidity(enthalpy).</description>
                                     <energyEfficiencyImpact>3.0</energyEfficiencyImpact>
                                     <energyFlexibilityImpact>0.0</energyFlexibilityImpact>
                                     <comfortImpact>3.0</comfortImpact>
@@ -2466,7 +2467,7 @@
                                     <en15232NonResidential>-</en15232NonResidential>
                                  </Functionality>
                                  <Functionality id="487">
-                                    <description>3 - Position of each product, fault detection, predictive maintenance, real-time sensor data (wind, lux, temperature, ...)</description>
+                                    <description>3 - Position of each product, fault detection, predictive maintenance, real-time sensor data (wind, lux, temperature-)</description>
                                     <energyEfficiencyImpact>0.0</energyEfficiencyImpact>
                                     <energyFlexibilityImpact>0.0</energyFlexibilityImpact>
                                     <comfortImpact>0.0</comfortImpact>
@@ -2478,7 +2479,7 @@
                                     <en15232NonResidential>-</en15232NonResidential>
                                  </Functionality>
                                  <Functionality id="488">
-                                    <description>4 - Position of each product, fault detection, predictive maintenance, real-time &amp; historical sensor data (wind, lux, temperature, ...)</description>
+                                    <description>4 - Position of each product, fault detection, predictive maintenance, real-time &amp; historical sensor data (wind, lux, temperature-)</description>
                                     <energyEfficiencyImpact>0.0</energyEfficiencyImpact>
                                     <energyFlexibilityImpact>0.0</energyFlexibilityImpact>
                                     <comfortImpact>0.0</comfortImpact>
@@ -2625,7 +2626,7 @@
                                     <en15232NonResidential>-</en15232NonResidential>
                                  </Functionality>
                                  <Functionality id="497">
-                                    <description>3 - On site storage of energy (e.g. electric battery or thermal storage) with controller optimising the use of locally generated electricity</description>
+                                    <description>3 - Performance evaluation including forecasting and/or benchmarking</description>
                                     <energyEfficiencyImpact>0.0</energyEfficiencyImpact>
                                     <energyFlexibilityImpact>2.0</energyFlexibilityImpact>
                                     <comfortImpact>0.0</comfortImpact>
@@ -2950,7 +2951,7 @@
                                     <en15232NonResidential>-</en15232NonResidential>
                                  </Functionality>
                                  <Functionality id="517">
-                                    <description>2 - Real-time feedback or benchmarking on building level</description>
+                                    <description>2 - real-time feedback or benchmarking on building level</description>
                                     <energyEfficiencyImpact>1.0</energyEfficiencyImpact>
                                     <energyFlexibilityImpact>0.0</energyFlexibilityImpact>
                                     <comfortImpact>0.0</comfortImpact>
@@ -2962,7 +2963,7 @@
                                     <en15232NonResidential>-</en15232NonResidential>
                                  </Functionality>
                                  <Functionality id="518">
-                                    <description>3 - Real-time feedback or benchmarking on appliance level</description>
+                                    <description>3 - real-time feedback or benchmarking on appliance level</description>
                                     <energyEfficiencyImpact>2.0</energyEfficiencyImpact>
                                     <energyFlexibilityImpact>0.0</energyFlexibilityImpact>
                                     <comfortImpact>0.0</comfortImpact>
@@ -2974,7 +2975,7 @@
                                     <en15232NonResidential>-</en15232NonResidential>
                                  </Functionality>
                                  <Functionality id="519">
-                                    <description>4 - Real-time feedback or benchmarking on appliance level with automated personalized recommendations</description>
+                                    <description>4 - real-time feedback or benchmarking on appliance level with automated personalized recommendations</description>
                                     <energyEfficiencyImpact>3.0</energyEfficiencyImpact>
                                     <energyFlexibilityImpact>0.0</energyFlexibilityImpact>
                                     <comfortImpact>0.0</comfortImpact>
@@ -3032,7 +3033,7 @@
                                     <en15232NonResidential>-</en15232NonResidential>
                                  </Functionality>
                                  <Functionality id="523">
-                                    <description>3 - 10-50% of parking spaces has recharging point</description>
+                                    <description>3 - 10-350% or parking spaces has recharging point</description>
                                     <energyEfficiencyImpact>0.0</energyEfficiencyImpact>
                                     <energyFlexibilityImpact>0.0</energyFlexibilityImpact>
                                     <comfortImpact>0.0</comfortImpact>
@@ -3044,7 +3045,7 @@
                                     <en15232NonResidential>-</en15232NonResidential>
                                  </Functionality>
                                  <Functionality id="524">
-                                    <description>4 - &gt;50% of parking spaces has recharging point</description>
+                                    <description>4 - &gt;350% of parking spaces has recharging point</description>
                                     <energyEfficiencyImpact>0.0</energyEfficiencyImpact>
                                     <energyFlexibilityImpact>0.0</energyFlexibilityImpact>
                                     <comfortImpact>0.0</comfortImpact>
@@ -3181,7 +3182,7 @@
                         <description>M&amp;C</description>
                         <Services>
                            <Service id="128">
-                              <description>Run time management of HVAC systems</description>
+                              <description>Run time management of HVAc systems</description>
                               <Functionalities>
                                  <Functionality id="531">
                                     <description>0 - Manual setting</description>
@@ -3328,7 +3329,7 @@
                               </Functionalities>
                            </Service>
                            <Service id="131">
-                              <description>Central reporting of TBS performance and energy use</description>
+                              <description>Central reporting of TBS performance</description>
                               <Functionalities>
                                  <Functionality id="542">
                                     <description>0 - None</description>
@@ -3355,7 +3356,7 @@
                                     <en15232NonResidential>-</en15232NonResidential>
                                  </Functionality>
                                  <Functionality id="544">
-                                    <description>2 - Central or remote reporting of realtime energy use per energy carrier, combining TBS of at least 2 domains in one interface</description>
+                                    <description>2 - Central or remote reporting of realtime energy use per energy carrier, combining TBS of all main domains in one interface</description>
                                     <energyEfficiencyImpact>1.0</energyEfficiencyImpact>
                                     <energyFlexibilityImpact>0.0</energyFlexibilityImpact>
                                     <comfortImpact>0.0</comfortImpact>
@@ -3408,7 +3409,7 @@
                                     <en15232NonResidential>-</en15232NonResidential>
                                  </Functionality>
                                  <Functionality id="548">
-                                    <description>2 -  Coordinated demand side management of multiple TBS</description>
+                                    <description>2 - Central or remote reporting of realtime energy use per energy carrier, combining TBS of at least 2 domains in one interface</description>
                                     <energyEfficiencyImpact>1.0</energyEfficiencyImpact>
                                     <energyFlexibilityImpact>3.0</energyFlexibilityImpact>
                                     <comfortImpact>0.0</comfortImpact>
@@ -3449,7 +3450,7 @@
                                     <en15232NonResidential>-</en15232NonResidential>
                                  </Functionality>
                                  <Functionality id="551">
-                                    <description>2 - Reporting information on current, historical and predicted DSM status, including managed energy flows</description>
+                                    <description>2 - Reporting information on currenthistorical and predicted DSM status, including managed energy flows</description>
                                     <energyEfficiencyImpact>0.0</energyEfficiencyImpact>
                                     <energyFlexibilityImpact>2.0</energyFlexibilityImpact>
                                     <comfortImpact>0.0</comfortImpact>
@@ -3600,7 +3601,7 @@
                      <chosenFuncionality>330</chosenFuncionality>
                      <comments/>
                      <justification/>
-                     <percentage>80.0</percentage>
+                     <percentage>100.0</percentage>
                   </datum>
                   <datum id="846">
                      <chosenFuncionality>562</chosenFuncionality>
@@ -3920,78 +3921,12 @@
                      <justification/>
                      <percentage>100.0</percentage>
                   </datum>
-                  <datum id="1887">
-                     <chosenFuncionality>466</chosenFuncionality>
-                     <comments/>
-                     <justification/>
-                     <percentage>0.0</percentage>
-                  </datum>
-                  <datum id="1888">
-                     <chosenFuncionality>466</chosenFuncionality>
-                     <comments/>
-                     <justification/>
-                     <percentage>0.0</percentage>
-                  </datum>
-                  <datum id="1889">
-                     <chosenFuncionality>466</chosenFuncionality>
-                     <comments/>
-                     <justification/>
-                     <percentage>0.0</percentage>
-                  </datum>
-                  <datum id="1890">
-                     <chosenFuncionality>466</chosenFuncionality>
-                     <comments/>
-                     <justification/>
-                     <percentage>0.0</percentage>
-                  </datum>
-                  <datum id="1891">
-                     <chosenFuncionality>466</chosenFuncionality>
-                     <comments/>
-                     <justification/>
-                     <percentage>0.0</percentage>
-                  </datum>
-                  <datum id="1892">
-                     <chosenFuncionality>466</chosenFuncionality>
-                     <comments/>
-                     <justification/>
-                     <percentage>0.0</percentage>
-                  </datum>
-                  <datum id="3214">
-                     <chosenFuncionality>330</chosenFuncionality>
-                     <comments/>
-                     <justification/>
-                     <percentage>0.0</percentage>
-                  </datum>
-                  <datum id="3215">
-                     <chosenFuncionality>327</chosenFuncionality>
-                     <comments/>
-                     <justification/>
-                     <percentage>0.0</percentage>
-                  </datum>
-                  <datum id="3221">
-                     <chosenFuncionality>327</chosenFuncionality>
-                     <comments/>
-                     <justification/>
-                     <percentage>0.0</percentage>
-                  </datum>
-                  <datum id="3222">
-                     <chosenFuncionality>327</chosenFuncionality>
-                     <comments/>
-                     <justification/>
-                     <percentage>0.0</percentage>
-                  </datum>
-                  <datum id="6476">
-                     <chosenFuncionality>327</chosenFuncionality>
-                     <comments/>
-                     <justification/>
-                     <percentage>20.0</percentage>
-                  </datum>
                </data>
                <results>
-                  <totalSriScore>32.51</totalSriScore>
-                  <scoreKF1>48.561499722209625</scoreKF1>
-                  <scoreKF2>37.752416301291966</scoreKF2>
-                  <scoreKF3>11.22023160684932</scoreKF3>
+                  <totalSriScore>33.26</totalSriScore>
+                  <scoreKF1>49.843069837865116</scoreKF1>
+                  <scoreKF2>38.66923167421421</scoreKF2>
+                  <scoreKF3>11.27922971114168</scoreKF3>
                </results>
             </Project>
          </Projects>

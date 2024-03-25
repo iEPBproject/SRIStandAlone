@@ -8,7 +8,7 @@ import copy
 from tabulate import tabulate
 
 import pandas as pd
-from librerias.miDjangoModel3.models import ChoiceField, Model, CharField, FloatField, BooleanField, ForeignKey, Manager
+from miDjangoModel3.models import ChoiceField, Model, CharField, FloatField, BooleanField, ForeignKey, Manager
 
 class User(Model):
     
@@ -46,6 +46,15 @@ class BuildingType(Model):
     class Meta:
         verbose_name = 'Buiding Type'
         verbose_name_plural = '11. Buiding Type'
+        
+        
+    @classmethod   
+    def creaDesdeXML(cls, element):
+        ns = {'d':"http://www.gbxml.org/schema"}
+        nuevaInstancia = cls()
+        nuevaInstancia.id = int(element.attrib['id'])
+        nuevaInstancia.description = element.find('.//d:descripcion', ns).text
+        return nuevaInstancia
 
 class Country(Model):
     
@@ -88,8 +97,21 @@ class Country(Model):
     def creaDesdeXML(cls, element):
         ns = {'d':"http://www.gbxml.org/schema"}
         nuevaInstancia = cls()
-        nuevaInstancia.id = element.find('.//d:country__id', ns).text
-        nuevaInstancia.name = element.find('.//d:country__name', ns).text
+        id = element.attrib['id']
+        nuevaInstancia.id = int(id)
+        nuevaInstancia.name = element.find('.//d:name', ns).text
+        nuevaInstancia.heatingMandatory = bool(element.find('.//d:heatingMandatory', ns).text)
+        nuevaInstancia.dhwMandatoryForResidential = bool(element.find('.//d:dhwMandatoryForResidential', ns).text)
+        nuevaInstancia.dhwMandatoryForTertiary = bool(element.find('.//d:dhwMandatoryForTertiary', ns).text)
+        nuevaInstancia.CoolingMandatory = bool(element.find('.//d:CoolingMandatory', ns).text)
+        nuevaInstancia.VentilationMandatory = bool(element.find('.//d:VentilationMandatory', ns).text)
+        nuevaInstancia.LightingMandatory = bool(element.find('.//d:LightingMandatory', ns).text)
+        nuevaInstancia.DynamicBuildingEnvelopeMandatory = bool(element.find('.//d:DynamicBuildingEnvelopeMandatory', ns).text)
+        nuevaInstancia.ElectricityMandatory = bool(element.find('.//d:ElectricityMandatory', ns).text)
+        nuevaInstancia.ElectricVehicleChargingMandatory = bool(element.find('.//d:ElectricVehicleChargingMandatory', ns).text)
+        nuevaInstancia.MonitoringAndControlMandatory = bool(element.find('.//d:MonitoringAndControlMandatory', ns).text)
+        nuevaInstancia.allowUserDefineDomainWeightings = bool(element.find('.//d:allowUserDefineDomainWeightings', ns).text)
+        nuevaInstancia.domainClassNames = element.find('.//d:domainClassNames', ns).text
         return nuevaInstancia
         
 
@@ -1861,8 +1883,9 @@ class Proyecto(Model):
         nuevaInstancia.name = nameElement.text         
         
         print(projectElement,projectElement.attrib)
-        nuevaInstancia.country = Country.creaDesdeXML(projectElement)
+        nuevaInstancia.country = Country.creaDesdeXML(projectElement.find('.//d:country', ns))
         nuevaInstancia.user = User.creaDesdeXML(projectElement)
+        nuevaInstancia.buildingType = BuildingType.creaDesdeXML(projectElement.find('.//d:BuildingType', ns))
         
         for domainWeigthingElement in projectElement.findall('.//d:DomainWeigthing', ns):
             nuevaInstancia.domainWeigthing = DomainWeigthing.creaDesdeXML(domainWeigthingElement)

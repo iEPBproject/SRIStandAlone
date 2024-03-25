@@ -13,6 +13,8 @@ import sys
 
 import django
 
+from models import Proyecto
+
 
 import xml.etree.ElementTree as et
 from xml.dom import minidom
@@ -59,7 +61,42 @@ if __name__ == '__main__':
     proyecto = Proyecto.objects.first()
     projectElement = et.SubElement(projectsElement, 'Project',attrib={"id": str(proyecto.id)})
     name = et.SubElement(projectElement, "name")
-    name.text = str(proyecto.name)       
+    name.text = str(proyecto.name)
+    
+    # Añadimos elemento country a proyecto
+    
+    country = proyecto.country
+    countryElement = et.SubElement(projectElement, 'country', attrib = {"id": str(country.id)})
+    
+    # Añadimos los elementos al elemento country
+    
+    nameCountryElement = et.SubElement(countryElement, 'name')
+    nameCountryElement.text = str(country.name)
+    heatingMandatoryElement = et.SubElement(countryElement, 'heatingMandatory')
+    heatingMandatoryElement.text = str(country.heatingMandatory)  
+    dhwMandatoryForResidentialElement = et.SubElement(countryElement, 'dhwMandatoryForResidential')
+    dhwMandatoryForResidentialElement.text = str(country.dhwMandatoryForResidential)  
+    dhwMandatoryForTertiaryElement = et.SubElement(countryElement, 'dhwMandatoryForTertiary')
+    dhwMandatoryForTertiaryElement.text = str(country.dhwMandatoryForTertiary)  
+    CoolingMandatoryElement = et.SubElement(countryElement, 'CoolingMandatory')
+    CoolingMandatoryElement.text = str(country.CoolingMandatory)  
+    VentilationMandatoryElement = et.SubElement(countryElement, 'VentilationMandatory')
+    VentilationMandatoryElement.text = str(country.VentilationMandatory)
+    LightingMandatoryElement = et.SubElement(countryElement, 'LightingMandatory')
+    LightingMandatoryElement.text = str(country.LightingMandatory)  
+    DynamicBuildingEnvelopeMandatoryElement = et.SubElement(countryElement, 'DynamicBuildingEnvelopeMandatory')
+    DynamicBuildingEnvelopeMandatoryElement.text = str(country.DynamicBuildingEnvelopeMandatory)  
+    ElectricityMandatoryElement = et.SubElement(countryElement, 'ElectricityMandatory')
+    ElectricityMandatoryElement.text = str(country.ElectricityMandatory)  
+    ElectricVehicleChargingMandatoryElement = et.SubElement(countryElement, 'ElectricVehicleChargingMandatory')
+    ElectricVehicleChargingMandatoryElement.text = str(country.ElectricVehicleChargingMandatory)  
+    MonitoringAndControlMandatoryElement = et.SubElement(countryElement, 'MonitoringAndControlMandatory')
+    MonitoringAndControlMandatoryElement.text = str(country.MonitoringAndControlMandatory)  
+    domainClassNamesElement = et.SubElement(countryElement, 'domainClassNames')
+    domainClassNamesElement.text = str(country.domainClassNames)  
+    allowUserDefineDomainWeightingsElement = et.SubElement(countryElement, 'allowUserDefineDomainWeightings')
+    allowUserDefineDomainWeightingsElement.text = str(country.allowUserDefineDomainWeightings)    
+           
 
     user__id = et.SubElement(projectElement, "user__id")
     user__id.text = str(proyecto.user.id)   
@@ -67,12 +104,19 @@ if __name__ == '__main__':
     user__username = et.SubElement(projectElement, "user__name")
     user__username.text = str(proyecto.user.username)         
     
-    country__id = et.SubElement(projectElement, "country__id")
-    country__id.text = str(proyecto.country.id)        
+    # country__id = et.SubElement(projectElement, "country__id")
+    # country__id.text = str(proyecto.country.id)        
+    #
+    # country__name = et.SubElement(projectElement, "country__name")
+    # country__name.text = str(proyecto.country.name)  
     
-    country__name = et.SubElement(projectElement, "country__name")
-    country__name.text = str(proyecto.country.name)  
+    # Añadimos elemento buildingType a proyecto
     
+    buildingType = proyecto.buildingType
+    
+    buildingTypeElement = et.SubElement(projectElement, 'BuildingType', attrib= {"id" : str(buildingType.id)})
+    descripcionElement = et.SubElement(buildingTypeElement, 'descripcion')
+    descripcionElement.text = str(buildingType.description)
   
     
     domainWeigthing = proyecto.domainWeigthing if not proyecto.customDomain else proyecto.customDomainWeigthings
@@ -118,13 +162,13 @@ if __name__ == '__main__':
         for service in domain.servicios.all():
             elementService = et.SubElement(services, 'Service',attrib={"id": str(service.id)})
             description = et.SubElement(elementService, "description")
-            description.text = service.description                     
+            description.text = str(service.description)                     
             
             functionalities = et.SubElement(elementService, 'Functionalities')  
             for functionality in service.funcionalidades.all():
                 elementFunctionality = et.SubElement(functionalities, 'Functionality',attrib={"id": str(functionality.id)})
                 description = et.SubElement(elementFunctionality, "description")
-                description.text = functionality.description         
+                description.text = str(functionality.description)         
                 energyEfficiencyImpact = et.SubElement(elementFunctionality, "energyEfficiencyImpact")
                 energyEfficiencyImpact.text = str(functionality.energyEfficiencyImpact)  
                 energyFlexibilityImpact = et.SubElement(elementFunctionality, "energyFlexibilityImpact")
