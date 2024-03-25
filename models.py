@@ -8,7 +8,7 @@ import copy
 from tabulate import tabulate
 
 import pandas as pd
-from miDjangoModel3.models import ChoiceField, Model, CharField, FloatField, BooleanField, ForeignKey, Manager
+from librerias.miDjangoModel3.models import ChoiceField, Model, CharField, FloatField, BooleanField, ForeignKey, Manager
 
 class User(Model):
     
@@ -100,7 +100,7 @@ class Country(Model):
         id = element.attrib['id']
         nuevaInstancia.id = int(id)
         nuevaInstancia.name = element.find('.//d:name', ns).text
-        nuevaInstancia.heatingMandatory = bool(element.find('.//d:heatingMandatory', ns).text)
+        nuevaInstancia.heatingMandatory = True if element.find('.//d:heatingMandatory', ns).text == 'True' else False
         nuevaInstancia.dhwMandatoryForResidential = bool(element.find('.//d:dhwMandatoryForResidential', ns).text)
         nuevaInstancia.dhwMandatoryForTertiary = bool(element.find('.//d:dhwMandatoryForTertiary', ns).text)
         nuevaInstancia.CoolingMandatory = bool(element.find('.//d:CoolingMandatory', ns).text)
@@ -1954,18 +1954,12 @@ class Proyecto(Model):
     # def puntuaciónTotal(self): # TODO: Falta de echar un vistazo porque las puntuaciones van ponderadas
     #     total = self.catalogo.impactMaxEnergyEfficiency + self.catalogo.impactMaxEnergyFlexibility + self.catalogo.impactMaxConvenience + self.catalogo.impactMaxComfort + self.catalogo.impactMaxHealthAccesibility + self.catalogo.impactMaxMaintenanceFaultPrediction + self.catalogo.impactMaxInformationOccupants
     #     return total 
-    @property
-    def iconosPresentes(self):
-        listaIconos = [] 
-        for dominio in self.catalogo.dominios.all():
-            if getattr(self, dominio.nameAttr):
-                listaIconos.append(dominio.icono)
-        return listaIconos
+
         
     @property
     def dominiosPresentes(self):
         listaDominios = [] 
-        for dominio in self.catalogo.dominios.all():
+        for dominio in self.catalogo.dominios:
             if getattr(self, dominio.nameAttr):
                 listaDominios.append(dominio)
         return listaDominios
