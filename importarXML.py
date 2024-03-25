@@ -16,6 +16,7 @@ if __name__ == '__main__':
         
     p = Proyecto.objects.first()
     print(p.catalogo)
+    print(p.dominiosPresentes)
 
                 
                 
