@@ -101,16 +101,16 @@ class Country(Model):
         nuevaInstancia.id = int(id)
         nuevaInstancia.name = element.find('.//d:name', ns).text
         nuevaInstancia.heatingMandatory = True if element.find('.//d:heatingMandatory', ns).text == 'True' else False
-        nuevaInstancia.dhwMandatoryForResidential = bool(element.find('.//d:dhwMandatoryForResidential', ns).text)
-        nuevaInstancia.dhwMandatoryForTertiary = bool(element.find('.//d:dhwMandatoryForTertiary', ns).text)
-        nuevaInstancia.CoolingMandatory = bool(element.find('.//d:CoolingMandatory', ns).text)
-        nuevaInstancia.VentilationMandatory = bool(element.find('.//d:VentilationMandatory', ns).text)
-        nuevaInstancia.LightingMandatory = bool(element.find('.//d:LightingMandatory', ns).text)
-        nuevaInstancia.DynamicBuildingEnvelopeMandatory = bool(element.find('.//d:DynamicBuildingEnvelopeMandatory', ns).text)
-        nuevaInstancia.ElectricityMandatory = bool(element.find('.//d:ElectricityMandatory', ns).text)
-        nuevaInstancia.ElectricVehicleChargingMandatory = bool(element.find('.//d:ElectricVehicleChargingMandatory', ns).text)
-        nuevaInstancia.MonitoringAndControlMandatory = bool(element.find('.//d:MonitoringAndControlMandatory', ns).text)
-        nuevaInstancia.allowUserDefineDomainWeightings = bool(element.find('.//d:allowUserDefineDomainWeightings', ns).text)
+        nuevaInstancia.dhwMandatoryForResidential = True if element.find('.//d:dhwMandatoryForResidential', ns).text == 'True' else False
+        nuevaInstancia.dhwMandatoryForTertiary = True if element.find('.//d:dhwMandatoryForTertiary', ns).text == 'True' else False
+        nuevaInstancia.CoolingMandatory = True if element.find('.//d:CoolingMandatory', ns).text == 'True' else False
+        nuevaInstancia.VentilationMandatory = True if element.find('.//d:VentilationMandatory', ns).text == 'True' else False
+        nuevaInstancia.LightingMandatory = True if element.find('.//d:LightingMandatory', ns).text == 'True' else False
+        nuevaInstancia.DynamicBuildingEnvelopeMandatory = True if element.find('.//d:DynamicBuildingEnvelopeMandatory', ns).text == 'True' else False
+        nuevaInstancia.ElectricityMandatory = True if element.find('.//d:ElectricityMandatory', ns).text == 'True' else False
+        nuevaInstancia.ElectricVehicleChargingMandatory = True if element.find('.//d:ElectricVehicleChargingMandatory', ns).text == 'True' else False
+        nuevaInstancia.MonitoringAndControlMandatory = True if element.find('.//d:MonitoringAndControlMandatory', ns).text == 'True' else False
+        nuevaInstancia.allowUserDefineDomainWeightings = True if element.find('.//d:allowUserDefineDomainWeightings', ns).text == 'True' else False
         nuevaInstancia.domainClassNames = element.find('.//d:domainClassNames', ns).text
         return nuevaInstancia
         
@@ -542,68 +542,9 @@ class Dominio(Model):
         id = int(domainElement.attrib['id'])
         nuevaInstancia.description = description.text
         nuevaInstancia.id = id
+        nuevaInstancia.nameAttr = domainElement.find('.//d:nameAttr', ns).text
         
         return nuevaInstancia  
-    
-    # def getForm(self, proyectoId = None):
-    #     '''
-    #     Clase Dominio
-    #     '''
-    #     from sri.forms import DominioForm
-    #     new_fields = {}
-    #     for servicio in self.servicios.all():
-    #         choices1 = [] 
-    #         cont = 0
-    #         for x in servicio.funcionalidades.all(): choices1.append((x.id, x.description))
-    #         listadoDatos = Dato.objects.filter(chosenFuncionality__service__id = servicio.id, proyect = proyectoId)
-    #         porcTotal = 0
-    #         # if len(listadoDatos) == 0:
-    #         new_fields['{0}--{1}--{2}'.format(servicio.id, 'Choice', cont) ] = forms.ChoiceField(label = servicio.description,
-    #                                                                                              help_text = servicio.description,
-    #                                                                                              choices = choices1)
-    #
-    #         new_fields['{0}--{1}--{2}'.format(servicio.id, 'Percentage', cont) ] = forms.FloatField(label = 'Percentage',
-    #                                                                                                 help_text = servicio.description,
-    #                                                                                                 initial = 100.0,
-    #                                                                                                 validators=[MinValueValidator(0.0),MaxValueValidator(100.0, u"Please introduce a lower value")])
-    #
-    #         new_fields['{0}--{1}--{2}'.format(servicio.id, 'Justificacion', cont) ] = forms.CharField(widget = CKEditorUploadingWidget(),
-    #                                                                                                   label = 'Justification',
-    #                                                                                                   help_text = servicio.description,
-    #                                                                                                   required = False)
-    #
-    #         new_fields['{0}--{1}--{2}'.format(servicio.id, 'Comentario', cont) ] = forms.CharField(widget = CKEditorUploadingWidget(),
-    #                                                                                                label = 'Comments',
-    #                                                                                                help_text = servicio.description,
-    #                                                                                                required = False)
-    #         # else:
-    #
-    #         for dato in listadoDatos:
-    #             porcTotal += dato.percentage
-    #             if porcTotal < 100.: 
-    #                 cont += 1
-    #
-    #                 new_fields['{0}--{1}--{2}'.format(servicio.id, 'Choice', cont) ] = forms.ChoiceField(label = servicio.description,
-    #                                                                                                      help_text = servicio.description,
-    #                                                                                                      choices = choices1)
-    #
-    #                 new_fields['{0}--{1}--{2}'.format(servicio.id, 'Percentage', cont) ] = forms.FloatField(label = 'Percentage',
-    #                                                                                                         help_text = servicio.description,
-    #                                                                                                         initial = 100 - porcTotal)
-    #
-    #                 new_fields['{0}--{1}--{2}'.format(servicio.id, 'Justificacion', cont) ] = forms.CharField(widget = CKEditorUploadingWidget(),
-    #                                                                                                           label = 'Justification',
-    #                                                                                                           help_text = servicio.description,
-    #                                                                                                           required = False)
-    #
-    #                 new_fields['{0}--{1}--{2}'.format(servicio.id, 'Comentario', cont) ] = forms.CharField(widget = CKEditorUploadingWidget(),
-    #                                                                                                        label = 'Comments',
-    #                                                                                                        help_text = servicio.description,
-    #                                                                                                        required = False)
-    #
-    #     DynamicDominionForm = type('DynamicDominionForm', (DominioForm,), new_fields)
-    #
-    #     return DynamicDominionForm
 
     
 class Servicio(Model):
@@ -1914,8 +1855,27 @@ class Proyecto(Model):
                         nuevaInstanciaFunctionality.service = nuevaInstanciaService
                         print("\t\t\t",funcionalitiesElement,funcionalitiesElement.attrib)
                         description = funcionalitiesElement.find('.//d:description',ns)
-                        print("\t\t\t\t",description.text)  
+                        print("\t\t\t\t",description.text)
+                        
+        assessableDomainsElement = projectElement.find('.//d:assessableDomains', ns)
+        nuevaInstancia.Heating = True if assessableDomainsElement.find('.//d:Heating', ns).text == 'True' else False
+        nuevaInstancia.Dhw = True if assessableDomainsElement.find('.//d:Dhw', ns).text == 'True' else False
+        nuevaInstancia.Cooling = True if assessableDomainsElement.find('.//d:Cooling', ns).text == 'True' else False
+        nuevaInstancia.Ventilation = True if assessableDomainsElement.find('.//d:Ventilation', ns).text == 'True' else False
+        nuevaInstancia.Lighting = True if assessableDomainsElement.find('.//d:Lighting', ns).text == 'True' else False
+        nuevaInstancia.DynamicBuildingEnvelope = True if assessableDomainsElement.find('.//d:DynamicBuildingEnvelope', ns).text == 'True' else False
+        nuevaInstancia.Electricity = True if assessableDomainsElement.find('.//d:Electricity', ns).text == 'True' else False
+        nuevaInstancia.ElectricVehicleCharging = True if assessableDomainsElement.find('.//d:ElectricVehicleCharging', ns).text == 'True' else False
+        nuevaInstancia.MonitoringAndControl = True if assessableDomainsElement.find('.//d:MonitoringAndControl', ns).text == 'True' else False
         
+        for datumElement in projectElement.findall('.//d:datum', ns):
+            nuevaInstanciaDato = Dato.creaDesdeXML(datumElement)
+            
+        resultsElement = projectElement.find('.//d:results', ns)
+        nuevaInstancia.totalSriScore = float(resultsElement.find('.//d:totalSriScore', ns).text)
+        nuevaInstancia.scoreKF1 = float(resultsElement.find('.//d:scoreKF1', ns).text)
+        nuevaInstancia.scoreKF2 = float(resultsElement.find('.//d:scoreKF2', ns).text)
+        nuevaInstancia.scoreKF3 = float(resultsElement.find('.//d:scoreKF3', ns).text)
                
         return nuevaInstancia
     
@@ -2781,5 +2741,19 @@ class Dato(Model):
         else:
             peso = 0.0
         return peso
-                     
+    
+    @classmethod
+    def creaDesdeXML(cls, dataElement):
+        ns = {'d':"http://www.gbxml.org/schema"}
+        nuevaInstancia = cls()
+        nuevaInstancia.id = int(dataElement.attrib['id'])
+        nuevaInstancia.chosenFuncionality = Funcionalidad.objects.get(id = int(dataElement.find('.//d:chosenFuncionality', ns).text))
+        nuevaInstancia.comments =  dataElement.find('.//d:comments', ns).text if dataElement.find('.//d:comments', ns).text else ''
+        nuevaInstancia.justification =  dataElement.find('.//d:justification', ns).text if dataElement.find('.//d:justification', ns).text else ''
+        nuevaInstancia.percentage = float(dataElement.find('.//d:percentage', ns).text)
+        
+        return nuevaInstancia
+        
+        
+        
     

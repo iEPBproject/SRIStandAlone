@@ -126,6 +126,7 @@
                   <Domains>
                      <Domain id="14">
                         <description>Heating</description>
+                        <nameAttr>Heating</nameAttr>
                         <Services>
                            <Service id="80">
                               <description>Heat emission control</description>
@@ -793,6 +794,7 @@
                      </Domain>
                      <Domain id="15">
                         <description>DHW</description>
+                        <nameAttr>Dhw</nameAttr>
                         <Services>
                            <Service id="91">
                               <description>Control of DHW storage charging (with direct electric heating or integrated electric heat pump)</description>
@@ -1135,6 +1137,7 @@
                      </Domain>
                      <Domain id="16">
                         <description>Cooling</description>
+                        <nameAttr>Cooling</nameAttr>
                         <Services>
                            <Service id="97">
                               <description>Cooling emission control</description>
@@ -1790,6 +1793,7 @@
                      </Domain>
                      <Domain id="17">
                         <description>Ventilation</description>
+                        <nameAttr>Ventilation</nameAttr>
                         <Services>
                            <Service id="107">
                               <description>Supply air flow control at the room level</description>
@@ -2173,6 +2177,7 @@
                      </Domain>
                      <Domain id="18">
                         <description>Lighting</description>
+                        <nameAttr>Lighting</nameAttr>
                         <Services>
                            <Service id="113">
                               <description>Occupancy control for indoor lighting</description>
@@ -2296,6 +2301,7 @@
                      </Domain>
                      <Domain id="19">
                         <description>Dynamic Envelope</description>
+                        <nameAttr>DynamicBuildingEnvelope</nameAttr>
                         <Services>
                            <Service id="115">
                               <description>Window solar shading control</description>
@@ -2508,6 +2514,7 @@
                      </Domain>
                      <Domain id="20">
                         <description>Electricity</description>
+                        <nameAttr>Electricity</nameAttr>
                         <Services>
                            <Service id="118">
                               <description>Reporting information regarding local electricity generation</description>
@@ -2992,6 +2999,7 @@
                      </Domain>
                      <Domain id="21">
                         <description>eVehicle</description>
+                        <nameAttr>ElectricVehicleCharging</nameAttr>
                         <Services>
                            <Service id="125">
                               <description>EV Charging Capacity</description>
@@ -3180,6 +3188,7 @@
                      </Domain>
                      <Domain id="22">
                         <description>M&amp;C</description>
+                        <nameAttr>MonitoringAndControl</nameAttr>
                         <Services>
                            <Service id="128">
                               <description>Run time management of HVAc systems</description>

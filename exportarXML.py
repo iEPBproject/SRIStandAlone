@@ -157,7 +157,8 @@ if __name__ == '__main__':
         elementDomain = et.SubElement(domains, 'Domain',attrib={"id": str(domain.id)})
         description = et.SubElement(elementDomain, "description")
         description.text = domain.description    
-        
+        nameAttribute = et.SubElement(elementDomain, 'nameAttr')
+        nameAttribute.text = domain.nameAttr
         services = et.SubElement(elementDomain, 'Services')
         for service in domain.servicios.all():
             elementService = et.SubElement(services, 'Service',attrib={"id": str(service.id)})
