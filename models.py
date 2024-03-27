@@ -600,7 +600,8 @@ class Servicio(Model):
         Clase Servicio
         Devuelve los maximos del impacto
         '''
-        impactoMaximo = max([getattr(funcionalidad, '{}Impact'.format(impacto)) for funcionalidad in self.funcionalidades.all()])
+        # impactoMaximo = max([getattr(funcionalidad, '{}Impact'.format(impacto)) for funcionalidad in self.funcionalidades.all()])
+        impactoMaximo = max([getattr(funcionalidad, '{}Impact'.format(impacto)) for funcionalidad in self.funcionalidades])
         return impactoMaximo
     
 #     def getImpactMaxEnergyEfficiency(self, proyecto = None):
@@ -1870,6 +1871,7 @@ class Proyecto(Model):
         
         for datumElement in projectElement.findall('.//d:datum', ns):
             nuevaInstanciaDato = Dato.creaDesdeXML(datumElement)
+            nuevaInstanciaDato.proyect = nuevaInstancia
             
         resultsElement = projectElement.find('.//d:results', ns)
         nuevaInstancia.totalSriScore = float(resultsElement.find('.//d:totalSriScore', ns).text)
@@ -1935,7 +1937,8 @@ class Proyecto(Model):
     @property
     def listadoNombreDominios(self):
         listadoNombreDominios = []
-        for dominio in self.catalogo.dominios.all():
+        # for dominio in self.catalogo.dominios.all():
+        for dominio in self.catalogo.dominios:
             if getattr(self, dominio.nameAttr):
                 listadoNombreDominios.append(dominio.description)
         return listadoNombreDominios
@@ -1943,7 +1946,8 @@ class Proyecto(Model):
     @property
     def listadoNombreDominiosMostrar(self):
         listadoNombreDominios = []
-        for dominio in self.catalogo.dominios.all():
+        # for dominio in self.catalogo.dominios.all():
+        for dominio in self.catalogo.dominios:
             if getattr(self, dominio.nameAttr):
                 listadoNombreDominios.append(dominio.description)
         return listadoNombreDominios
@@ -2406,19 +2410,19 @@ class Proyecto(Model):
             tabla.append(fila)
         return tabla
 
-    def tablaImpactosPD(self, tablaBruta):
-        ''' 
-        Clase Proyecto
-        Dominios filas
-        '''
-        # impactos = set([x[0] for x in tablaBruta])
-        
-        tabla = self.tablaImpactos(tablaBruta)
-            
-        df = pd.DataFrame(tabla, columns = self.listadoNombreImpactosMostrar, index = self.listadoNombreDominiosMostrar)
-    
-        print(tabulate(df, headers = 'keys', tablefmt = 'psql'))  
-        return df    
+    # def tablaImpactosPD(self, tablaBruta):
+    #     ''' 
+    #     Clase Proyecto
+    #     Dominios filas
+    #     '''
+    #     # impactos = set([x[0] for x in tablaBruta])
+    #
+    #     tabla = self.tablaImpactos(tablaBruta)
+    #
+    #     df = pd.DataFrame(tabla, columns = self.listadoNombreImpactosMostrar, index = self.listadoNombreDominiosMostrar)
+    #
+    #     print(tabulate(df, headers = 'keys', tablefmt = 'psql'))  
+    #     return df    
     
     def getClase(self, totalImpactScore):
         if self.country:
@@ -2471,16 +2475,16 @@ class Proyecto(Model):
             tabla.append(fila)
         return tabla
         
-    def tablaImpactosMaximosPD(self, tablaBruta):
-        ''' 
-        Clase Proyecto
-        Dominios filas
-        '''
-        tabla = self.tablaImpactosMaximos(tablaBruta)
-        df = pd.DataFrame(tabla, columns = self.listadoNombreImpactosMostrar, index = self.listadoNombreDominiosMostrar)
-    
-        print(tabulate(df, headers = 'keys', tablefmt = 'psql'))
-        return df
+    # def tablaImpactosMaximosPD(self, tablaBruta):
+    #     ''' 
+    #     Clase Proyecto
+    #     Dominios filas
+    #     '''
+    #     tabla = self.tablaImpactosMaximos(tablaBruta)
+    #     df = pd.DataFrame(tabla, columns = self.listadoNombreImpactosMostrar, index = self.listadoNombreDominiosMostrar)
+    #
+    #     print(tabulate(df, headers = 'keys', tablefmt = 'psql'))
+    #     return df
     
     
     def tablaScoresDetallados(self, tablaBruta):
@@ -2514,43 +2518,43 @@ class Proyecto(Model):
         #
         #     impactScores.append("{:0.0f}".format(puntuacionPonderadaPorDominio / puntuacionMaximaPonderadaPorDominio * 100.0) if puntuacionMaximaPonderadaPorDominio else '-')                   
         
-    def tablaScoresDetalladosPD(self, tablaBruta):
-        ''' 
-        Clase Proyecto
-        Dominios filas
-        '''        
-        print("Detailed scores")
-        tabla = self.tablaScoresDetallados(tablaBruta)    
-        tablaFormateada = []
-        for fila in tabla:
-            filaFormateada = []
-            sumaPonderada = 0.0
-            sumaPesos = 0.0
-            for elemento,peso in zip(fila,self.impactWeightings) :
-                filaFormateada.append("{:0.0f}%".format(elemento) if elemento != None else '-')
-                if elemento != None:
-                    sumaPonderada += elemento * peso
-                    sumaPesos += peso
-            impactoPorDominio = sumaPonderada / sumaPesos if sumaPesos else 0.0
-            filaFormateada.append("{:0.0f}%".format(impactoPorDominio) if impactoPorDominio else '-')
-                
-                    
-            tablaFormateada.append(filaFormateada)
-        
-        df = pd.DataFrame(tablaFormateada, columns = self.listadoNombreImpactosMostrar + ['Domain SRI'], index = self.listadoNombreDominiosMostrar)
-        print(tabulate(df, headers = 'keys', tablefmt = 'psql'))
-        return df
+    # def tablaScoresDetalladosPD(self, tablaBruta):
+    #     ''' 
+    #     Clase Proyecto
+    #     Dominios filas
+    #     '''        
+    #     print("Detailed scores")
+    #     tabla = self.tablaScoresDetallados(tablaBruta)    
+    #     tablaFormateada = []
+    #     for fila in tabla:
+    #         filaFormateada = []
+    #         sumaPonderada = 0.0
+    #         sumaPesos = 0.0
+    #         for elemento,peso in zip(fila,self.impactWeightings) :
+    #             filaFormateada.append("{:0.0f}%".format(elemento) if elemento != None else '-')
+    #             if elemento != None:
+    #                 sumaPonderada += elemento * peso
+    #                 sumaPesos += peso
+    #         impactoPorDominio = sumaPonderada / sumaPesos if sumaPesos else 0.0
+    #         filaFormateada.append("{:0.0f}%".format(impactoPorDominio) if impactoPorDominio else '-')
+    #
+    #
+    #         tablaFormateada.append(filaFormateada)
+    #
+    #     df = pd.DataFrame(tablaFormateada, columns = self.listadoNombreImpactosMostrar + ['Domain SRI'], index = self.listadoNombreDominiosMostrar)
+    #     print(tabulate(df, headers = 'keys', tablefmt = 'psql'))
+    #     return df
         
      
-    def repAuxialiaryTable(self):
-            
-        df = pd.DataFrame([self.getListaPuntuacionPonderada(self.calculoMatrizImpacto()),
-                            self.getListaPuntuacionPonderadaMaxima(self.calculoMatrizImpacto()),
-                            self.impactWeightings], columns = self.listadoNombreImpactosMostrar, index = ['Impact scores weighted by domain', 'Maximum impact scores weighted by domain', 'Impact Weightings'])
-        
-        print("Auxiliary table with scores weighted by domain")    
-        print(tabulate(df, headers = 'keys', tablefmt = 'psql'))
-        return df
+    # def repAuxialiaryTable(self):
+    #
+    #     df = pd.DataFrame([self.getListaPuntuacionPonderada(self.calculoMatrizImpacto()),
+    #                         self.getListaPuntuacionPonderadaMaxima(self.calculoMatrizImpacto()),
+    #                         self.impactWeightings], columns = self.listadoNombreImpactosMostrar, index = ['Impact scores weighted by domain', 'Maximum impact scores weighted by domain', 'Impact Weightings'])
+    #
+    #     print("Auxiliary table with scores weighted by domain")    
+    #     print(tabulate(df, headers = 'keys', tablefmt = 'psql'))
+    #     return df
 
     def listaAggregatedScores(self):
         
@@ -2571,7 +2575,8 @@ class Proyecto(Model):
          
         '''
     
-        listadoDatos = self.datos.all()
+        # listadoDatos = self.datos.all()
+        listadoDatos = self.datos
         evaluacionImpactos = {}
         evaluacionImpactosMaximos = {}
         evaluacionPesos = {}
@@ -2652,20 +2657,21 @@ class Proyecto(Model):
         matrizImpactos = self.calculoMatrizImpacto()
         calculado = False
         if matrizImpactos:
-            tablaImpactosResultado = self.tablaImpactosPD(matrizImpactos)
-            tablaImpactoMaximosResultado = self.tablaImpactosMaximosPD(matrizImpactos)
-            tablaScores = self.tablaScoresDetalladosPD(matrizImpactos)
+            # tablaImpactosResultado = self.tablaImpactosPD(matrizImpactos)
+            # tablaImpactoMaximosResultado = self.tablaImpactosMaximosPD(matrizImpactos)
+            # tablaScores = self.tablaScoresDetalladosPD(matrizImpactos)
 
-            listaImpactScores = self.representacionTablaImpactScore()
+            # listaImpactScores = self.representacionTablaImpactScore()
             totalSri = self.getTotalSRI()
-            tablaAuxiliary = self.repAuxialiaryTable()
+            # tablaAuxiliary = self.repAuxialiaryTable()
             listaAggregatedScores = self.listaAggregatedScores()
             letraCalificacion = self.getClase(totalSri)
             resultadoResidential = self.getNotaResidentialAndNonResidential(matrizImpactos)
             dicc15232Residential = self.getDicc15232Residential(matrizImpactos)
             dicc15232NonResidential = self.getDicc15232NonResidential(matrizImpactos)
             calculado = True       
-            return [calculado, tablaImpactosResultado, tablaImpactoMaximosResultado, tablaScores, tablaAuxiliary, listaImpactScores, listaAggregatedScores, totalSri, letraCalificacion, resultadoResidential, dicc15232Residential, dicc15232NonResidential]
+            # return [calculado, tablaImpactosResultado, tablaImpactoMaximosResultado, tablaScores, tablaAuxiliary, listaImpactScores, listaAggregatedScores, totalSri, letraCalificacion, resultadoResidential, dicc15232Residential, dicc15232NonResidential]
+            return [calculado, listaAggregatedScores, totalSri, letraCalificacion, resultadoResidential, dicc15232Residential, dicc15232NonResidential]
         else:
             return [calculado, ]
 
