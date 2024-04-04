@@ -6,6 +6,7 @@ Created on 2 abr 2024
 import sys, getopt
 from exportarXML import exportarSri2Market
 from importarXML import importarSriStandAlone
+
 def main(argv):
     inputfile = ''
     outputfile = ''
@@ -21,9 +22,11 @@ def main(argv):
         elif opt in ("-i", "--ifile"):
             inputfile = arg
             importarSriStandAlone()
+            print ('El archivo XML ha sido importado correctamente')
         elif opt in ("-o", "--ofile"):
             outputfile = arg
             exportarSri2Market()
+            print ('El archivo XML ha sido exportado correctamente')
     print ('Input file is {}'.format(inputfile))
     print ('Output file is {}'.format(outputfile))
     
