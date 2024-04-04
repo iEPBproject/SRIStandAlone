@@ -36,7 +36,7 @@ from sri.models import *
 
 
 def getRoot():
-    root=et.Element('gbXML',attrib={'xmlns':"http://www.gbxml.org/schema",
+    root=et.Element('iEPBxml',attrib={'xmlns':"http://www.gbxml.org/schema",
                                                       'xmlns:xhtml':"http://www.w3.org/1999/xhtml",
                                                       'xmlns:xsi':"http://www.w3.org/2001/XMLSchema-instance",
                                                       'xmlns:xsd':"http://www.w3.org/2001/XMLSchema",
@@ -50,15 +50,15 @@ def getRoot():
                                                       'SurfaceReferenceLocation':"Centerline"})  
     return root
     
-
-
-if __name__ == '__main__':
+def exportarSri2Market():
     root = getRoot()
-    iEPBxml=et.SubElement(root,'iEPBxml',attrib={"version": "0.1"})  
-    sri2MarketElement=et.SubElement(iEPBxml,'SRI2MARKET',attrib={"version": "0.1"})
+    paisElement=et.SubElement(root,'Spain')
+    sriElement = et.SubElement(paisElement, 'SRI')  
+    sri2MarketElement=et.SubElement(sriElement,'SRI2MARKET',attrib={"version": "0.1"})
     projectsElement = et.SubElement(sri2MarketElement, 'Projects')
       
-    proyecto = Proyecto.objects.first()
+    # proyecto = Proyecto.objects.first()
+    proyecto = Proyecto.objects.get(id = 427)
     projectElement = et.SubElement(projectsElement, 'Project',attrib={"id": str(proyecto.id)})
     name = et.SubElement(projectElement, "name")
     name.text = str(proyecto.name)
@@ -248,3 +248,6 @@ if __name__ == '__main__':
         f.write(xmlstr) 
         
     print("Fin")
+
+if __name__ == '__main__':
+    exportarSri2Market()
