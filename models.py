@@ -5,9 +5,9 @@ import copy
 # from django import forms
 # from django.contrib.auth.models import User
 # from django.core.validators import MaxValueValidator, MinValueValidator
-from tabulate import tabulate
+# from tabulate import tabulate
 
-import pandas as pd
+# import pandas as pd
 from librerias.miDjangoModel3.models import ChoiceField, Model, CharField, FloatField, BooleanField, ForeignKey, Manager
 
 class User(Model):
@@ -36,12 +36,12 @@ class BuildingType(Model):
                             max_length = 100,
                             verbose_name = 'Description')
                             
-    def __str__(self):
-        ''' 
-        Clase BuildindgType
-        '''
-        
-        return f"{self.description}"
+    # def __str__(self):
+    #     ''' 
+    #     Clase BuildindgType
+    #     '''
+    #
+    #     return f"{self.description}"
         
     class Meta:
         verbose_name = 'Buiding Type'
@@ -82,12 +82,12 @@ class Country(Model):
     
     allowUserDefineDomainWeightings = BooleanField(default = False, verbose_name = "Allow user defined domain weightings", )
 
-    def __str__(self):
-        ''' 
-        Clase Country
-        
-        '''
-        return 'Id: {} - {} '.format(self.id, self.name)
+    # def __str__(self):
+    #     ''' 
+    #     Clase Country
+    #
+    #     '''
+    #     return 'Id: {} - {} '.format(self.id, self.name)
 
     class Meta:
         verbose_name = 'Country'
@@ -136,12 +136,12 @@ class Catalogo(Model):
         verbose_name_plural = '1.Catalogue'
         ordering = ('id',)
 
-    def __str__(self):
-        ''' 
-        Clase Catalogo
-        
-        '''
-        return str(self.description)
+    # def __str__(self):
+    #     ''' 
+    #     Clase Catalogo
+    #
+    #     '''
+    #     return str(self.description)
 
     @property
     def tieneDatos(self):
@@ -312,7 +312,6 @@ class Catalogo(Model):
     def creaDesdeXML(cls,catalogoElement):
         ns = {'d':"http://www.gbxml.org/schema"}
         nuevaInstancia = cls()
-        print("\t",catalogoElement,catalogoElement.attrib)
         description = catalogoElement.find('.//d:description',ns)
         id = int(catalogoElement.attrib['id'])
         nuevaInstancia.description = description.text
@@ -332,12 +331,12 @@ class Climate(Model):
                          verbose_name = 'Countries',
                          related_name = 'climates',)
 
-    def __str__(self):
-        ''' 
-        Clase Climate
-        
-        '''
-        return 'Id: {} - {} '.format(self.id, self.description)
+    # def __str__(self):
+    #     ''' 
+    #     Clase Climate
+    #
+    #     '''
+    #     return 'Id: {} - {} '.format(self.id, self.description)
 
     class Meta:
         verbose_name = 'Climate'
@@ -365,12 +364,12 @@ class Dominio(Model):
         verbose_name_plural = '2.Domain'
         ordering = ('id',)
 
-    def __str__(self):
-        ''' 
-        Clase Dominio
-        
-        '''
-        return f"{self.description}"
+    # def __str__(self):
+    #     ''' 
+    #     Clase Dominio
+    #
+    #     '''
+    #     return f"{self.description}"
     
     def duplicar(self, padre = None):
         ''' 
@@ -537,7 +536,6 @@ class Dominio(Model):
     def creaDesdeXML(cls,domainElement):
         ns = {'d':"http://www.gbxml.org/schema"}
         nuevaInstancia = cls()
-        print("\t",domainElement,domainElement.attrib)
         description = domainElement.find('.//d:description',ns)
         id = int(domainElement.attrib['id'])
         nuevaInstancia.description = description.text
@@ -568,12 +566,12 @@ class Servicio(Model):
         verbose_name_plural = '3.Service'
         ordering = ('id',)
 
-    def __str__(self):
-        ''' 
-        Clase Servicio
-        
-        '''
-        return str(self.description)
+    # def __str__(self):
+    #     ''' 
+    #     Clase Servicio
+    #
+    #     '''
+    #     return str(self.description)
     
     def duplicar(self, padre = None):
         ''' 
@@ -827,7 +825,6 @@ class Servicio(Model):
     def creaDesdeXML(cls,serviceElement):
         ns = {'d':"http://www.gbxml.org/schema"}
         nuevaInstancia = cls()
-        print("\t",serviceElement,serviceElement.attrib)
         description = serviceElement.find('.//d:description',ns)
         id = int(serviceElement.attrib['id'])
         nuevaInstancia.description = description.text
@@ -886,12 +883,12 @@ class Funcionalidad(Model):
         verbose_name_plural = '4.Functionality'
         ordering = ('id',)
 
-    def __str__(self):
-        ''' 
-        Clase Funcionalidad
-        
-        '''
-        return 'Id: {} - {} '.format(self.id, self.description)
+    # def __str__(self):
+    #     ''' 
+    #     Clase Funcionalidad
+    #
+    #     '''
+    #     return 'Id: {} - {} '.format(self.id, self.description)
     
     def duplicar(self, padre = None):
         ''' 
@@ -914,7 +911,6 @@ class Funcionalidad(Model):
     def creaDesdeXML(cls,funcionalidadElement):
         ns = {'d':"http://www.gbxml.org/schema"}
         nuevaInstancia = cls()
-        print("\t",funcionalidadElement,funcionalidadElement.attrib)
         description = funcionalidadElement.find('.//d:description',ns)
         id = int(funcionalidadElement.attrib['id'])
         nuevaInstancia.description = description.text
@@ -990,12 +986,12 @@ class ImpactWeightings (Model):
         self.save()
         return self
 
-    def __str__(self):
-        ''' 
-        Clase ImpactWeightings
-        
-        '''
-        return 'Id: {}'.format(self.id)
+    # def __str__(self):
+    #     ''' 
+    #     Clase ImpactWeightings
+    #
+    #     '''
+    #     return 'Id: {}'.format(self.id)
         
     @classmethod
     def creaDesdeXML(cls, impactWeightingElement):
@@ -1078,11 +1074,11 @@ class CustomImpactWeightings(Model):
         self.save()
         return self
 
-    def __str__(self):
-        ''' 
-        Clase CustomImpactWeightings
-        '''
-        return 'Id: {}'.format(self.id)
+    # def __str__(self):
+    #     ''' 
+    #     Clase CustomImpactWeightings
+    #     '''
+    #     return 'Id: {}'.format(self.id)
 
 class DomainWeigthing(Model):
     
@@ -1298,12 +1294,12 @@ class DomainWeigthing(Model):
                                                           
     
     
-    def __str__(self):
-        ''' 
-        Clase DomainWeigthing
-        
-        '''
-        return 'Id: {} - {} '.format(self.id, self.name)
+    # def __str__(self):
+    #     ''' 
+    #     Clase DomainWeigthing
+    #
+    #     '''
+    #     return 'Id: {} - {} '.format(self.id, self.name)
     
     class Meta:
         verbose_name = 'Domain Weighting'
@@ -1326,7 +1322,6 @@ class DomainWeigthing(Model):
     def creaDesdeXML(cls,domainWeigthingElement):
         ns = {'d':"http://www.gbxml.org/schema"}
         nuevaInstancia = cls()
-        print("\t",domainWeigthingElement,domainWeigthingElement.attrib)
         description = domainWeigthingElement.find('.//d:name',ns)
         id = int(domainWeigthingElement.attrib['id'])
         nuevaInstancia.name = description.text
@@ -1341,7 +1336,6 @@ class DomainWeigthing(Model):
         nuevaInstancia.healthAccesibilityHeating = float(instanciaHeating.find('.//d:healthAccesibility', ns).text)
         nuevaInstancia.maintenanceFaultPredictionHeating = float(instanciaHeating.find('.//d:maintenanceFaultPrediction', ns).text)
         nuevaInstancia.informationOccupantsHeating = float(instanciaHeating.find('.//d:informationOccupants', ns).text)        
-        print(instanciaHeating)
         
         # Para los atributos de Heating en el XML
         instanciaCooling = domainWeigthingElement.find('.//d:Cooling',ns)
@@ -1352,7 +1346,7 @@ class DomainWeigthing(Model):
         nuevaInstancia.healthAccesibilityCooling = float(instanciaCooling.find('.//d:healthAccesibility', ns).text)
         nuevaInstancia.maintenanceFaultPredictionCooling = float(instanciaCooling.find('.//d:maintenanceFaultPrediction', ns).text)
         nuevaInstancia.informationOccupantsCooling = float(instanciaCooling.find('.//d:informationOccupants', ns).text)        
-        print(instanciaCooling)
+        
         
         # Para los atributos de Heating en el XML
         instanciaDhw = domainWeigthingElement.find('.//d:Dhw',ns)
@@ -1363,7 +1357,7 @@ class DomainWeigthing(Model):
         nuevaInstancia.healthAccesibilityDhw = float(instanciaDhw.find('.//d:healthAccesibility', ns).text)
         nuevaInstancia.maintenanceFaultPredictionDhw = float(instanciaDhw.find('.//d:maintenanceFaultPrediction', ns).text)
         nuevaInstancia.informationOccupantsDhw = float(instanciaDhw.find('.//d:informationOccupants', ns).text)        
-        print(instanciaDhw)
+        
         
         # Para los atributos de Heating en el XML
         instanciaVentilation = domainWeigthingElement.find('.//d:Ventilation',ns)
@@ -1374,7 +1368,7 @@ class DomainWeigthing(Model):
         nuevaInstancia.healthAccesibilityVentilation = float(instanciaVentilation.find('.//d:healthAccesibility', ns).text)
         nuevaInstancia.maintenanceFaultPredictionVentilation = float(instanciaVentilation.find('.//d:maintenanceFaultPrediction', ns).text)
         nuevaInstancia.informationOccupantsVentilation = float(instanciaVentilation.find('.//d:informationOccupants', ns).text)        
-        print(instanciaVentilation)
+        
         
         # Para los atributos de Heating en el XML
         instanciaLighting = domainWeigthingElement.find('.//d:Lighting',ns)
@@ -1385,7 +1379,7 @@ class DomainWeigthing(Model):
         nuevaInstancia.healthAccesibilityLighting = float(instanciaLighting.find('.//d:healthAccesibility', ns).text)
         nuevaInstancia.maintenanceFaultPredictionLighting = float(instanciaLighting.find('.//d:maintenanceFaultPrediction', ns).text)
         nuevaInstancia.informationOccupantsLighting = float(instanciaLighting.find('.//d:informationOccupants', ns).text)        
-        print(instanciaLighting)
+        
         
         # Para los atributos de Heating en el XML
         instanciaElectricity = domainWeigthingElement.find('.//d:Electricity',ns)
@@ -1396,7 +1390,7 @@ class DomainWeigthing(Model):
         nuevaInstancia.healthAccesibilityElectricity = float(instanciaElectricity.find('.//d:healthAccesibility', ns).text)
         nuevaInstancia.maintenanceFaultPredictionElectricity = float(instanciaElectricity.find('.//d:maintenanceFaultPrediction', ns).text)
         nuevaInstancia.informationOccupantsElectricity = float(instanciaElectricity.find('.//d:informationOccupants', ns).text)        
-        print(instanciaElectricity)
+        
         
         # Para los atributos de Heating en el XML
         instanciaDynamicBuildingEnvelope = domainWeigthingElement.find('.//d:DynamicBuildingEnvelope',ns)
@@ -1407,7 +1401,7 @@ class DomainWeigthing(Model):
         nuevaInstancia.healthAccesibilityDynamicBuildingEnvelope = float(instanciaDynamicBuildingEnvelope.find('.//d:healthAccesibility', ns).text)
         nuevaInstancia.maintenanceFaultPredictionDynamicBuildingEnvelope = float(instanciaDynamicBuildingEnvelope.find('.//d:maintenanceFaultPrediction', ns).text)
         nuevaInstancia.informationOccupantsDynamicBuildingEnvelope = float(instanciaDynamicBuildingEnvelope.find('.//d:informationOccupants', ns).text)        
-        print(instanciaDynamicBuildingEnvelope)
+        
         
         # Para los atributos de Heating en el XML
         instanciaElectricVehicleCharging = domainWeigthingElement.find('.//d:ElectricVehicleCharging',ns)
@@ -1418,7 +1412,7 @@ class DomainWeigthing(Model):
         nuevaInstancia.healthAccesibilityElectricVehicleCharging = float(instanciaElectricVehicleCharging.find('.//d:healthAccesibility', ns).text)
         nuevaInstancia.maintenanceFaultPredictionElectricVehicleCharging = float(instanciaElectricVehicleCharging.find('.//d:maintenanceFaultPrediction', ns).text)
         nuevaInstancia.informationOccupantsElectricVehicleCharging = float(instanciaElectricVehicleCharging.find('.//d:informationOccupants', ns).text)        
-        print(instanciaElectricVehicleCharging)
+        
         
         # Para los atributos de Heating en el XML
         instanciaMonitoringAndControl = domainWeigthingElement.find('.//d:MonitoringAndControl',ns)
@@ -1429,7 +1423,7 @@ class DomainWeigthing(Model):
         nuevaInstancia.healthAccesibilityMonitoringAndControl = float(instanciaMonitoringAndControl.find('.//d:healthAccesibility', ns).text)
         nuevaInstancia.maintenanceFaultPredictionMonitoringAndControl = float(instanciaMonitoringAndControl.find('.//d:maintenanceFaultPrediction', ns).text)
         nuevaInstancia.informationOccupantsMonitoringAndControl = float(instanciaMonitoringAndControl.find('.//d:informationOccupants', ns).text)        
-        print(instanciaMonitoringAndControl)
+        
         
         instanciaImpactWeighting = ImpactWeightings.creaDesdeXML(domainWeigthingElement.find('.//d:ImpactWeighting', ns))
         nuevaInstancia.impactWeighting = instanciaImpactWeighting
@@ -1642,12 +1636,12 @@ class CustomDomainWeighting(Model):
         verbose_name_plural = '12. Particular Domain Weighting'
         ordering = ('id',)
         
-    def __str__(self):
-        ''' 
-        Clase CustomDomainWeigthing
-        
-        '''
-        return 'Id: {} - {} '.format(self.id, self.name)
+    # def __str__(self):
+    #     ''' 
+    #     Clase CustomDomainWeigthing
+    #
+    #     '''
+    #     return 'Id: {} - {} '.format(self.id, self.name)
         
     def duplicar(self, padre = None):
         ''' 
@@ -1824,7 +1818,6 @@ class Proyecto(Model):
         nameElement = projectElement.find('d:name',ns)
         nuevaInstancia.name = nameElement.text         
         
-        print(projectElement,projectElement.attrib)
         nuevaInstancia.country = Country.creaDesdeXML(projectElement.find('.//d:country', ns))
         nuevaInstancia.user = User.creaDesdeXML(projectElement)
         nuevaInstancia.buildingType = BuildingType.creaDesdeXML(projectElement.find('.//d:BuildingType', ns))
@@ -1834,29 +1827,21 @@ class Proyecto(Model):
             
         
         for catalogueElement in projectElement.findall('.//d:Catalogue',ns):
-            print("\t",catalogueElement,catalogueElement.attrib)
             description = catalogueElement.find('.//d:description',ns)
             nuevaInstancia.catalogo = Catalogo.creaDesdeXML(catalogueElement)
             nuevaInstancia.catalogo.country = nuevaInstancia.country
-            print("\t\t",description.text)
             for domainElement in catalogueElement.findall('.//d:Domain',ns):
                 nuevaInstanciaDominio = Dominio.creaDesdeXML(domainElement)
                 nuevaInstanciaDominio.catalogo = nuevaInstancia.catalogo
-                print("\t\t\t",domainElement,domainElement.attrib)
                 description = domainElement.find('.//d:description',ns)
-                print("\t\t\t\t",description.text)
                 for serviceElement in domainElement.findall('.//d:Service',ns):
                     nuevaInstanciaService = Servicio.creaDesdeXML(serviceElement)
                     nuevaInstanciaService.dominio = nuevaInstanciaDominio
-                    print("\t\t\t",serviceElement,serviceElement.attrib)
                     description = serviceElement.find('.//d:description',ns)
-                    print("\t\t\t\t",description.text)
                     for funcionalitiesElement in serviceElement.findall('.//d:Functionality', ns):
                         nuevaInstanciaFunctionality = Funcionalidad.creaDesdeXML(funcionalitiesElement)
                         nuevaInstanciaFunctionality.service = nuevaInstanciaService
-                        print("\t\t\t",funcionalitiesElement,funcionalitiesElement.attrib)
                         description = funcionalitiesElement.find('.//d:description',ns)
-                        print("\t\t\t\t",description.text)
                         
         assessableDomainsElement = projectElement.find('.//d:assessableDomains', ns)
         nuevaInstancia.Heating = True if assessableDomainsElement.find('.//d:Heating', ns).text == 'True' else False
@@ -1886,12 +1871,12 @@ class Proyecto(Model):
         verbose_name_plural = '10. Project'
         ordering = ('id',)
     
-    def __str__(self):
-        ''' 
-        Clase Proyecto
-        
-        '''
-        return 'Project:' + '{}'.format(self.id) + ' - {}'.format(self.name)
+    # def __str__(self):
+    #     ''' 
+    #     Clase Proyecto
+    #
+    #     '''
+    #     return 'Project:' + '{}'.format(self.id) + ' - {}'.format(self.name)
     
     def duplicar(self):
         ''' 
@@ -2706,12 +2691,12 @@ class Dato(Model):
         verbose_name_plural = '5.Data'
         ordering = ('id',)
         
-    def __str__(self):
-        ''' 
-        Clase Dato
-        
-        '''
-        return '{2}: {0}, {3}: {1}'.format(self.proyect.id, self.chosenFuncionality.id, 'Project', 'Functionality')
+    # def __str__(self):
+    #     ''' 
+    #     Clase Dato
+    #
+    #     '''
+    #     return '{2}: {0}, {3}: {1}'.format(self.proyect.id, self.chosenFuncionality.id, 'Project', 'Functionality')
         
     def duplicar(self, padre = None):
         ''' 

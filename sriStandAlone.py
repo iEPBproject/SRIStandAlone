@@ -4,7 +4,6 @@ Created on 2 abr 2024
 @author: efinovatic
 '''
 import sys, getopt
-from exportarXML import exportarSri2Market
 from importarXML import importarSriStandAlone
 
 def main(argv):
@@ -25,7 +24,6 @@ def main(argv):
             print ('El archivo XML ha sido importado correctamente')
         elif opt in ("-o", "--ofile"):
             outputfile = arg
-            exportarSri2Market()
             print ('El archivo XML ha sido exportado correctamente')
     print ('Input file is {}'.format(inputfile))
     print ('Output file is {}'.format(outputfile))
