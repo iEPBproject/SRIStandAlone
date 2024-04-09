@@ -5,9 +5,7 @@ import copy
 # from django import forms
 # from django.contrib.auth.models import User
 # from django.core.validators import MaxValueValidator, MinValueValidator
-from tabulate import tabulate
 
-import pandas as pd
 from librerias.miDjangoModel3.models import ChoiceField, Model, CharField, FloatField, BooleanField, ForeignKey, Manager
 
 class User(Model):

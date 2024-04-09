@@ -13,7 +13,7 @@ import sys
 
 import django
 
-from models import Proyecto
+from modulos.models import Proyecto
 
 
 import xml.etree.ElementTree as et
