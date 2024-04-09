@@ -7,8 +7,8 @@ Created on 19 mar 2024
 import xml.etree.ElementTree as ET
 from models import Proyecto
 
-def importarSriStandAlone():
-    tree = ET.parse('ejemplos/test.iEPBXML')
+def importarSriStandAlone(nombreArchivo):
+    tree = ET.parse(r'ejemplos/{}'.format(nombreArchivo))
     root = tree.getroot()
     ns = {'d':"http://www.gbxml.org/schema"}
     for projectElement in root.findall('.//d:Project',ns):
