@@ -12,7 +12,9 @@ def importarSriStandAlone(nombreArchivo):
     root = tree.getroot()
     ns = {'d':"http://www.gbxml.org/schema"}
     for projectElement in root.findall('.//d:Project',ns):
-        Proyecto.creaDesdeXML(projectElement)
+        p=Proyecto.creaDesdeXML(projectElement)
+        print(p.getTotalSRI())
+        print(p.sri())        
 
 if __name__ == '__main__':
     importarSriStandAlone()  
