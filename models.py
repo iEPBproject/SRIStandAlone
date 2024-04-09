@@ -997,7 +997,6 @@ class ImpactWeightings (Model):
     def creaDesdeXML(cls, impactWeightingElement):
         ns = {'d':"http://www.gbxml.org/schema"}
         nuevaInstancia = cls()
-        print("\t",impactWeightingElement,impactWeightingElement.attrib)
         id = int(impactWeightingElement.attrib['id'])
         nuevaInstancia.id = id
         
