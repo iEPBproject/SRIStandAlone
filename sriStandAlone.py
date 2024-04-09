@@ -20,7 +20,7 @@ def main(argv):
             sys.exit()
         elif opt in ("-i", "--ifile"):
             inputfile = arg
-            importarSriStandAlone()
+            importarSriStandAlone(arg)
             print ('El archivo XML ha sido importado correctamente')
         elif opt in ("-o", "--ofile"):
             outputfile = arg
