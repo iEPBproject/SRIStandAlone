@@ -1814,7 +1814,7 @@ class Proyecto(Model):
         nuevaInstancia = cls()
         nameElement = projectElement.find('d:name',ns)
         nuevaInstancia.name = nameElement.text         
-        
+        nuevaInstancia.id = int(projectElement.attrib['id'])
         nuevaInstancia.country = Country.creaDesdeXML(projectElement.find('.//d:country', ns))
         nuevaInstancia.user = User.creaDesdeXML(projectElement)
         nuevaInstancia.buildingType = BuildingType.creaDesdeXML(projectElement.find('.//d:BuildingType', ns))
