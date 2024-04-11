@@ -4,7 +4,7 @@ Created on 2 abr 2024
 @author: efinovatic
 '''
 import sys, getopt
-from modulos.importarXML import importarSriStandAlone
+from modulos.operacionesXML import importarSriStandAlone
 
 
 
