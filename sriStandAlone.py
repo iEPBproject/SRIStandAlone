@@ -4,7 +4,8 @@ Created on 2 abr 2024
 @author: efinovatic
 '''
 import sys, getopt
-from modulos.operacionesXML import importarSriStandAlone, escribirResultadosSri
+from modulos.operacionesXML import importarSriStandAlone, escribirResultadosSri,\
+    escribirXML
 
 
 
@@ -27,7 +28,8 @@ def main(argv):
             print ('El archivo XML ha sido importado correctamente')
         elif opt in ("-o", "--ofile"):
             outputfile = arg
-            print ('El archivo XML ha sido exportado correctamente')
+            escribirXML(outputfile)
+            print ('El archivo XML se ha mostrado correctamente')
         elif opt in ("-p", "--pfile"):
             file = arg
             print ('Estos son los resultados que se han encontrado')
