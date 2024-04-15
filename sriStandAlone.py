@@ -14,7 +14,7 @@ def main(argv):
     inputfile = ''
     outputfile = ''
     try:
-        opts, args = getopt.getopt(argv,"hi:o:p:",["ifile=","ofile=","pfile="])
+        opts, args = getopt.getopt(argv,"hi:o:p",["ifile=","ofile=","pfile="])
     except getopt.GetoptError:
         print ('Las opciones admitidas son las siguientes --> -i <inputfile> -o <outputfile>')
         sys.exit(2)
@@ -31,14 +31,13 @@ def main(argv):
             escribirXML(outputfile)
             print ('El archivo XML se ha mostrado correctamente')
         elif opt in ("-p", "--pfile"):
-            file = arg
             print ('Estos son los resultados que se han encontrado')
-            escribirResultadosSri(file)
+            escribirResultadosSri(inputfile)
     print ('Input file is {}'.format(inputfile))
     print ('Output file is {}'.format(outputfile))
     
 if __name__ == "__main__":
-    print("Hello sriStandAlone")
+    # print("Hello sriStandAlone")
     # print(sys.argv[:1])
     # sys.argv.append(r'C:\temp\test.iEPBXML -o')
     # print(sys.argv[1:])
