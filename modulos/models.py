@@ -22,7 +22,7 @@ class User(Model):
                       
     @classmethod    
     def creaDesdeXML(cls, element):
-        ns = {'d':"http://www.gbxml.org/schema"}
+        ns = {'d':"http://www.efinovatic.es/sri"}
         nuevaInstancia = cls()
         nuevaInstancia.id = element.find('.//d:user__id', ns).text
         nuevaInstancia.name = element.find('.//d:user__name', ns).text
@@ -48,7 +48,7 @@ class BuildingType(Model):
         
     @classmethod   
     def creaDesdeXML(cls, element):
-        ns = {'d':"http://www.gbxml.org/schema"}
+        ns = {'d':"http://www.efinovatic.es/sri"}
         nuevaInstancia = cls()
         nuevaInstancia.id = int(element.attrib['id'])
         nuevaInstancia.description = element.find('.//d:descripcion', ns).text
@@ -93,7 +93,7 @@ class Country(Model):
         ordering = ('id',)
     @classmethod    
     def creaDesdeXML(cls, element):
-        ns = {'d':"http://www.gbxml.org/schema"}
+        ns = {'d':"http://www.efinovatic.es/sri"}
         nuevaInstancia = cls()
         id = element.attrib['id']
         nuevaInstancia.id = int(id)
@@ -308,7 +308,7 @@ class Catalogo(Model):
         
     @classmethod
     def creaDesdeXML(cls,catalogoElement):
-        ns = {'d':"http://www.gbxml.org/schema"}
+        ns = {'d':"http://www.efinovatic.es/sri"}
         nuevaInstancia = cls()
         description = catalogoElement.find('.//d:description',ns)
         id = int(catalogoElement.attrib['id'])
@@ -532,7 +532,7 @@ class Dominio(Model):
         
     @classmethod
     def creaDesdeXML(cls,domainElement):
-        ns = {'d':"http://www.gbxml.org/schema"}
+        ns = {'d':"http://www.efinovatic.es/sri"}
         nuevaInstancia = cls()
         description = domainElement.find('.//d:description',ns)
         id = int(domainElement.attrib['id'])
@@ -821,7 +821,7 @@ class Servicio(Model):
         
     @classmethod
     def creaDesdeXML(cls,serviceElement):
-        ns = {'d':"http://www.gbxml.org/schema"}
+        ns = {'d':"http://www.efinovatic.es/sri"}
         nuevaInstancia = cls()
         description = serviceElement.find('.//d:description',ns)
         id = int(serviceElement.attrib['id'])
@@ -907,7 +907,7 @@ class Funcionalidad(Model):
         
     @classmethod
     def creaDesdeXML(cls,funcionalidadElement):
-        ns = {'d':"http://www.gbxml.org/schema"}
+        ns = {'d':"http://www.efinovatic.es/sri"}
         nuevaInstancia = cls()
         description = funcionalidadElement.find('.//d:description',ns)
         id = int(funcionalidadElement.attrib['id'])
@@ -993,7 +993,7 @@ class ImpactWeightings (Model):
         
     @classmethod
     def creaDesdeXML(cls, impactWeightingElement):
-        ns = {'d':"http://www.gbxml.org/schema"}
+        ns = {'d':"http://www.efinovatic.es/sri"}
         nuevaInstancia = cls()
         id = int(impactWeightingElement.attrib['id'])
         nuevaInstancia.id = id
@@ -1317,7 +1317,7 @@ class DomainWeigthing(Model):
         
     @classmethod
     def creaDesdeXML(cls,domainWeigthingElement):
-        ns = {'d':"http://www.gbxml.org/schema"}
+        ns = {'d':"http://www.efinovatic.es/sri"}
         nuevaInstancia = cls()
         description = domainWeigthingElement.find('.//d:name',ns)
         id = int(domainWeigthingElement.attrib['id'])
@@ -1810,7 +1810,7 @@ class Proyecto(Model):
     
     @classmethod
     def creaDesdeXML(cls,projectElement):
-        ns = {'d':"http://www.gbxml.org/schema"}
+        ns = {'d':"http://www.efinovatic.es/sri"}
         nuevaInstancia = cls()
         nameElement = projectElement.find('d:name',ns)
         nuevaInstancia.name = nameElement.text         
@@ -2732,7 +2732,7 @@ class Dato(Model):
     
     @classmethod
     def creaDesdeXML(cls, dataElement):
-        ns = {'d':"http://www.gbxml.org/schema"}
+        ns = {'d':"http://www.efinovatic.es/sri"}
         nuevaInstancia = cls()
         nuevaInstancia.id = int(dataElement.attrib['id'])
         nuevaInstancia.chosenFuncionality = Funcionalidad.objects.get(id = int(dataElement.find('.//d:chosenFuncionality', ns).text))

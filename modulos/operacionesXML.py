@@ -4,6 +4,7 @@ Created on 19 mar 2024
 @author: Efinovatic
 '''
 
+import sys
 import xml.etree.ElementTree as ET
 from xml.dom import minidom
 from modulos.models import Proyecto
@@ -22,11 +23,11 @@ ET.register_namespace('version', "6.01")
 ET.register_namespace('SurfaceReferenceLocation', "Centerline")
 
 def getRoot():
-    root=ET.Element('iEPBxml',attrib={'xmlns':"http://www.gbxml.org/schema",
+    root=ET.Element('iEPBxml',attrib={'xmlns':"http://www.efinovatic.es/sri",
                                                       'xmlns:xhtml':"http://www.w3.org/1999/xhtml",
                                                       'xmlns:xsi':"http://www.w3.org/2001/XMLSchema-instance",
                                                       'xmlns:xsd':"http://www.w3.org/2001/XMLSchema",
-                                                      'xsi:schemaLocation':"http://www.gbxml.org/schema http://gbxml.org/schema/6-01/GreenBuildingXML_Ver6.01.xsd",
+                                                      'xsi:schemaLocation':"http://www.efinovatic.es/sri http://gbxml.org/schema/6-01/GreenBuildingXML_Ver6.01.xsd",
                                                       'temperatureUnit':"C",
                                                       'lengthUnit':"Meters",
                                                       'areaUnit':"SquareMeters",
@@ -39,7 +40,7 @@ def getRoot():
 def importarSriStandAlone(nombreArchivo):
     tree = ET.parse(nombreArchivo)
     root = tree.getroot()
-    ns = {'d':"http://www.gbxml.org/schema"}
+    ns = {'d':"http://www.efinovatic.es/sri"}
     for projectElement in root.findall('.//d:Project',ns):
         p=Proyecto.creaDesdeXML(projectElement)
         # print(p.getTotalSRI())
@@ -49,7 +50,7 @@ def importarSriStandAlone(nombreArchivo):
 def escribirResultadosSri(rutaArchivo = None):
     tree = ET.parse(rutaArchivo)
     root = tree.getroot()
-    ns = {'d':"http://www.gbxml.org/schema"}
+    ns = {'d':"http://www.efinovatic.es/sri"}
     project = root.find('.//d:Project', ns)
     # p = Proyecto.objects.get(id = int(project.attrib['id']))
     p = None
@@ -67,35 +68,43 @@ def escribirResultadosSri(rutaArchivo = None):
 def escribirXML(rutaArchivoOriginal, rutaArchivoNuevo):
     tree = ET.parse(rutaArchivoOriginal)
     root = tree.getroot()
-    ns = {'d':"http://www.gbxml.org/schema"}
-    project = root.find('.//d:Project', ns)
-    for instanciaProyecto in listaProyectosAlmacenado:
-        if instanciaProyecto.id == int(project.attrib['id']):
-            p = instanciaProyecto
-            
-    if p:
-        totalSri = root.find('.//d:totalSriScore', ns)
-        totalSri.text = str(p.getTotalSRI())
+    if rutaArchivoOriginal == rutaArchivoNuevo:
+        print('Error no pueden ser el mismo archivo')
+        sys.exit()
         
-        totalScoreKf1 = root.find('.//d:scoreKF1', ns)
-        totalScoreKf1.text = str(p.getEnergyPerformannceKf1())
-        
-        totalScoreKf2 = root.find('.//d:scoreKF2', ns)
-        totalScoreKf2.text = str(p.getResponseToUserNeedsKf2())
-        
-        totalScoreKf3 = root.find('.//d:scoreKF3', ns)
-        totalScoreKf3.text = str(p.getEnergyFlexibilityKf3())
+    elif rutaArchivoOriginal != '':
+        ns = {'d':"http://www.efinovatic.es/sri"}
+        project = root.find('.//d:Project', ns)
     
-    # doc = minidom.parseString(ET.tostring(root))
-    # print (doc.toprettyxml(encoding='utf8'))
-    # tree.write(rutaArchivoNuevo)
-    xmlstr = minidom.parseString(ET.tostring(root)).toprettyxml(indent="    ")
-    with open(rutaArchivoNuevo, "w") as f:
-        f.write(xmlstr) 
+        for instanciaProyecto in listaProyectosAlmacenado:
+            if instanciaProyecto.id == int(project.attrib['id']):
+                p = instanciaProyecto
+                
+        if p:
+            totalSri = root.find('.//d:totalSriScore', ns)
+            totalSri.text = str(p.getTotalSRI())
+            
+            totalScoreKf1 = root.find('.//d:scoreKF1', ns)
+            totalScoreKf1.text = str(p.getEnergyPerformannceKf1())
+            
+            totalScoreKf2 = root.find('.//d:scoreKF2', ns)
+            totalScoreKf2.text = str(p.getResponseToUserNeedsKf2())
+            
+            totalScoreKf3 = root.find('.//d:scoreKF3', ns)
+            totalScoreKf3.text = str(p.getEnergyFlexibilityKf3())
+    else:
+        print('Error neceseitas utilizar la opcion -i <inputfile>')
+    if rutaArchivoNuevo != '':
+        tree.write(rutaArchivoNuevo)
+    else:
+        print('Error necesitas aprotar un archivo de salida')
+    # xmlstr = minidom.parseString(ET.tostring(root)).toprettyxml(indent="    ")
+    # with open(rutaArchivoNuevo, "w") as f:
+    #     f.write(xmlstr) 
 if __name__ == '__main__':
     importarSriStandAlone(r'C:\Temp\test.iEPBXML')  
     # escribirResultadosSri(r'C:\Temp\test.iEPBXML')
-    escribirXML(r'C:\Temp\test.iEPBXML', r'C:\Temp\test2.iEPBXML')
+    escribirXML(r'C:\Temp\test.iEPBXML', r'C:\Temp\test.iEPBXML')
     # p = Proyecto.objects.first()
     # print(p.catalogo)
     # print(p.dominiosPresentes)

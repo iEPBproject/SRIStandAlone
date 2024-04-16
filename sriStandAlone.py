@@ -28,13 +28,13 @@ def main(argv):
             print ('El archivo XML ha sido importado correctamente')
         elif opt in ("-o", "--ofile"):
             outputfile = arg
-            escribirXML(outputfile)
-            print ('El archivo XML se ha mostrado correctamente')
+            escribirXML(inputfile, outputfile)
+            print ('El archivo XML se ha mostrado correctamente en --> {}'.format(outputfile))
         elif opt in ("-p", "--pfile"):
             print ('Estos son los resultados que se han encontrado')
             escribirResultadosSri(inputfile)
-    print ('Input file is {}'.format(inputfile))
-    print ('Output file is {}'.format(outputfile))
+    # print ('Input file is {}'.format(inputfile))
+    # print ('Output file is {}'.format(outputfile))
     
 if __name__ == "__main__":
     # print("Hello sriStandAlone")
