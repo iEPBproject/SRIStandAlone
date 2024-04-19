@@ -24,8 +24,8 @@ class User(Model):
     def creaDesdeXML(cls, element):
         ns = {'d':"http://www.efinovatic.es/sri"}
         nuevaInstancia = cls()
-        nuevaInstancia.id = element.find('.//d:user__id', ns).text
-        nuevaInstancia.name = element.find('.//d:user__name', ns).text
+        nuevaInstancia.id = element.find('.//d:User__id', ns).text
+        nuevaInstancia.name = element.find('.//d:User__name', ns).text
         return nuevaInstancia
 
 class BuildingType(Model):
@@ -51,7 +51,7 @@ class BuildingType(Model):
         ns = {'d':"http://www.efinovatic.es/sri"}
         nuevaInstancia = cls()
         nuevaInstancia.id = int(element.attrib['id'])
-        nuevaInstancia.description = element.find('.//d:descripcion', ns).text
+        nuevaInstancia.description = element.find('.//d:Descripcion', ns).text
         return nuevaInstancia
 
 class Country(Model):
@@ -97,10 +97,10 @@ class Country(Model):
         nuevaInstancia = cls()
         id = element.attrib['id']
         nuevaInstancia.id = int(id)
-        nuevaInstancia.name = element.find('.//d:name', ns).text
-        nuevaInstancia.heatingMandatory = True if element.find('.//d:heatingMandatory', ns).text == 'True' else False
-        nuevaInstancia.dhwMandatoryForResidential = True if element.find('.//d:dhwMandatoryForResidential', ns).text == 'True' else False
-        nuevaInstancia.dhwMandatoryForTertiary = True if element.find('.//d:dhwMandatoryForTertiary', ns).text == 'True' else False
+        nuevaInstancia.name = element.find('.//d:Name', ns).text
+        nuevaInstancia.heatingMandatory = True if element.find('.//d:HeatingMandatory', ns).text == 'True' else False
+        nuevaInstancia.dhwMandatoryForResidential = True if element.find('.//d:DHWMandatoryForResidential', ns).text == 'True' else False
+        nuevaInstancia.dhwMandatoryForTertiary = True if element.find('.//d:DHWMandatoryForTertiary', ns).text == 'True' else False
         nuevaInstancia.CoolingMandatory = True if element.find('.//d:CoolingMandatory', ns).text == 'True' else False
         nuevaInstancia.VentilationMandatory = True if element.find('.//d:VentilationMandatory', ns).text == 'True' else False
         nuevaInstancia.LightingMandatory = True if element.find('.//d:LightingMandatory', ns).text == 'True' else False
@@ -108,8 +108,8 @@ class Country(Model):
         nuevaInstancia.ElectricityMandatory = True if element.find('.//d:ElectricityMandatory', ns).text == 'True' else False
         nuevaInstancia.ElectricVehicleChargingMandatory = True if element.find('.//d:ElectricVehicleChargingMandatory', ns).text == 'True' else False
         nuevaInstancia.MonitoringAndControlMandatory = True if element.find('.//d:MonitoringAndControlMandatory', ns).text == 'True' else False
-        nuevaInstancia.allowUserDefineDomainWeightings = True if element.find('.//d:allowUserDefineDomainWeightings', ns).text == 'True' else False
-        nuevaInstancia.domainClassNames = element.find('.//d:domainClassNames', ns).text
+        nuevaInstancia.allowUserDefineDomainWeightings = True if element.find('.//d:AllowUserDefineDomainWeightings', ns).text == 'True' else False
+        nuevaInstancia.domainClassNames = element.find('.//d:DomainClassNames', ns).text
         return nuevaInstancia
         
 
@@ -310,7 +310,7 @@ class Catalogo(Model):
     def creaDesdeXML(cls,catalogoElement):
         ns = {'d':"http://www.efinovatic.es/sri"}
         nuevaInstancia = cls()
-        description = catalogoElement.find('.//d:description',ns)
+        description = catalogoElement.find('.//d:Description',ns)
         id = int(catalogoElement.attrib['id'])
         nuevaInstancia.description = description.text
         nuevaInstancia.id = id
@@ -534,11 +534,11 @@ class Dominio(Model):
     def creaDesdeXML(cls,domainElement):
         ns = {'d':"http://www.efinovatic.es/sri"}
         nuevaInstancia = cls()
-        description = domainElement.find('.//d:description',ns)
+        description = domainElement.find('.//d:Description',ns)
         id = int(domainElement.attrib['id'])
         nuevaInstancia.description = description.text
         nuevaInstancia.id = id
-        nuevaInstancia.nameAttr = domainElement.find('.//d:nameAttr', ns).text
+        nuevaInstancia.nameAttr = domainElement.find('.//d:NameAttr', ns).text
         
         return nuevaInstancia  
 
@@ -823,7 +823,7 @@ class Servicio(Model):
     def creaDesdeXML(cls,serviceElement):
         ns = {'d':"http://www.efinovatic.es/sri"}
         nuevaInstancia = cls()
-        description = serviceElement.find('.//d:description',ns)
+        description = serviceElement.find('.//d:Description',ns)
         id = int(serviceElement.attrib['id'])
         nuevaInstancia.description = description.text
         nuevaInstancia.id = id
@@ -909,19 +909,19 @@ class Funcionalidad(Model):
     def creaDesdeXML(cls,funcionalidadElement):
         ns = {'d':"http://www.efinovatic.es/sri"}
         nuevaInstancia = cls()
-        description = funcionalidadElement.find('.//d:description',ns)
+        description = funcionalidadElement.find('.//d:Description',ns)
         id = int(funcionalidadElement.attrib['id'])
         nuevaInstancia.description = description.text
         nuevaInstancia.id = id
-        nuevaInstancia.energyEfficiencyImpact = float(funcionalidadElement.find('.//d:energyEfficiencyImpact',ns).text)
-        nuevaInstancia.energyFlexibilityImpact = float(funcionalidadElement.find('.//d:energyFlexibilityImpact',ns).text)
-        nuevaInstancia.comfortImpact = float(funcionalidadElement.find('.//d:comfortImpact',ns).text)
-        nuevaInstancia.convenienceImpact = float(funcionalidadElement.find('.//d:convenienceImpact',ns).text)
-        nuevaInstancia.healthAccesibilityImpact = float(funcionalidadElement.find('.//d:healthAccesibilityImpact',ns).text)
-        nuevaInstancia.maintenanceFaultPredictionImpact = float(funcionalidadElement.find('.//d:maintenanceFaultPredictionImpact',ns).text)
-        nuevaInstancia.informationOccupantsImpact = float(funcionalidadElement.find('.//d:informationOccupantsImpact',ns).text)
-        nuevaInstancia.en15232Residential = funcionalidadElement.find('.//d:en15232Residential',ns).text
-        nuevaInstancia.en15232NonResidential = funcionalidadElement.find('.//d:en15232NonResidential',ns).text
+        nuevaInstancia.energyEfficiencyImpact = float(funcionalidadElement.find('.//d:EnergyEfficiencyImpact',ns).text)
+        nuevaInstancia.energyFlexibilityImpact = float(funcionalidadElement.find('.//d:EnergyFlexibilityImpact',ns).text)
+        nuevaInstancia.comfortImpact = float(funcionalidadElement.find('.//d:ComfortImpact',ns).text)
+        nuevaInstancia.convenienceImpact = float(funcionalidadElement.find('.//d:ConvenienceImpact',ns).text)
+        nuevaInstancia.healthAccesibilityImpact = float(funcionalidadElement.find('.//d:HealthAccesibilityImpact',ns).text)
+        nuevaInstancia.maintenanceFaultPredictionImpact = float(funcionalidadElement.find('.//d:MaintenanceFaultPredictionImpact',ns).text)
+        nuevaInstancia.informationOccupantsImpact = float(funcionalidadElement.find('.//d:InformationOccupantsImpact',ns).text)
+        nuevaInstancia.en15232Residential = funcionalidadElement.find('.//d:En15232Residential',ns).text
+        nuevaInstancia.en15232NonResidential = funcionalidadElement.find('.//d:En15232NonResidential',ns).text
         return nuevaInstancia
 
     
@@ -998,16 +998,16 @@ class ImpactWeightings (Model):
         id = int(impactWeightingElement.attrib['id'])
         nuevaInstancia.id = id
         
-        nuevaInstancia.energyEfficiency = float(impactWeightingElement.find('.//d:energyEfficiency',ns).text)
-        nuevaInstancia.energyFlexibility = float(impactWeightingElement.find('.//d:energyFlexibility',ns).text)
-        nuevaInstancia.comfort = float(impactWeightingElement.find('.//d:comfort',ns).text)
-        nuevaInstancia.convenience = float(impactWeightingElement.find('.//d:convenience',ns).text)
-        nuevaInstancia.healthAccesibility = float(impactWeightingElement.find('.//d:healthAccesibility',ns).text)
-        nuevaInstancia.maintenanceFaultPrediction = float(impactWeightingElement.find('.//d:maintenanceFaultPrediction',ns).text)
-        nuevaInstancia.informationOccupants = float(impactWeightingElement.find('.//d:informationOccupants',ns).text)
-        nuevaInstancia.kF1_energyPerformanceAndOperation = float(impactWeightingElement.find('.//d:kF1_energyPerformanceAndOperation',ns).text)
-        nuevaInstancia.kF2_responseToUserNeeds = float(impactWeightingElement.find('.//d:kF2_responseToUserNeeds',ns).text)
-        nuevaInstancia.kF3_energyFlexibility = float(impactWeightingElement.find('.//d:kF3_energyFlexibility',ns).text)
+        nuevaInstancia.energyEfficiency = float(impactWeightingElement.find('.//d:EnergyEfficiency',ns).text)
+        nuevaInstancia.energyFlexibility = float(impactWeightingElement.find('.//d:EnergyFlexibility',ns).text)
+        nuevaInstancia.comfort = float(impactWeightingElement.find('.//d:Comfort',ns).text)
+        nuevaInstancia.convenience = float(impactWeightingElement.find('.//d:Convenience',ns).text)
+        nuevaInstancia.healthAccesibility = float(impactWeightingElement.find('.//d:HealthAccesibility',ns).text)
+        nuevaInstancia.maintenanceFaultPrediction = float(impactWeightingElement.find('.//d:MaintenanceFaultPrediction',ns).text)
+        nuevaInstancia.informationOccupants = float(impactWeightingElement.find('.//d:InformationOccupants',ns).text)
+        nuevaInstancia.kF1_energyPerformanceAndOperation = float(impactWeightingElement.find('.//d:KF1_energyPerformanceAndOperation',ns).text)
+        nuevaInstancia.kF2_responseToUserNeeds = float(impactWeightingElement.find('.//d:KF2_responseToUserNeeds',ns).text)
+        nuevaInstancia.kF3_energyFlexibility = float(impactWeightingElement.find('.//d:KF3_energyFlexibility',ns).text)
         
         return nuevaInstancia
         
@@ -1319,107 +1319,107 @@ class DomainWeigthing(Model):
     def creaDesdeXML(cls,domainWeigthingElement):
         ns = {'d':"http://www.efinovatic.es/sri"}
         nuevaInstancia = cls()
-        description = domainWeigthingElement.find('.//d:name',ns)
+        description = domainWeigthingElement.find('.//d:Name',ns)
         id = int(domainWeigthingElement.attrib['id'])
         nuevaInstancia.name = description.text
         nuevaInstancia.id = id
         
         # Para los atributos de Heating en el XML
         instanciaHeating = domainWeigthingElement.find('.//d:Heating',ns)
-        nuevaInstancia.energyEfficiencyHeating = float(instanciaHeating.find('.//d:energyEfficiency', ns).text)
-        nuevaInstancia.energyFlexibilityHeating = float(instanciaHeating.find('.//d:energyFlexibility', ns).text)
-        nuevaInstancia.comfortHeating = float(instanciaHeating.find('.//d:comfort', ns).text)
-        nuevaInstancia.convenienceHeating = float(instanciaHeating.find('.//d:convenience', ns).text)
-        nuevaInstancia.healthAccesibilityHeating = float(instanciaHeating.find('.//d:healthAccesibility', ns).text)
-        nuevaInstancia.maintenanceFaultPredictionHeating = float(instanciaHeating.find('.//d:maintenanceFaultPrediction', ns).text)
-        nuevaInstancia.informationOccupantsHeating = float(instanciaHeating.find('.//d:informationOccupants', ns).text)        
+        nuevaInstancia.energyEfficiencyHeating = float(instanciaHeating.find('.//d:EnergyEfficiency', ns).text)
+        nuevaInstancia.energyFlexibilityHeating = float(instanciaHeating.find('.//d:EnergyFlexibility', ns).text)
+        nuevaInstancia.comfortHeating = float(instanciaHeating.find('.//d:Comfort', ns).text)
+        nuevaInstancia.convenienceHeating = float(instanciaHeating.find('.//d:Convenience', ns).text)
+        nuevaInstancia.healthAccesibilityHeating = float(instanciaHeating.find('.//d:HealthAccesibility', ns).text)
+        nuevaInstancia.maintenanceFaultPredictionHeating = float(instanciaHeating.find('.//d:MaintenanceFaultPrediction', ns).text)
+        nuevaInstancia.informationOccupantsHeating = float(instanciaHeating.find('.//d:InformationOccupants', ns).text)        
         
         # Para los atributos de Heating en el XML
         instanciaCooling = domainWeigthingElement.find('.//d:Cooling',ns)
-        nuevaInstancia.energyEfficiencyCooling = float(instanciaCooling.find('.//d:energyEfficiency', ns).text)
-        nuevaInstancia.energyFlexibilityCooling = float(instanciaCooling.find('.//d:energyFlexibility', ns).text)
-        nuevaInstancia.comfortCooling = float(instanciaCooling.find('.//d:comfort', ns).text)
-        nuevaInstancia.convenienceCooling = float(instanciaCooling.find('.//d:convenience', ns).text)
-        nuevaInstancia.healthAccesibilityCooling = float(instanciaCooling.find('.//d:healthAccesibility', ns).text)
-        nuevaInstancia.maintenanceFaultPredictionCooling = float(instanciaCooling.find('.//d:maintenanceFaultPrediction', ns).text)
-        nuevaInstancia.informationOccupantsCooling = float(instanciaCooling.find('.//d:informationOccupants', ns).text)        
+        nuevaInstancia.energyEfficiencyCooling = float(instanciaCooling.find('.//d:EnergyEfficiency', ns).text)
+        nuevaInstancia.energyFlexibilityCooling = float(instanciaCooling.find('.//d:EnergyFlexibility', ns).text)
+        nuevaInstancia.comfortCooling = float(instanciaCooling.find('.//d:Comfort', ns).text)
+        nuevaInstancia.convenienceCooling = float(instanciaCooling.find('.//d:Convenience', ns).text)
+        nuevaInstancia.healthAccesibilityCooling = float(instanciaCooling.find('.//d:HealthAccesibility', ns).text)
+        nuevaInstancia.maintenanceFaultPredictionCooling = float(instanciaCooling.find('.//d:MaintenanceFaultPrediction', ns).text)
+        nuevaInstancia.informationOccupantsCooling = float(instanciaCooling.find('.//d:InformationOccupants', ns).text)        
         
         
         # Para los atributos de Heating en el XML
-        instanciaDhw = domainWeigthingElement.find('.//d:Dhw',ns)
-        nuevaInstancia.energyEfficiencyDhw = float(instanciaDhw.find('.//d:energyEfficiency', ns).text)
-        nuevaInstancia.energyFlexibilityDhw = float(instanciaDhw.find('.//d:energyFlexibility', ns).text)
-        nuevaInstancia.comfortDhw = float(instanciaDhw.find('.//d:comfort', ns).text)
-        nuevaInstancia.convenienceDhw = float(instanciaDhw.find('.//d:convenience', ns).text)
-        nuevaInstancia.healthAccesibilityDhw = float(instanciaDhw.find('.//d:healthAccesibility', ns).text)
-        nuevaInstancia.maintenanceFaultPredictionDhw = float(instanciaDhw.find('.//d:maintenanceFaultPrediction', ns).text)
-        nuevaInstancia.informationOccupantsDhw = float(instanciaDhw.find('.//d:informationOccupants', ns).text)        
+        instanciaDhw = domainWeigthingElement.find('.//d:DHW',ns)
+        nuevaInstancia.energyEfficiencyDhw = float(instanciaDhw.find('.//d:EnergyEfficiency', ns).text)
+        nuevaInstancia.energyFlexibilityDhw = float(instanciaDhw.find('.//d:EnergyFlexibility', ns).text)
+        nuevaInstancia.comfortDhw = float(instanciaDhw.find('.//d:Comfort', ns).text)
+        nuevaInstancia.convenienceDhw = float(instanciaDhw.find('.//d:Convenience', ns).text)
+        nuevaInstancia.healthAccesibilityDhw = float(instanciaDhw.find('.//d:HealthAccesibility', ns).text)
+        nuevaInstancia.maintenanceFaultPredictionDhw = float(instanciaDhw.find('.//d:MaintenanceFaultPrediction', ns).text)
+        nuevaInstancia.informationOccupantsDhw = float(instanciaDhw.find('.//d:InformationOccupants', ns).text)        
         
         
         # Para los atributos de Heating en el XML
         instanciaVentilation = domainWeigthingElement.find('.//d:Ventilation',ns)
-        nuevaInstancia.energyEfficiencyVentilation = float(instanciaVentilation.find('.//d:energyEfficiency', ns).text)
-        nuevaInstancia.energyFlexibilityVentilation = float(instanciaVentilation.find('.//d:energyFlexibility', ns).text)
-        nuevaInstancia.comfortVentilation = float(instanciaVentilation.find('.//d:comfort', ns).text)
-        nuevaInstancia.convenienceVentilation = float(instanciaVentilation.find('.//d:convenience', ns).text)
-        nuevaInstancia.healthAccesibilityVentilation = float(instanciaVentilation.find('.//d:healthAccesibility', ns).text)
-        nuevaInstancia.maintenanceFaultPredictionVentilation = float(instanciaVentilation.find('.//d:maintenanceFaultPrediction', ns).text)
-        nuevaInstancia.informationOccupantsVentilation = float(instanciaVentilation.find('.//d:informationOccupants', ns).text)        
+        nuevaInstancia.energyEfficiencyVentilation = float(instanciaVentilation.find('.//d:EnergyEfficiency', ns).text)
+        nuevaInstancia.energyFlexibilityVentilation = float(instanciaVentilation.find('.//d:EnergyFlexibility', ns).text)
+        nuevaInstancia.comfortVentilation = float(instanciaVentilation.find('.//d:Comfort', ns).text)
+        nuevaInstancia.convenienceVentilation = float(instanciaVentilation.find('.//d:Convenience', ns).text)
+        nuevaInstancia.healthAccesibilityVentilation = float(instanciaVentilation.find('.//d:HealthAccesibility', ns).text)
+        nuevaInstancia.maintenanceFaultPredictionVentilation = float(instanciaVentilation.find('.//d:MaintenanceFaultPrediction', ns).text)
+        nuevaInstancia.informationOccupantsVentilation = float(instanciaVentilation.find('.//d:InformationOccupants', ns).text)        
         
         
         # Para los atributos de Heating en el XML
         instanciaLighting = domainWeigthingElement.find('.//d:Lighting',ns)
-        nuevaInstancia.energyEfficiencyLighting = float(instanciaLighting.find('.//d:energyEfficiency', ns).text)
-        nuevaInstancia.energyFlexibilityLighting = float(instanciaLighting.find('.//d:energyFlexibility', ns).text)
-        nuevaInstancia.comfortLighting = float(instanciaLighting.find('.//d:comfort', ns).text)
-        nuevaInstancia.convenienceLighting = float(instanciaLighting.find('.//d:convenience', ns).text)
-        nuevaInstancia.healthAccesibilityLighting = float(instanciaLighting.find('.//d:healthAccesibility', ns).text)
-        nuevaInstancia.maintenanceFaultPredictionLighting = float(instanciaLighting.find('.//d:maintenanceFaultPrediction', ns).text)
-        nuevaInstancia.informationOccupantsLighting = float(instanciaLighting.find('.//d:informationOccupants', ns).text)        
+        nuevaInstancia.energyEfficiencyLighting = float(instanciaLighting.find('.//d:EnergyEfficiency', ns).text)
+        nuevaInstancia.energyFlexibilityLighting = float(instanciaLighting.find('.//d:EnergyFlexibility', ns).text)
+        nuevaInstancia.comfortLighting = float(instanciaLighting.find('.//d:Comfort', ns).text)
+        nuevaInstancia.convenienceLighting = float(instanciaLighting.find('.//d:Convenience', ns).text)
+        nuevaInstancia.healthAccesibilityLighting = float(instanciaLighting.find('.//d:HealthAccesibility', ns).text)
+        nuevaInstancia.maintenanceFaultPredictionLighting = float(instanciaLighting.find('.//d:MaintenanceFaultPrediction', ns).text)
+        nuevaInstancia.informationOccupantsLighting = float(instanciaLighting.find('.//d:InformationOccupants', ns).text)        
         
         
         # Para los atributos de Heating en el XML
         instanciaElectricity = domainWeigthingElement.find('.//d:Electricity',ns)
-        nuevaInstancia.energyEfficiencyElectricity = float(instanciaElectricity.find('.//d:energyEfficiency', ns).text)
-        nuevaInstancia.energyFlexibilityElectricity = float(instanciaElectricity.find('.//d:energyFlexibility', ns).text)
-        nuevaInstancia.comfortElectricity = float(instanciaElectricity.find('.//d:comfort', ns).text)
-        nuevaInstancia.convenienceElectricity = float(instanciaElectricity.find('.//d:convenience', ns).text)
-        nuevaInstancia.healthAccesibilityElectricity = float(instanciaElectricity.find('.//d:healthAccesibility', ns).text)
-        nuevaInstancia.maintenanceFaultPredictionElectricity = float(instanciaElectricity.find('.//d:maintenanceFaultPrediction', ns).text)
-        nuevaInstancia.informationOccupantsElectricity = float(instanciaElectricity.find('.//d:informationOccupants', ns).text)        
+        nuevaInstancia.energyEfficiencyElectricity = float(instanciaElectricity.find('.//d:EnergyEfficiency', ns).text)
+        nuevaInstancia.energyFlexibilityElectricity = float(instanciaElectricity.find('.//d:EnergyFlexibility', ns).text)
+        nuevaInstancia.comfortElectricity = float(instanciaElectricity.find('.//d:Comfort', ns).text)
+        nuevaInstancia.convenienceElectricity = float(instanciaElectricity.find('.//d:Convenience', ns).text)
+        nuevaInstancia.healthAccesibilityElectricity = float(instanciaElectricity.find('.//d:HealthAccesibility', ns).text)
+        nuevaInstancia.maintenanceFaultPredictionElectricity = float(instanciaElectricity.find('.//d:MaintenanceFaultPrediction', ns).text)
+        nuevaInstancia.informationOccupantsElectricity = float(instanciaElectricity.find('.//d:InformationOccupants', ns).text)        
         
         
         # Para los atributos de Heating en el XML
         instanciaDynamicBuildingEnvelope = domainWeigthingElement.find('.//d:DynamicBuildingEnvelope',ns)
-        nuevaInstancia.energyEfficiencyDynamicBuildingEnvelope = float(instanciaDynamicBuildingEnvelope.find('.//d:energyEfficiency', ns).text)
-        nuevaInstancia.energyFlexibilityDynamicBuildingEnvelope = float(instanciaDynamicBuildingEnvelope.find('.//d:energyFlexibility', ns).text)
-        nuevaInstancia.comfortDynamicBuildingEnvelope = float(instanciaDynamicBuildingEnvelope.find('.//d:comfort', ns).text)
-        nuevaInstancia.convenienceDynamicBuildingEnvelope = float(instanciaDynamicBuildingEnvelope.find('.//d:convenience', ns).text)
-        nuevaInstancia.healthAccesibilityDynamicBuildingEnvelope = float(instanciaDynamicBuildingEnvelope.find('.//d:healthAccesibility', ns).text)
-        nuevaInstancia.maintenanceFaultPredictionDynamicBuildingEnvelope = float(instanciaDynamicBuildingEnvelope.find('.//d:maintenanceFaultPrediction', ns).text)
-        nuevaInstancia.informationOccupantsDynamicBuildingEnvelope = float(instanciaDynamicBuildingEnvelope.find('.//d:informationOccupants', ns).text)        
+        nuevaInstancia.energyEfficiencyDynamicBuildingEnvelope = float(instanciaDynamicBuildingEnvelope.find('.//d:EnergyEfficiency', ns).text)
+        nuevaInstancia.energyFlexibilityDynamicBuildingEnvelope = float(instanciaDynamicBuildingEnvelope.find('.//d:EnergyFlexibility', ns).text)
+        nuevaInstancia.comfortDynamicBuildingEnvelope = float(instanciaDynamicBuildingEnvelope.find('.//d:Comfort', ns).text)
+        nuevaInstancia.convenienceDynamicBuildingEnvelope = float(instanciaDynamicBuildingEnvelope.find('.//d:Convenience', ns).text)
+        nuevaInstancia.healthAccesibilityDynamicBuildingEnvelope = float(instanciaDynamicBuildingEnvelope.find('.//d:HealthAccesibility', ns).text)
+        nuevaInstancia.maintenanceFaultPredictionDynamicBuildingEnvelope = float(instanciaDynamicBuildingEnvelope.find('.//d:MaintenanceFaultPrediction', ns).text)
+        nuevaInstancia.informationOccupantsDynamicBuildingEnvelope = float(instanciaDynamicBuildingEnvelope.find('.//d:InformationOccupants', ns).text)        
         
         
         # Para los atributos de Heating en el XML
         instanciaElectricVehicleCharging = domainWeigthingElement.find('.//d:ElectricVehicleCharging',ns)
-        nuevaInstancia.energyEfficiencyElectricVehicleCharging = float(instanciaElectricVehicleCharging.find('.//d:energyEfficiency', ns).text)
-        nuevaInstancia.energyFlexibilityElectricVehicleCharging = float(instanciaElectricVehicleCharging.find('.//d:energyFlexibility', ns).text)
-        nuevaInstancia.comfortElectricVehicleCharging = float(instanciaElectricVehicleCharging.find('.//d:comfort', ns).text)
-        nuevaInstancia.convenienceElectricVehicleCharging = float(instanciaElectricVehicleCharging.find('.//d:convenience', ns).text)
-        nuevaInstancia.healthAccesibilityElectricVehicleCharging = float(instanciaElectricVehicleCharging.find('.//d:healthAccesibility', ns).text)
-        nuevaInstancia.maintenanceFaultPredictionElectricVehicleCharging = float(instanciaElectricVehicleCharging.find('.//d:maintenanceFaultPrediction', ns).text)
-        nuevaInstancia.informationOccupantsElectricVehicleCharging = float(instanciaElectricVehicleCharging.find('.//d:informationOccupants', ns).text)        
+        nuevaInstancia.energyEfficiencyElectricVehicleCharging = float(instanciaElectricVehicleCharging.find('.//d:EnergyEfficiency', ns).text)
+        nuevaInstancia.energyFlexibilityElectricVehicleCharging = float(instanciaElectricVehicleCharging.find('.//d:EnergyFlexibility', ns).text)
+        nuevaInstancia.comfortElectricVehicleCharging = float(instanciaElectricVehicleCharging.find('.//d:Comfort', ns).text)
+        nuevaInstancia.convenienceElectricVehicleCharging = float(instanciaElectricVehicleCharging.find('.//d:Convenience', ns).text)
+        nuevaInstancia.healthAccesibilityElectricVehicleCharging = float(instanciaElectricVehicleCharging.find('.//d:HealthAccesibility', ns).text)
+        nuevaInstancia.maintenanceFaultPredictionElectricVehicleCharging = float(instanciaElectricVehicleCharging.find('.//d:MaintenanceFaultPrediction', ns).text)
+        nuevaInstancia.informationOccupantsElectricVehicleCharging = float(instanciaElectricVehicleCharging.find('.//d:InformationOccupants', ns).text)        
         
         
         # Para los atributos de Heating en el XML
         instanciaMonitoringAndControl = domainWeigthingElement.find('.//d:MonitoringAndControl',ns)
-        nuevaInstancia.energyEfficiencyMonitoringAndControl = float(instanciaMonitoringAndControl.find('.//d:energyEfficiency', ns).text)
-        nuevaInstancia.energyFlexibilityMonitoringAndControl = float(instanciaMonitoringAndControl.find('.//d:energyFlexibility', ns).text)
-        nuevaInstancia.comfortMonitoringAndControl = float(instanciaMonitoringAndControl.find('.//d:comfort', ns).text)
-        nuevaInstancia.convenienceMonitoringAndControl = float(instanciaMonitoringAndControl.find('.//d:convenience', ns).text)
-        nuevaInstancia.healthAccesibilityMonitoringAndControl = float(instanciaMonitoringAndControl.find('.//d:healthAccesibility', ns).text)
-        nuevaInstancia.maintenanceFaultPredictionMonitoringAndControl = float(instanciaMonitoringAndControl.find('.//d:maintenanceFaultPrediction', ns).text)
-        nuevaInstancia.informationOccupantsMonitoringAndControl = float(instanciaMonitoringAndControl.find('.//d:informationOccupants', ns).text)        
+        nuevaInstancia.energyEfficiencyMonitoringAndControl = float(instanciaMonitoringAndControl.find('.//d:EnergyEfficiency', ns).text)
+        nuevaInstancia.energyFlexibilityMonitoringAndControl = float(instanciaMonitoringAndControl.find('.//d:EnergyFlexibility', ns).text)
+        nuevaInstancia.comfortMonitoringAndControl = float(instanciaMonitoringAndControl.find('.//d:Comfort', ns).text)
+        nuevaInstancia.convenienceMonitoringAndControl = float(instanciaMonitoringAndControl.find('.//d:Convenience', ns).text)
+        nuevaInstancia.healthAccesibilityMonitoringAndControl = float(instanciaMonitoringAndControl.find('.//d:HealthAccesibility', ns).text)
+        nuevaInstancia.maintenanceFaultPredictionMonitoringAndControl = float(instanciaMonitoringAndControl.find('.//d:MaintenanceFaultPrediction', ns).text)
+        nuevaInstancia.informationOccupantsMonitoringAndControl = float(instanciaMonitoringAndControl.find('.//d:InformationOccupants', ns).text)        
         
         
         instanciaImpactWeighting = ImpactWeightings.creaDesdeXML(domainWeigthingElement.find('.//d:ImpactWeighting', ns))
@@ -1812,10 +1812,10 @@ class Proyecto(Model):
     def creaDesdeXML(cls,projectElement):
         ns = {'d':"http://www.efinovatic.es/sri"}
         nuevaInstancia = cls()
-        nameElement = projectElement.find('d:name',ns)
+        nameElement = projectElement.find('d:Name',ns)
         nuevaInstancia.name = nameElement.text         
         nuevaInstancia.id = int(projectElement.attrib['id'])
-        nuevaInstancia.country = Country.creaDesdeXML(projectElement.find('.//d:country', ns))
+        nuevaInstancia.country = Country.creaDesdeXML(projectElement.find('.//d:Country', ns))
         nuevaInstancia.user = User.creaDesdeXML(projectElement)
         nuevaInstancia.buildingType = BuildingType.creaDesdeXML(projectElement.find('.//d:BuildingType', ns))
         
@@ -1824,25 +1824,25 @@ class Proyecto(Model):
             
         
         for catalogueElement in projectElement.findall('.//d:Catalogue',ns):
-            description = catalogueElement.find('.//d:description',ns)
+            description = catalogueElement.find('.//d:Description',ns)
             nuevaInstancia.catalogo = Catalogo.creaDesdeXML(catalogueElement)
             nuevaInstancia.catalogo.country = nuevaInstancia.country
             for domainElement in catalogueElement.findall('.//d:Domain',ns):
                 nuevaInstanciaDominio = Dominio.creaDesdeXML(domainElement)
                 nuevaInstanciaDominio.catalogo = nuevaInstancia.catalogo
-                description = domainElement.find('.//d:description',ns)
+                description = domainElement.find('.//d:Description',ns)
                 for serviceElement in domainElement.findall('.//d:Service',ns):
                     nuevaInstanciaService = Servicio.creaDesdeXML(serviceElement)
                     nuevaInstanciaService.dominio = nuevaInstanciaDominio
-                    description = serviceElement.find('.//d:description',ns)
+                    description = serviceElement.find('.//d:Description',ns)
                     for funcionalitiesElement in serviceElement.findall('.//d:Functionality', ns):
                         nuevaInstanciaFunctionality = Funcionalidad.creaDesdeXML(funcionalitiesElement)
                         nuevaInstanciaFunctionality.service = nuevaInstanciaService
-                        description = funcionalitiesElement.find('.//d:description',ns)
+                        description = funcionalitiesElement.find('.//d:Description',ns)
                         
-        assessableDomainsElement = projectElement.find('.//d:assessableDomains', ns)
+        assessableDomainsElement = projectElement.find('.//d:AssessableDomains', ns)
         nuevaInstancia.Heating = True if assessableDomainsElement.find('.//d:Heating', ns).text == 'True' else False
-        nuevaInstancia.Dhw = True if assessableDomainsElement.find('.//d:Dhw', ns).text == 'True' else False
+        nuevaInstancia.Dhw = True if assessableDomainsElement.find('.//d:DHW', ns).text == 'True' else False
         nuevaInstancia.Cooling = True if assessableDomainsElement.find('.//d:Cooling', ns).text == 'True' else False
         nuevaInstancia.Ventilation = True if assessableDomainsElement.find('.//d:Ventilation', ns).text == 'True' else False
         nuevaInstancia.Lighting = True if assessableDomainsElement.find('.//d:Lighting', ns).text == 'True' else False
@@ -1851,15 +1851,15 @@ class Proyecto(Model):
         nuevaInstancia.ElectricVehicleCharging = True if assessableDomainsElement.find('.//d:ElectricVehicleCharging', ns).text == 'True' else False
         nuevaInstancia.MonitoringAndControl = True if assessableDomainsElement.find('.//d:MonitoringAndControl', ns).text == 'True' else False
         
-        for datumElement in projectElement.findall('.//d:datum', ns):
+        for datumElement in projectElement.findall('.//d:Datum', ns):
             nuevaInstanciaDato = Dato.creaDesdeXML(datumElement)
             nuevaInstanciaDato.proyect = nuevaInstancia
             
-        resultsElement = projectElement.find('.//d:results', ns)
-        nuevaInstancia.totalSriScore = float(resultsElement.find('.//d:totalSriScore', ns).text)
-        nuevaInstancia.scoreKF1 = float(resultsElement.find('.//d:scoreKF1', ns).text)
-        nuevaInstancia.scoreKF2 = float(resultsElement.find('.//d:scoreKF2', ns).text)
-        nuevaInstancia.scoreKF3 = float(resultsElement.find('.//d:scoreKF3', ns).text)
+        resultsElement = projectElement.find('.//d:Results', ns)
+        nuevaInstancia.totalSriScore = float(resultsElement.find('.//d:TotalSriScore', ns).text)
+        nuevaInstancia.scoreKF1 = float(resultsElement.find('.//d:ScoreKF1', ns).text)
+        nuevaInstancia.scoreKF2 = float(resultsElement.find('.//d:ScoreKF2', ns).text)
+        nuevaInstancia.scoreKF3 = float(resultsElement.find('.//d:ScoreKF3', ns).text)
                
         return nuevaInstancia
     
@@ -2735,10 +2735,10 @@ class Dato(Model):
         ns = {'d':"http://www.efinovatic.es/sri"}
         nuevaInstancia = cls()
         nuevaInstancia.id = int(dataElement.attrib['id'])
-        nuevaInstancia.chosenFuncionality = Funcionalidad.objects.get(id = int(dataElement.find('.//d:chosenFuncionality', ns).text))
-        nuevaInstancia.comments =  dataElement.find('.//d:comments', ns).text if dataElement.find('.//d:comments', ns).text else ''
-        nuevaInstancia.justification =  dataElement.find('.//d:justification', ns).text if dataElement.find('.//d:justification', ns).text else ''
-        nuevaInstancia.percentage = float(dataElement.find('.//d:percentage', ns).text)
+        nuevaInstancia.chosenFuncionality = Funcionalidad.objects.get(id = int(dataElement.find('.//d:ChosenFuncionality', ns).text))
+        nuevaInstancia.comments =  dataElement.find('.//d:Comments', ns).text if dataElement.find('.//d:Comments', ns).text else ''
+        nuevaInstancia.justification =  dataElement.find('.//d:Justification', ns).text if dataElement.find('.//d:Justification', ns).text else ''
+        nuevaInstancia.percentage = float(dataElement.find('.//d:Percentage', ns).text)
         
         return nuevaInstancia
         

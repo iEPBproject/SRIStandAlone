@@ -81,16 +81,16 @@ def escribirXML(rutaArchivoOriginal, rutaArchivoNuevo):
                 p = instanciaProyecto
                 
         if p:
-            totalSri = root.find('.//d:totalSriScore', ns)
+            totalSri = root.find('.//d:TotalSriScore', ns)
             totalSri.text = str(p.getTotalSRI())
             
-            totalScoreKf1 = root.find('.//d:scoreKF1', ns)
+            totalScoreKf1 = root.find('.//d:ScoreKF1', ns)
             totalScoreKf1.text = str(p.getEnergyPerformannceKf1())
             
-            totalScoreKf2 = root.find('.//d:scoreKF2', ns)
+            totalScoreKf2 = root.find('.//d:ScoreKF2', ns)
             totalScoreKf2.text = str(p.getResponseToUserNeedsKf2())
             
-            totalScoreKf3 = root.find('.//d:scoreKF3', ns)
+            totalScoreKf3 = root.find('.//d:ScoreKF3', ns)
             totalScoreKf3.text = str(p.getEnergyFlexibilityKf3())
     else:
         print('Error neceseitas utilizar la opcion -i <inputfile>')
@@ -102,9 +102,9 @@ def escribirXML(rutaArchivoOriginal, rutaArchivoNuevo):
     # with open(rutaArchivoNuevo, "w") as f:
     #     f.write(xmlstr) 
 if __name__ == '__main__':
-    importarSriStandAlone(r'C:\Temp\test.iEPBXML')  
-    # escribirResultadosSri(r'C:\Temp\test.iEPBXML')
-    escribirXML(r'C:\Temp\test.iEPBXML', r'C:\Temp\test.iEPBXML')
+    # importarSriStandAlone(r'C:\Users\efinovatic\Desktop\Proyectos Sri2Market\175.xml')  
+    # escribirResultadosSri(r'C:\Users\efinovatic\Desktop\Proyectos Sri2Market\175.xml')
+    # escribirXML(r'C:\Users\efinovatic\Desktop\Proyectos Sri2Market\175.xml', r'C:\Temp\test.iEPBXML')
     # p = Proyecto.objects.first()
     # print(p.catalogo)
     # print(p.dominiosPresentes)
