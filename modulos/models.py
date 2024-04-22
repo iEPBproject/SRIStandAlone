@@ -51,7 +51,7 @@ class BuildingType(Model):
         ns = {'d':"http://www.efinovatic.es/sri"}
         nuevaInstancia = cls()
         nuevaInstancia.id = int(element.attrib['id'])
-        nuevaInstancia.description = element.find('.//d:Descripcion', ns).text
+        nuevaInstancia.description = element.find('.//d:Description', ns).text
         return nuevaInstancia
 
 class Country(Model):
@@ -1815,6 +1815,14 @@ class Proyecto(Model):
         nameElement = projectElement.find('d:Name',ns)
         nuevaInstancia.name = nameElement.text         
         nuevaInstancia.id = int(projectElement.attrib['id'])
+        nuevaInstancia.assessmentPurpose = projectElement.find('d:AssessmentPurpose',ns).text
+        nuevaInstancia.organisation = projectElement.find('d:Organisation',ns).text
+        nuevaInstancia.email = projectElement.find('d:EmailAdress',ns).text
+        nuevaInstancia.telephoneNumber = projectElement.find('d:TelephoneNumber',ns).text
+        nuevaInstancia.netFloorAreaOfTheBuilding = float(projectElement.find('d:NetFloorAreaBuilding',ns).text)
+        nuevaInstancia.buildingState = projectElement.find('d:BuildingState',ns).text
+        nuevaInstancia.combinedHVACPower = projectElement.find('d:EffectiveRatedOutputHVACSystem',ns).text
+        nuevaInstancia.descriptionOfBuilding = projectElement.find('d:DescriptionBuilding',ns).text
         nuevaInstancia.country = Country.creaDesdeXML(projectElement.find('.//d:Country', ns))
         nuevaInstancia.user = User.creaDesdeXML(projectElement)
         nuevaInstancia.buildingType = BuildingType.creaDesdeXML(projectElement.find('.//d:BuildingType', ns))

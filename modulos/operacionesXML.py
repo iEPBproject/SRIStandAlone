@@ -43,6 +43,7 @@ def importarSriStandAlone(nombreArchivo):
     ns = {'d':"http://www.efinovatic.es/sri"}
     for projectElement in root.findall('.//d:Project',ns):
         p=Proyecto.creaDesdeXML(projectElement)
+        p.yearOfConstruction = float(root.find('.//d:YearOfConstruction', ns).text)
         # print(p.getTotalSRI())
         # print(p.sri())
         listaProyectosAlmacenado.append(p)
@@ -102,7 +103,7 @@ def escribirXML(rutaArchivoOriginal, rutaArchivoNuevo):
     # with open(rutaArchivoNuevo, "w") as f:
     #     f.write(xmlstr) 
 if __name__ == '__main__':
-    # importarSriStandAlone(r'C:\Users\efinovatic\Desktop\Proyectos Sri2Market\175.xml')  
+    importarSriStandAlone(r'C:\Users\efinovatic\Desktop\Proyectos Sri2Market\427.xml')  
     # escribirResultadosSri(r'C:\Users\efinovatic\Desktop\Proyectos Sri2Market\175.xml')
     # escribirXML(r'C:\Users\efinovatic\Desktop\Proyectos Sri2Market\175.xml', r'C:\Temp\test.iEPBXML')
     # p = Proyecto.objects.first()
@@ -110,9 +111,3 @@ if __name__ == '__main__':
     # print(p.dominiosPresentes)
     # print(p.getTotalSRI())
     # print(p.sri())
-    
-
-                
-                
-            
-            
