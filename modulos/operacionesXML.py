@@ -8,6 +8,8 @@ import sys
 import xml.etree.ElementTree as ET
 from xml.dom import minidom
 from modulos.models import Proyecto
+import zipfile
+import os
 listaProyectosAlmacenado = []
 
 ET.register_namespace('', "http://www.opengis.net/wmts/1.0")
@@ -36,9 +38,24 @@ def getRoot():
                                                       'version':"6.01",
                                                       'SurfaceReferenceLocation':"Centerline"})  
     return root
+    
+def descomprimirZIP(path):
+#     files=os.listdir(path)
+#     for file in files:
+#         if file.endswith('.iEPB'):
+    # filePath=path+'/'+file
+    zip_file = zipfile.ZipFile(path)
+    ruta, fichero = os.path.split(path)
+    for names in zip_file.namelist():
+        zip_file.extract(names,ruta)
+        if '_gbXML' not in names:
+            rutaXML = os.path.join(ruta,names)
+    zip_file.close()
+    return rutaXML
 
 def importarSriStandAlone(nombreArchivo):
-    tree = ET.parse(nombreArchivo)
+    rutaXML = descomprimirZIP(nombreArchivo)
+    tree = ET.parse(rutaXML)
     root = tree.getroot()
     ns = {'d':"http://www.efinovatic.es/sri"}
     for projectElement in root.findall('.//d:Project',ns):
@@ -103,7 +120,7 @@ def escribirXML(rutaArchivoOriginal, rutaArchivoNuevo):
     # with open(rutaArchivoNuevo, "w") as f:
     #     f.write(xmlstr) 
 if __name__ == '__main__':
-    importarSriStandAlone(r'C:\Users\efinovatic\Desktop\Proyectos Sri2Market\427.xml')  
+    importarSriStandAlone(r'C:\Temp\427.iEPB')  
     # escribirResultadosSri(r'C:\Users\efinovatic\Desktop\Proyectos Sri2Market\175.xml')
     # escribirXML(r'C:\Users\efinovatic\Desktop\Proyectos Sri2Market\175.xml', r'C:\Temp\test.iEPBXML')
     # p = Proyecto.objects.first()
