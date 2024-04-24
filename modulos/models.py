@@ -1,6 +1,6 @@
 # # -\*- coding: utf-8 -\*-
 import copy
-
+import sys
 # from ckeditor_uploader.widgets import CKEditorUploadingWidget
 # from django import forms
 # from django.contrib.auth.models import User
@@ -2566,7 +2566,11 @@ class Proyecto(Model):
         '''
     
         # listadoDatos = self.datos.all()
-        listadoDatos = self.datos
+        try:
+            listadoDatos = self.datos
+        except:
+            print('No hay datos para porder realizar los calculos necesarios')
+            sys.exit()
         evaluacionImpactos = {}
         evaluacionImpactosMaximos = {}
         evaluacionPesos = {}
@@ -2576,7 +2580,11 @@ class Proyecto(Model):
         for nombreImpacto in self.listadoNombreImpactos:
             # print(f"Impacto: {nombreImpacto}")
             for dominio in self.dominiosPresentes:
-                listadoDatosDominio = [x for x in listadoDatos if x.chosenFuncionality.service.dominio == dominio and x.percentage > 0.0]
+                try:
+                    listadoDatosDominio = [x for x in listadoDatos if x.chosenFuncionality.service.dominio == dominio and x.percentage > 0.0]
+                except:
+                    print('Error: No existen servicios o hay algún servicio que no existe')
+                    sys.exit() 
                 listadoPreguntas = []
                 listadoMaximos = []
                 evaluacionImpactos[nombreImpacto] = [dato.impact(nombreImpacto) for dato in listadoDatosDominio]

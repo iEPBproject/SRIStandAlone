@@ -23,21 +23,21 @@ ET.register_namespace('volumeUnit', "CubicMeters")
 ET.register_namespace('useSIUnitsForResults', "True")
 ET.register_namespace('version', "6.01")
 ET.register_namespace('SurfaceReferenceLocation', "Centerline")
-
-def getRoot():
-    root=ET.Element('iEPBxml',attrib={'xmlns':"http://www.efinovatic.es/sri",
-                                                      'xmlns:xhtml':"http://www.w3.org/1999/xhtml",
-                                                      'xmlns:xsi':"http://www.w3.org/2001/XMLSchema-instance",
-                                                      'xmlns:xsd':"http://www.w3.org/2001/XMLSchema",
-                                                      'xsi:schemaLocation':"http://www.efinovatic.es/sri http://gbxml.org/schema/6-01/GreenBuildingXML_Ver6.01.xsd",
-                                                      'temperatureUnit':"C",
-                                                      'lengthUnit':"Meters",
-                                                      'areaUnit':"SquareMeters",
-                                                      'volumeUnit':"CubicMeters",
-                                                      'useSIUnitsForResults':"true",
-                                                      'version':"6.01",
-                                                      'SurfaceReferenceLocation':"Centerline"})  
-    return root
+    
+def exportarZip(rutaZip, rutaXML, rutaGBXML):
+    # Create a ZipFile Object
+    rutaXMLTemporal, ficheroXML = os.path.split(rutaXML)
+    rutaGBXMLTemporal, ficheroGBXML = os.path.split(rutaGBXML)
+    with zipfile.ZipFile(rutaZip, 'w') as zip_object:
+        # Adding files that need to be zipped
+        zip_object.write(rutaXML, arcname = ficheroXML)
+        zip_object.write(rutaGBXML, arcname = ficheroGBXML)
+    
+    # Check to see if the zip file is created
+    if os.path.exists(rutaZip):
+        print('Se ha creado correctamente el nuevo archivo iEPB')
+    else:
+        print('No se ha crear correctamente el nuevo archivo iEPB')
     
 def descomprimirZIP(path):
 #     files=os.listdir(path)
@@ -50,11 +50,13 @@ def descomprimirZIP(path):
         zip_file.extract(names,ruta)
         if '_gbXML' not in names:
             rutaXML = os.path.join(ruta,names)
+        else:
+            rutagbXML = os.path.join(ruta,names)
     zip_file.close()
-    return rutaXML
+    return rutaXML, rutagbXML
 
 def importarSriStandAlone(nombreArchivo):
-    rutaXML = descomprimirZIP(nombreArchivo)
+    rutaXML, rutagbXML = descomprimirZIP(nombreArchivo)
     tree = ET.parse(rutaXML)
     root = tree.getroot()
     ns = {'d':"http://www.efinovatic.es/sri"}
@@ -66,7 +68,8 @@ def importarSriStandAlone(nombreArchivo):
         listaProyectosAlmacenado.append(p)
     
 def escribirResultadosSri(rutaArchivo = None):
-    tree = ET.parse(rutaArchivo)
+    rutaXML, rutagbXML = descomprimirZIP(rutaArchivo)
+    tree = ET.parse(rutaXML)
     root = tree.getroot()
     ns = {'d':"http://www.efinovatic.es/sri"}
     project = root.find('.//d:Project', ns)
@@ -84,14 +87,17 @@ def escribirResultadosSri(rutaArchivo = None):
         print('Primero debe importar un archivo con la opcion --> -i <inputfile>')
         
 def escribirXML(rutaArchivoOriginal, rutaArchivoNuevo):
-    tree = ET.parse(rutaArchivoOriginal)
-    root = tree.getroot()
-    ET.register_namespace("", "http://www.efinovatic.es/sri")
     if rutaArchivoOriginal == rutaArchivoNuevo:
         print('Error no pueden ser el mismo archivo')
         sys.exit()
         
     elif rutaArchivoOriginal != '':
+        rutaXML, rutagbXML = descomprimirZIP(rutaArchivoOriginal)
+        
+        # Grabamos el primer archivo xml
+        tree = ET.parse(rutaXML)
+        root = tree.getroot()
+        ET.register_namespace("", "http://www.efinovatic.es/sri")
         ns = {'d':"http://www.efinovatic.es/sri"}
         project = root.find('.//d:Project', ns)
     
@@ -122,12 +128,29 @@ def escribirXML(rutaArchivoOriginal, rutaArchivoNuevo):
                 scoreKF2 = ET.SubElement(results, "ScoreKF2")
                 scoreKF2.text = str(p.getResponseToUserNeedsKf2())
                 scoreKF3 = ET.SubElement(results, "ScoreKF3")
-                scoreKF3.text = str(p.getEnergyFlexibilityKf3()) 
-    else:
-        print('Error neceseitas utilizar la opcion -i <inputfile>')
-    if rutaArchivoNuevo != '':    
-        ET.indent(tree, space="\t", level=0)   
-        tree.write(rutaArchivoNuevo)
+                scoreKF3.text = str(p.getEnergyFlexibilityKf3())  
+        ET.indent(tree, space="\t", level=0)
+        ruta, newFileXML = os.path.split(rutaXML)
+        arrayXML = newFileXML.split('.')
+        arrayXML[0] = '{}-outputfile'.format(arrayXML[0])
+        newFileXML = '.'.join(arrayXML)        
+        nuevaRutaXML = os.path.join(ruta, newFileXML)
+        tree.write(nuevaRutaXML)
+        
+        # Grabamos el archivo gbXML
+        treeGbXML = ET.parse(rutagbXML)
+        rootGbXML = treeGbXML.getroot()
+        ET.register_namespace("", "http://www.gbxml.org/schema")
+        ET.indent(tree, space="\t", level=0)
+        rutaGbXML, newFileGbXML = os.path.split(rutagbXML)
+        arrayGbXML = newFileGbXML.split('.')
+        arrayGbXML[0] = '{}-outputfile'.format(arrayGbXML[0])
+        newFileGbXML = '.'.join(arrayGbXML)  
+        nuevaRutaGbXML = os.path.join(rutaGbXML, newFileGbXML)
+        treeGbXML.write(nuevaRutaGbXML)
+        
+        # Creamos el nuevo zip
+        exportarZip(rutaArchivoNuevo, nuevaRutaXML, nuevaRutaGbXML)
     else:
         print('Error necesitas aprotar un archivo de salida')
     # xmlstr = minidom.parseString(ET.tostring(root)).toprettyxml(indent="    ")
@@ -135,8 +158,8 @@ def escribirXML(rutaArchivoOriginal, rutaArchivoNuevo):
     #     f.write(xmlstr) 
 if __name__ == '__main__':
     importarSriStandAlone(r'C:\Temp\427.iEPB')  
-    # escribirResultadosSri(r'C:\Users\efinovatic\Desktop\Proyectos Sri2Market\175.xml')
-    escribirXML(r'C:\Temp\427 - copia.xml', r'C:\Temp\testCopia427.iEPBXML')
+    escribirResultadosSri(r'C:\Temp\427.iEPB')
+    # escribirXML(r'C:\Temp\427.iEPB', r'C:\Temp\427-output.iEPB')
     # p = Proyecto.objects.first()
     # print(p.catalogo)
     # print(p.dominiosPresentes)
