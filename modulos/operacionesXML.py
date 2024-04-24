@@ -86,6 +86,7 @@ def escribirResultadosSri(rutaArchivo = None):
 def escribirXML(rutaArchivoOriginal, rutaArchivoNuevo):
     tree = ET.parse(rutaArchivoOriginal)
     root = tree.getroot()
+    ET.register_namespace("", "http://www.efinovatic.es/sri")
     if rutaArchivoOriginal == rutaArchivoNuevo:
         print('Error no pueden ser el mismo archivo')
         sys.exit()
@@ -99,20 +100,33 @@ def escribirXML(rutaArchivoOriginal, rutaArchivoNuevo):
                 p = instanciaProyecto
                 
         if p:
-            totalSri = root.find('.//d:TotalSriScore', ns)
-            totalSri.text = str(p.getTotalSRI())
-            
-            totalScoreKf1 = root.find('.//d:ScoreKF1', ns)
-            totalScoreKf1.text = str(p.getEnergyPerformannceKf1())
-            
-            totalScoreKf2 = root.find('.//d:ScoreKF2', ns)
-            totalScoreKf2.text = str(p.getResponseToUserNeedsKf2())
-            
-            totalScoreKf3 = root.find('.//d:ScoreKF3', ns)
-            totalScoreKf3.text = str(p.getEnergyFlexibilityKf3())
+            resultados = root.find('.//d:Results', ns)
+            if resultados:
+                totalSri = root.find('.//d:TotalSriScore', ns)
+                totalSri.text = str(p.getTotalSRI())
+                
+                totalScoreKf1 = root.find('.//d:ScoreKF1', ns)
+                totalScoreKf1.text = str(p.getEnergyPerformannceKf1())
+                
+                totalScoreKf2 = root.find('.//d:ScoreKF2', ns)
+                totalScoreKf2.text = str(p.getResponseToUserNeedsKf2())
+                
+                totalScoreKf3 = root.find('.//d:ScoreKF3', ns)
+                totalScoreKf3.text = str(p.getEnergyFlexibilityKf3())
+            else:
+                results = ET.SubElement(project, 'Results') 
+                totalSriScore = ET.SubElement(results, "TotalSriScore")
+                totalSriScore.text = str(p.getTotalSRI())      
+                scoreKF1 = ET.SubElement(results, "ScoreKF1")
+                scoreKF1.text = str(p.getEnergyPerformannceKf1())     
+                scoreKF2 = ET.SubElement(results, "ScoreKF2")
+                scoreKF2.text = str(p.getResponseToUserNeedsKf2())
+                scoreKF3 = ET.SubElement(results, "ScoreKF3")
+                scoreKF3.text = str(p.getEnergyFlexibilityKf3()) 
     else:
         print('Error neceseitas utilizar la opcion -i <inputfile>')
-    if rutaArchivoNuevo != '':
+    if rutaArchivoNuevo != '':    
+        ET.indent(tree, space="\t", level=0)   
         tree.write(rutaArchivoNuevo)
     else:
         print('Error necesitas aprotar un archivo de salida')
@@ -122,7 +136,7 @@ def escribirXML(rutaArchivoOriginal, rutaArchivoNuevo):
 if __name__ == '__main__':
     importarSriStandAlone(r'C:\Temp\427.iEPB')  
     # escribirResultadosSri(r'C:\Users\efinovatic\Desktop\Proyectos Sri2Market\175.xml')
-    # escribirXML(r'C:\Users\efinovatic\Desktop\Proyectos Sri2Market\175.xml', r'C:\Temp\test.iEPBXML')
+    escribirXML(r'C:\Temp\427 - copia.xml', r'C:\Temp\testCopia427.iEPBXML')
     # p = Proyecto.objects.first()
     # print(p.catalogo)
     # print(p.dominiosPresentes)
