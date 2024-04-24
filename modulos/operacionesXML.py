@@ -10,6 +10,7 @@ from xml.dom import minidom
 from modulos.models import Proyecto
 import zipfile
 import os
+import tempfile
 listaProyectosAlmacenado = []
 
 ET.register_namespace('', "http://www.opengis.net/wmts/1.0")
@@ -28,6 +29,7 @@ def exportarZip(rutaZip, rutaXML, rutaGBXML):
     # Create a ZipFile Object
     rutaXMLTemporal, ficheroXML = os.path.split(rutaXML)
     rutaGBXMLTemporal, ficheroGBXML = os.path.split(rutaGBXML)
+    print(str(tempfile.gettempdir()))
     with zipfile.ZipFile(rutaZip, 'w') as zip_object:
         # Adding files that need to be zipped
         zip_object.write(rutaXML, arcname = ficheroXML)
@@ -47,11 +49,11 @@ def descomprimirZIP(path):
     zip_file = zipfile.ZipFile(path)
     ruta, fichero = os.path.split(path)
     for names in zip_file.namelist():
-        zip_file.extract(names,ruta)
+        zip_file.extract(names,tempfile.gettempdir())
         if '_gbXML' not in names:
-            rutaXML = os.path.join(ruta,names)
+            rutaXML = os.path.join(tempfile.gettempdir(),names)
         else:
-            rutagbXML = os.path.join(ruta,names)
+            rutagbXML = os.path.join(tempfile.gettempdir(),names)
     zip_file.close()
     return rutaXML, rutagbXML
 
@@ -67,6 +69,7 @@ def importarSriStandAlone(nombreArchivo):
             # print(p.getTotalSRI())
             # print(p.sri())
             listaProyectosAlmacenado.append(p)
+        if os.path.exists(rutaXML):os.remove(rutaXML)
     else:
         print('Error el archivo que intenta exportar no existe')
         sys.exit()
@@ -90,6 +93,7 @@ def escribirResultadosSri(rutaArchivo = None):
             print('El resultado Total de Energy Flexibility (Kf3): {}'.format(p.getEnergyFlexibilityKf3()))
         else:
             print('Primero debe importar un archivo con la opcion --> -i <inputfile>')
+        if os.path.exists(rutaXML):os.remove(rutaXML) 
     else:
         print('Error el archivo que intenta exportar no existe')
         sys.exit()
@@ -102,7 +106,6 @@ def escribirXML(rutaArchivoOriginal, rutaArchivoNuevo):
             
         elif rutaArchivoOriginal != '':
             rutaXML, rutagbXML = descomprimirZIP(rutaArchivoOriginal)
-            
             # Grabamos el primer archivo xml
             tree = ET.parse(rutaXML)
             root = tree.getroot()
@@ -160,6 +163,11 @@ def escribirXML(rutaArchivoOriginal, rutaArchivoNuevo):
             
             # Creamos el nuevo zip
             exportarZip(rutaArchivoNuevo, nuevaRutaXML, nuevaRutaGbXML)
+            #Eliminamos todos los archivos temporales
+            if os.path.exists(rutaXML):os.remove(rutaXML)
+            if os.path.exists(rutagbXML):os.remove(rutagbXML)
+            if os.path.exists(nuevaRutaXML):os.remove(nuevaRutaXML)
+            if os.path.exists(nuevaRutaGbXML):os.remove(nuevaRutaGbXML)
         else:
             print('Error necesitas aportar un archivo de salida')
     else:
@@ -169,8 +177,8 @@ def escribirXML(rutaArchivoOriginal, rutaArchivoNuevo):
     # with open(rutaArchivoNuevo, "w") as f:
     #     f.write(xmlstr) 
 if __name__ == '__main__':
-    importarSriStandAlone(r'C:\Temp\AAA.iEPB')  
-    # escribirResultadosSri(r'C:\Temp\427.iEPB')
+    importarSriStandAlone(r'C:\Temp\427.iEPB')  
+    escribirResultadosSri(r'C:\Temp\427.iEPB')
     # escribirXML(r'C:\Temp\427.iEPB', r'C:\Temp\427-output.iEPB')
     # p = Proyecto.objects.first()
     # print(p.catalogo)
