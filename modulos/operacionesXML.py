@@ -29,7 +29,6 @@ def exportarZip(rutaZip, rutaXML, rutaGBXML):
     # Create a ZipFile Object
     rutaXMLTemporal, ficheroXML = os.path.split(rutaXML)
     rutaGBXMLTemporal, ficheroGBXML = os.path.split(rutaGBXML)
-    print(str(tempfile.gettempdir()))
     with zipfile.ZipFile(rutaZip, 'w') as zip_object:
         # Adding files that need to be zipped
         zip_object.write(rutaXML, arcname = ficheroXML)
@@ -41,19 +40,26 @@ def exportarZip(rutaZip, rutaXML, rutaGBXML):
     else:
         print('No se ha crear correctamente el nuevo archivo iEPB')
     
-def descomprimirZIP(path):
+def descomprimirZIP(path, pathDestino = None, extraer = False):
 #     files=os.listdir(path)
 #     for file in files:
 #         if file.endswith('.iEPB'):
     # filePath=path+'/'+file
     zip_file = zipfile.ZipFile(path)
     ruta, fichero = os.path.split(path)
+    if pathDestino:
+        rutaGuardar = pathDestino
+    elif extraer:
+        rutaGuardar = ruta
+    else:
+        rutaGuardar = tempfile.gettempdir()
+        
     for names in zip_file.namelist():
-        zip_file.extract(names,tempfile.gettempdir())
+        zip_file.extract(names,rutaGuardar)
         if '_gbXML' not in names:
-            rutaXML = os.path.join(tempfile.gettempdir(),names)
+            rutaXML = os.path.join(rutaGuardar,names)
         else:
-            rutagbXML = os.path.join(tempfile.gettempdir(),names)
+            rutagbXML = os.path.join(rutaGuardar,names)
     zip_file.close()
     return rutaXML, rutagbXML
 
@@ -74,7 +80,7 @@ def importarSriStandAlone(nombreArchivo):
         print('Error el archivo que intenta exportar no existe')
         sys.exit()
     
-def escribirResultadosSri(rutaArchivo = None):
+def imprimirTodosResultadosSri(rutaArchivo = None):
     if os.path.exists(rutaArchivo):
         rutaXML, rutagbXML = descomprimirZIP(rutaArchivo)
         tree = ET.parse(rutaXML)
@@ -98,10 +104,94 @@ def escribirResultadosSri(rutaArchivo = None):
         print('Error el archivo que intenta exportar no existe')
         sys.exit()
         
+def imprimirResultadoSRI(rutaArchivo = None):
+    if os.path.exists(rutaArchivo):
+        rutaXML, rutagbXML = descomprimirZIP(rutaArchivo)
+        tree = ET.parse(rutaXML)
+        root = tree.getroot()
+        ns = {'d':"http://www.efinovatic.es/sri"}
+        project = root.find('.//d:Project', ns)
+        # p = Proyecto.objects.get(id = int(project.attrib['id']))
+        p = None
+        for instanciaProyecto in listaProyectosAlmacenado:
+            if instanciaProyecto.id == int(project.attrib['id']):
+                p = instanciaProyecto
+        if p:
+            print('El resultado Total del SRI: {}'.format(p.getTotalSRI()))
+        else:
+            print('Primero debe importar un archivo con la opcion --> -i <inputfile>')
+        if os.path.exists(rutaXML):os.remove(rutaXML) 
+    else:
+        print('Error el archivo que intenta exportar no existe')
+        sys.exit()
+        
+def imprimirResultadoKf1(rutaArchivo = None):
+    if os.path.exists(rutaArchivo):
+        rutaXML, rutagbXML = descomprimirZIP(rutaArchivo)
+        tree = ET.parse(rutaXML)
+        root = tree.getroot()
+        ns = {'d':"http://www.efinovatic.es/sri"}
+        project = root.find('.//d:Project', ns)
+        # p = Proyecto.objects.get(id = int(project.attrib['id']))
+        p = None
+        for instanciaProyecto in listaProyectosAlmacenado:
+            if instanciaProyecto.id == int(project.attrib['id']):
+                p = instanciaProyecto
+        if p:
+            print('El resultado total de Energy Perfomance (Kf1): {}'.format(p.getEnergyPerformannceKf1()))
+        else:
+            print('Primero debe importar un archivo con la opcion --> -i <inputfile>')
+        if os.path.exists(rutaXML):os.remove(rutaXML) 
+    else:
+        print('Error el archivo que intenta exportar no existe')
+        sys.exit()
+        
+def imprimirResultadoKf2(rutaArchivo = None):
+    if os.path.exists(rutaArchivo):
+        rutaXML, rutagbXML = descomprimirZIP(rutaArchivo)
+        tree = ET.parse(rutaXML)
+        root = tree.getroot()
+        ns = {'d':"http://www.efinovatic.es/sri"}
+        project = root.find('.//d:Project', ns)
+        # p = Proyecto.objects.get(id = int(project.attrib['id']))
+        p = None
+        for instanciaProyecto in listaProyectosAlmacenado:
+            if instanciaProyecto.id == int(project.attrib['id']):
+                p = instanciaProyecto
+        if p:
+            print('El resultado total de Response To User Needs (Kf2): {}'.format(p.getResponseToUserNeedsKf2()))
+        else:
+            print('Primero debe importar un archivo con la opcion --> -i <inputfile>')
+        if os.path.exists(rutaXML):os.remove(rutaXML) 
+    else:
+        print('Error el archivo que intenta exportar no existe')
+        sys.exit()
+        
+def imprimirResultadoKf3(rutaArchivo = None):
+    if os.path.exists(rutaArchivo):
+        rutaXML, rutagbXML = descomprimirZIP(rutaArchivo)
+        tree = ET.parse(rutaXML)
+        root = tree.getroot()
+        ns = {'d':"http://www.efinovatic.es/sri"}
+        project = root.find('.//d:Project', ns)
+        # p = Proyecto.objects.get(id = int(project.attrib['id']))
+        p = None
+        for instanciaProyecto in listaProyectosAlmacenado:
+            if instanciaProyecto.id == int(project.attrib['id']):
+                p = instanciaProyecto
+        if p:
+            print('El resultado total de Energy Flexibility (Kf3): {}'.format(p.getEnergyFlexibilityKf3()))
+        else:
+            print('Primero debe importar un archivo con la opcion --> -i <inputfile>')
+        if os.path.exists(rutaXML):os.remove(rutaXML) 
+    else:
+        print('Error el archivo que intenta exportar no existe')
+        sys.exit()
+        
 def escribirXML(rutaArchivoOriginal, rutaArchivoNuevo):
     if os.path.exists(rutaArchivoOriginal):
         if rutaArchivoOriginal == rutaArchivoNuevo:
-            print('Error no pueden ser el mismo archivo')
+            print('Error: El archivo importado y el archivo para exportar no se pueden llamarse igual')
             sys.exit()
             
         elif rutaArchivoOriginal != '':
@@ -119,7 +209,18 @@ def escribirXML(rutaArchivoOriginal, rutaArchivoNuevo):
                     
             if p:
                 resultados = root.find('.//d:Results', ns)
-                if resultados:
+                if resultados == None:
+                    results = ET.SubElement(project, 'Results') 
+                    totalSriScore = ET.SubElement(results, "TotalSriScore")
+                    totalSriScore.text = str(p.getTotalSRI())      
+                    scoreKF1 = ET.SubElement(results, "ScoreKF1")
+                    scoreKF1.text = str(p.getEnergyPerformannceKf1())     
+                    scoreKF2 = ET.SubElement(results, "ScoreKF2")
+                    scoreKF2.text = str(p.getResponseToUserNeedsKf2())
+                    scoreKF3 = ET.SubElement(results, "ScoreKF3")
+                    scoreKF3.text = str(p.getEnergyFlexibilityKf3())  
+                    ET.indent(tree, space="\t", level=0)
+                else:
                     totalSri = root.find('.//d:TotalSriScore', ns)
                     totalSri.text = str(p.getTotalSRI())
                     
@@ -131,17 +232,7 @@ def escribirXML(rutaArchivoOriginal, rutaArchivoNuevo):
                     
                     totalScoreKf3 = root.find('.//d:ScoreKF3', ns)
                     totalScoreKf3.text = str(p.getEnergyFlexibilityKf3())
-                else:
-                    results = ET.SubElement(project, 'Results') 
-                    totalSriScore = ET.SubElement(results, "TotalSriScore")
-                    totalSriScore.text = str(p.getTotalSRI())      
-                    scoreKF1 = ET.SubElement(results, "ScoreKF1")
-                    scoreKF1.text = str(p.getEnergyPerformannceKf1())     
-                    scoreKF2 = ET.SubElement(results, "ScoreKF2")
-                    scoreKF2.text = str(p.getResponseToUserNeedsKf2())
-                    scoreKF3 = ET.SubElement(results, "ScoreKF3")
-                    scoreKF3.text = str(p.getEnergyFlexibilityKf3())  
-            ET.indent(tree, space="\t", level=0)
+                    
             ruta, newFileXML = os.path.split(rutaXML)
             arrayXML = newFileXML.split('.')
             arrayXML[0] = '{}-outputfile'.format(arrayXML[0])
@@ -153,7 +244,6 @@ def escribirXML(rutaArchivoOriginal, rutaArchivoNuevo):
             treeGbXML = ET.parse(rutagbXML)
             rootGbXML = treeGbXML.getroot()
             ET.register_namespace("", "http://www.gbxml.org/schema")
-            ET.indent(tree, space="\t", level=0)
             rutaGbXML, newFileGbXML = os.path.split(rutagbXML)
             arrayGbXML = newFileGbXML.split('.')
             arrayGbXML[0] = '{}-outputfile'.format(arrayGbXML[0])
@@ -173,15 +263,30 @@ def escribirXML(rutaArchivoOriginal, rutaArchivoNuevo):
     else:
         print('Error el archivo que intenta exportar no existe')
         sys.exit()
+def extraerArchivos(ficheroDescomprimir, rutaDestinoExtraer = None):
+    if os.path.exists(ficheroDescomprimir):
+        if rutaDestinoExtraer  and os.path.exists(rutaDestinoExtraer):
+            if os.path.isfile(rutaDestinoExtraer):
+                print('Error: la ruta introducida no puede ser otro archivo')
+                sys.exit()
+            else:
+                rutaXML, rutagbXML = descomprimirZIP(ficheroDescomprimir, rutaDestinoExtraer)
+                print('El arhivo XML se ha extraido correctamente en {}'.format(rutaXML))
+                print('El arhivo gbXML se ha extraido correctamente en {}'.format(rutagbXML))
+        else:
+            print('No ha introducido ruta de destino o la ruta para guardar los documentos extraidos no existe')
+            print('Extrayendo archivos en el archivo original')
+            rutaXML, rutagbXML = descomprimirZIP(ficheroDescomprimir, extraer=True)
+            print('El arhivo XML se ha extraido correctamente en {}'.format(rutaXML))
+            print('El arhivo gbXML se ha extraido correctamente en {}'.format(rutagbXML))
+    else:
+        print('Error la ruta para extraer los documentos no existe')
     # xmlstr = minidom.parseString(ET.tostring(root)).toprettyxml(indent="    ")
     # with open(rutaArchivoNuevo, "w") as f:
     #     f.write(xmlstr) 
 if __name__ == '__main__':
-    importarSriStandAlone(r'C:\Temp\427.iEPB')  
-    escribirResultadosSri(r'C:\Temp\427.iEPB')
+    # importarSriStandAlone(r'C:\Temp\427.iEPB')  
+    # imprimirTodosResultadosSri(r'C:\Temp\427.iEPB')
     # escribirXML(r'C:\Temp\427.iEPB', r'C:\Temp\427-output.iEPB')
-    # p = Proyecto.objects.first()
-    # print(p.catalogo)
-    # print(p.dominiosPresentes)
-    # print(p.getTotalSRI())
-    # print(p.sri())
+    extraerArchivos(r'C:\Temp\427.iEPB', r'C:\Temp\427.iEPB')
+    
