@@ -157,8 +157,8 @@ def escribirXML(rutaArchivoOriginal, rutaArchivoNuevo):
     # with open(rutaArchivoNuevo, "w") as f:
     #     f.write(xmlstr) 
 if __name__ == '__main__':
-    importarSriStandAlone(r'C:\Temp\427.iEPB')  
-    escribirResultadosSri(r'C:\Temp\427.iEPB')
+    importarSriStandAlone(r'C:\Temp\12.iEPB')  
+    escribirResultadosSri(r'C:\Temp\12.iEPB')
     # escribirXML(r'C:\Temp\427.iEPB', r'C:\Temp\427-output.iEPB')
     # p = Proyecto.objects.first()
     # print(p.catalogo)
