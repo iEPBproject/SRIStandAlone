@@ -8,6 +8,7 @@ import sys
 import xml.etree.ElementTree as ET
 from xml.dom import minidom
 from modulos.models import Proyecto
+from modulos.__init__ import __version__
 import zipfile
 import os
 import tempfile
@@ -251,6 +252,11 @@ def escribirXML(rutaArchivoOriginal, rutaArchivoNuevo):
             nuevaRutaGbXML = os.path.join(rutaGbXML, newFileGbXML)
             treeGbXML.write(nuevaRutaGbXML)
             
+            #Comprobamos que existe la rua del archivo nuevo si no la creamos
+            if not os.path.exists(rutaArchivoNuevo):
+                nuevaRuta, nuevoArchivo = os.path.split(rutaArchivoNuevo)
+                os.makedirs(nuevaRuta)
+            
             # Creamos el nuevo zip
             exportarZip(rutaArchivoNuevo, nuevaRutaXML, nuevaRutaGbXML)
             #Eliminamos todos los archivos temporales
@@ -283,10 +289,15 @@ def extraerArchivos(ficheroDescomprimir, rutaDestinoExtraer = None):
         print('Extracting folder does not exists')
     # xmlstr = minidom.parseString(ET.tostring(root)).toprettyxml(indent="    ")
     # with open(rutaArchivoNuevo, "w") as f:
-    #     f.write(xmlstr) 
+    #     f.write(xmlstr)
+    
+def imprimirVersion():
+    print(__version__)
+     
 if __name__ == '__main__':
     # importarSriStandAlone(r'C:\Temp\427.iEPB')  
     # imprimirTodosResultadosSri(r'C:\Temp\427.iEPB')
-    # escribirXML(r'C:\Temp\427.iEPB', r'C:\Temp\427-output.iEPB')
-    extraerArchivos(r'C:\Temp\427.iEPB', r'C:\Temp\427.iEPB')
+    # escribirXML(r'C:\Temp\427.iEPB', r'C:\Temp\Prueba2\427-output.iEPB')
+    # extraerArchivos(r'C:\Temp\427.iEPB', r'C:\Temp\427.iEPB')
+    imprimirVersion()
     

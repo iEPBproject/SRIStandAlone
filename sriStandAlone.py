@@ -7,7 +7,7 @@ import sys, getopt
 import argparse
 from modulos.operacionesXML import importarSriStandAlone, imprimirTodosResultadosSri,\
     escribirXML, imprimirResultadoSRI, imprimirResultadoKf1, imprimirResultadoKf2, imprimirResultadoKf3, \
-    extraerArchivos
+    extraerArchivos, imprimirVersion
 
 
 
@@ -45,10 +45,11 @@ def main(argv):
     parser.add_argument('-kf2','--result_Kf2', type=str, help="Print Kf2 result", nargs='?')
     parser.add_argument('-kf3','--result_Kf3', type=str, help="Print Kf3 result", nargs='?')
     parser.add_argument('-x','--extract_files', type=str, help="Extract xml and gbXML from iEPB file", nargs='?')
+    parser.add_argument('-v','--show_version', type=str, help="Show version of software", nargs='?')
     
     args = parser.parse_args()
     
-    if args.output_file and '-o' in argv:
+    if args.output_file:
         inputfile = args.import_file
         outputfile = args.output_file
         importarSriStandAlone(inputfile)
@@ -140,6 +141,9 @@ def main(argv):
         importarSriStandAlone(args.import_file)
         args.extract_files = args.import_file
         extraerArchivos(args.extract_files)
+        
+    elif not args.show_version and '-v' in argv or '--show_version' in argv:
+        imprimirVersion()
     else:
         importarSriStandAlone(args.import_file)
         print ('iEPB loaded') 
