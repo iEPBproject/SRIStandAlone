@@ -10,7 +10,7 @@ from cx_Freeze import setup, Executable
 
 # Dependencies are automatically detected, but it might need fine tuning.
 build_exe_options = {
-    "excludes": ["tkinter", "unittest",'scipy','matplotlib','pandas','pytz','wx','email','html','http','logging','pydoc_data','urllib'],
+    "excludes": ["tkinter", "unittest",'scipy','matplotlib','pandas','pytz','wx','email','html','http','logging','pydoc_data'],
     # "include_msvcr": True
 }
 
