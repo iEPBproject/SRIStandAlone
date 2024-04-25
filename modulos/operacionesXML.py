@@ -117,7 +117,7 @@ def imprimirResultadoSRI(rutaArchivo = None):
             if instanciaProyecto.id == int(project.attrib['id']):
                 p = instanciaProyecto
         if p:
-            print('El resultado Total del SRI: {}'.format(p.getTotalSRI()))
+            print(p.getTotalSRI())
         else:
             print('Primero debe importar un archivo con la opcion --> -i <inputfile>')
         if os.path.exists(rutaXML):os.remove(rutaXML) 
@@ -138,7 +138,7 @@ def imprimirResultadoKf1(rutaArchivo = None):
             if instanciaProyecto.id == int(project.attrib['id']):
                 p = instanciaProyecto
         if p:
-            print('El resultado total de Energy Perfomance (Kf1): {}'.format(p.getEnergyPerformannceKf1()))
+            print(p.getEnergyPerformannceKf1())
         else:
             print('Primero debe importar un archivo con la opcion --> -i <inputfile>')
         if os.path.exists(rutaXML):os.remove(rutaXML) 
@@ -159,7 +159,7 @@ def imprimirResultadoKf2(rutaArchivo = None):
             if instanciaProyecto.id == int(project.attrib['id']):
                 p = instanciaProyecto
         if p:
-            print('El resultado total de Response To User Needs (Kf2): {}'.format(p.getResponseToUserNeedsKf2()))
+            print(p.getResponseToUserNeedsKf2())
         else:
             print('Primero debe importar un archivo con la opcion --> -i <inputfile>')
         if os.path.exists(rutaXML):os.remove(rutaXML) 
@@ -180,7 +180,7 @@ def imprimirResultadoKf3(rutaArchivo = None):
             if instanciaProyecto.id == int(project.attrib['id']):
                 p = instanciaProyecto
         if p:
-            print('El resultado total de Energy Flexibility (Kf3): {}'.format(p.getEnergyFlexibilityKf3()))
+            print(p.getEnergyFlexibilityKf3())
         else:
             print('Primero debe importar un archivo con la opcion --> -i <inputfile>')
         if os.path.exists(rutaXML):os.remove(rutaXML) 

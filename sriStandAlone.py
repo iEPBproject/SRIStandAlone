@@ -41,9 +41,9 @@ def main(argv):
     parser.add_argument('-o','--output_file', type=str, help="Exporta proyectos")
     parser.add_argument('-p','--result_file', type=str, help="Imprime todos los resultados del proyectos", nargs='?')
     parser.add_argument('-s','--result_SRI', type=str, help="Imprime el resultado SRI del proyecto", nargs='?')
-    parser.add_argument('-e','--result_Kf1', type=str, help="Imprime el resultado Kf1 del proyecto", nargs='?')
-    parser.add_argument('-n','--result_Kf2', type=str, help="Imprime el resultado Kf2 del proyecto", nargs='?')
-    parser.add_argument('-f','--result_Kf3', type=str, help="Imprime el resultado Kf3 del proyecto", nargs='?')
+    parser.add_argument('-kf1','--result_Kf1', type=str, help="Imprime el resultado Kf1 del proyecto", nargs='?')
+    parser.add_argument('-kf2','--result_Kf2', type=str, help="Imprime el resultado Kf2 del proyecto", nargs='?')
+    parser.add_argument('-kf3','--result_Kf3', type=str, help="Imprime el resultado Kf3 del proyecto", nargs='?')
     parser.add_argument('-x','--extract_files', type=str, help="Extrae los xml y los guarda en el mismo sitio o en la ruta introducida", nargs='?')
     
     args = parser.parse_args()
@@ -76,82 +76,68 @@ def main(argv):
     elif args.result_SRI:
         if args.import_file != args.result_SRI:
             importarSriStandAlone(args.import_file)
-            print ('El archivo XML ha sido importado correctamente')
             print('Error: El archivo importado y el archivo para imprimir resultado del SRI deben ser el mismo')
             sys.exit()
         else:
             importarSriStandAlone(args.import_file)
-            print ('El archivo XML ha sido importado correctamente')
             inputfile = args.result_SRI
             imprimirResultadoSRI(inputfile)
     elif not args.result_SRI and '-s' in argv:
         args.result_SRI = args.import_file
         importarSriStandAlone(args.import_file)
-        print ('El archivo XML ha sido importado correctamente')
         inputfile = args.result_SRI
         imprimirResultadoSRI(inputfile)
          
     elif args.result_Kf1:
         if args.import_file != args.result_Kf1:
             importarSriStandAlone(args.import_file)
-            print ('El archivo XML ha sido importado correctamente')
             print('Error: El archivo importado y el archivo para imprimir resultado total de Energy Perfomance (Kf1) deben ser el mismo')
             sys.exit()
         else:
             importarSriStandAlone(args.import_file)
-            print ('El archivo XML ha sido importado correctamente')
             inputfile = args.result_Kf1
             imprimirResultadoKf1(inputfile)
-    elif not args.result_Kf1 and '-e' in argv:
+    elif not args.result_Kf1 and '-kf1' in argv:
         args.result_Kf1 = args.import_file
         importarSriStandAlone(args.import_file)
-        print ('El archivo XML ha sido importado correctamente')
         inputfile = args.result_Kf1
         imprimirResultadoKf1(inputfile)
         
     elif args.result_Kf2:
         if args.import_file != args.result_Kf2:
             importarSriStandAlone(args.import_file)
-            print ('El archivo XML ha sido importado correctamente')
             print('Error: El archivo importado y el archivo para imprimir resultado total de Response To User Needs (Kf2) deben ser el mismo')
             sys.exit()
         else:
             importarSriStandAlone(args.import_file)
-            print ('El archivo XML ha sido importado correctamente')
             inputfile = args.result_Kf2
             imprimirResultadoKf2(inputfile)
-    elif not args.result_Kf2 and '-n' in argv:
+    elif not args.result_Kf2 and '-kf2' in argv:
         args.result_Kf2 = args.import_file
         importarSriStandAlone(args.import_file)
-        print ('El archivo XML ha sido importado correctamente')
         inputfile = args.result_Kf2
         imprimirResultadoKf2(inputfile)
         
     elif args.result_Kf3:
         if args.import_file != args.result_Kf3:
             importarSriStandAlone(args.import_file)
-            print ('El archivo XML ha sido importado correctamente')
             print('Error: El archivo importado y el archivo para imprimir resultado total de Energy Flexibility (Kf3) deben ser el mismo')
             sys.exit()
         else:
             importarSriStandAlone(args.import_file)
-            print ('El archivo XML ha sido importado correctamente')
             inputfile = args.result_Kf3
             imprimirResultadoKf3(inputfile)
-    elif not args.result_Kf3 and '-f' in argv:
+    elif not args.result_Kf3 and '-kf3' in argv:
         args.result_Kf3 = args.import_file
         importarSriStandAlone(args.import_file)
-        print ('El archivo XML ha sido importado correctamente')
         inputfile = args.result_Kf3
         imprimirResultadoKf3(inputfile)
     
     elif args.extract_files:
         importarSriStandAlone(args.import_file)
-        print ('El archivo XML ha sido importado correctamente')
         extraerArchivos(args.import_file, args.extract_files)
     elif not args.extract_files and '-x' in argv:
         importarSriStandAlone(args.import_file)
-        print ('El archivo XML ha sido importado correctamente')
         args.extract_files = args.import_file
         extraerArchivos(args.extract_files)
     else:
