@@ -36,9 +36,9 @@ def exportarZip(rutaZip, rutaXML, rutaGBXML):
     
     # Check to see if the zip file is created
     if os.path.exists(rutaZip):
-        print('Se ha creado correctamente el nuevo archivo iEPB')
+        print('New iEPB file created')
     else:
-        print('No se ha crear correctamente el nuevo archivo iEPB')
+        print('Problem creating the new iEPB file ')
     
 def descomprimirZIP(path, pathDestino = None, extraer = False):
 #     files=os.listdir(path)
@@ -77,7 +77,7 @@ def importarSriStandAlone(nombreArchivo):
             listaProyectosAlmacenado.append(p)
         if os.path.exists(rutaXML):os.remove(rutaXML)
     else:
-        print('Error el archivo que intenta exportar no existe')
+        print('The file does not exist.')
         sys.exit()
     
 def imprimirTodosResultadosSri(rutaArchivo = None):
@@ -93,15 +93,15 @@ def imprimirTodosResultadosSri(rutaArchivo = None):
             if instanciaProyecto.id == int(project.attrib['id']):
                 p = instanciaProyecto
         if p:
-            print('El resultado Total del SRI: {}'.format(p.getTotalSRI()))
-            print('El resultado Total de Energy Perfomance (Kf1): {}'.format(p.getEnergyPerformannceKf1()))
-            print('El resultado Total de Response To User Needs (Kf2): {}'.format(p.getResponseToUserNeedsKf2()))
-            print('El resultado Total de Energy Flexibility (Kf3): {}'.format(p.getEnergyFlexibilityKf3()))
+            print('Total SRI: {}'.format(p.getTotalSRI()))
+            print('Energy Perfomance (Kf1): {}'.format(p.getEnergyPerformannceKf1()))
+            print('Response To User Needs (Kf2): {}'.format(p.getResponseToUserNeedsKf2()))
+            print('Energy Flexibility (Kf3): {}'.format(p.getEnergyFlexibilityKf3()))
         else:
-            print('Primero debe importar un archivo con la opcion --> -i <inputfile>')
+            print('Please, define the input file --> -i <inputfile>')
         if os.path.exists(rutaXML):os.remove(rutaXML) 
     else:
-        print('Error el archivo que intenta exportar no existe')
+        print('The input file does not exist.')
         sys.exit()
         
 def imprimirResultadoSRI(rutaArchivo = None):
@@ -119,10 +119,10 @@ def imprimirResultadoSRI(rutaArchivo = None):
         if p:
             print(p.getTotalSRI())
         else:
-            print('Primero debe importar un archivo con la opcion --> -i <inputfile>')
+            print('Please, define the input file --> -i <inputfile>')
         if os.path.exists(rutaXML):os.remove(rutaXML) 
     else:
-        print('Error el archivo que intenta exportar no existe')
+        print('The input file does not exist.')
         sys.exit()
         
 def imprimirResultadoKf1(rutaArchivo = None):
@@ -140,10 +140,10 @@ def imprimirResultadoKf1(rutaArchivo = None):
         if p:
             print(p.getEnergyPerformannceKf1())
         else:
-            print('Primero debe importar un archivo con la opcion --> -i <inputfile>')
+            print('Please, define the input file --> -i <inputfile>')
         if os.path.exists(rutaXML):os.remove(rutaXML) 
     else:
-        print('Error el archivo que intenta exportar no existe')
+        print('The input file does not exist')
         sys.exit()
         
 def imprimirResultadoKf2(rutaArchivo = None):
@@ -161,10 +161,10 @@ def imprimirResultadoKf2(rutaArchivo = None):
         if p:
             print(p.getResponseToUserNeedsKf2())
         else:
-            print('Primero debe importar un archivo con la opcion --> -i <inputfile>')
+            print('Please, define the input file --> -i <inputfile>')
         if os.path.exists(rutaXML):os.remove(rutaXML) 
     else:
-        print('Error el archivo que intenta exportar no existe')
+        print('The input file does not exist')
         sys.exit()
         
 def imprimirResultadoKf3(rutaArchivo = None):
@@ -182,16 +182,16 @@ def imprimirResultadoKf3(rutaArchivo = None):
         if p:
             print(p.getEnergyFlexibilityKf3())
         else:
-            print('Primero debe importar un archivo con la opcion --> -i <inputfile>')
+            print('Please, define the input file --> -i <inputfile>')
         if os.path.exists(rutaXML):os.remove(rutaXML) 
     else:
-        print('Error el archivo que intenta exportar no existe')
+        print('The input file does not exist')
         sys.exit()
         
 def escribirXML(rutaArchivoOriginal, rutaArchivoNuevo):
     if os.path.exists(rutaArchivoOriginal):
         if rutaArchivoOriginal == rutaArchivoNuevo:
-            print('Error: El archivo importado y el archivo para exportar no se pueden llamarse igual')
+            print('Error: Both files should be the same')
             sys.exit()
             
         elif rutaArchivoOriginal != '':
@@ -259,28 +259,28 @@ def escribirXML(rutaArchivoOriginal, rutaArchivoNuevo):
             if os.path.exists(nuevaRutaXML):os.remove(nuevaRutaXML)
             if os.path.exists(nuevaRutaGbXML):os.remove(nuevaRutaGbXML)
         else:
-            print('Error necesitas aportar un archivo de salida')
+            print('Error: The out file is required')
     else:
-        print('Error el archivo que intenta exportar no existe')
+        print('Error: output file does not exist')
         sys.exit()
 def extraerArchivos(ficheroDescomprimir, rutaDestinoExtraer = None):
     if os.path.exists(ficheroDescomprimir):
         if rutaDestinoExtraer  and os.path.exists(rutaDestinoExtraer):
             if os.path.isfile(rutaDestinoExtraer):
-                print('Error: la ruta introducida no puede ser otro archivo')
+                print('Error: Output file already exists')
                 sys.exit()
             else:
                 rutaXML, rutagbXML = descomprimirZIP(ficheroDescomprimir, rutaDestinoExtraer)
-                print('El arhivo XML se ha extraido correctamente en {}'.format(rutaXML))
-                print('El arhivo gbXML se ha extraido correctamente en {}'.format(rutagbXML))
+                print('XML has been extracted in {}'.format(rutaXML))
+                print('gbXML has been extracted in {}'.format(rutagbXML))
         else:
-            print('No ha introducido ruta de destino o la ruta para guardar los documentos extraidos no existe')
-            print('Extrayendo archivos en el archivo original')
+            print('Destination folder is not defined or does not exists.')
+            print('Extracting')
             rutaXML, rutagbXML = descomprimirZIP(ficheroDescomprimir, extraer=True)
-            print('El arhivo XML se ha extraido correctamente en {}'.format(rutaXML))
-            print('El arhivo gbXML se ha extraido correctamente en {}'.format(rutagbXML))
+            print('XML has been extracted in {}'.format(rutaXML))
+            print('gbXML has been extracted in {}'.format(rutagbXML))
     else:
-        print('Error la ruta para extraer los documentos no existe')
+        print('Extracting folder does not exists')
     # xmlstr = minidom.parseString(ET.tostring(root)).toprettyxml(indent="    ")
     # with open(rutaArchivoNuevo, "w") as f:
     #     f.write(xmlstr) 
