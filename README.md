@@ -44,7 +44,7 @@ Estos son los programas que con su ayuda hemos podido desarrollar el software pa
 ### Prerequisitos
 Lo primero tendrás que tener descargado el software en el sitio habilitado para la distribución del producto.
 ### Instalación
-Para descargarlo hacer doble click en realease y guardarlo en la ubicacion que decida.
+Para descargarlo hacer doble click en release y guardarlo en la ubicacion que decida.
 <!-- USO DEL SRIStandAlone -->
 ## USO
 En este apartado vamos a explicar el manejo del programa ya que este tiene una serie de opciones. 
