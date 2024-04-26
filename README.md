@@ -23,15 +23,16 @@
   </ol>
 </details>
 
-<!-- SOBRE EL SRIStandAlone -->
+<!-- SOBRE LA SRIStandAlone APP-->
 ## Sobre el SRIStandAlone
-Es un programa que complementará al la página del SRI2Market, con el cual podremos hacer varias acciones: 
+The SRI Standalone APP is a tool developed within the framework of the iEPB project (co-funded by the European Union, project number 101120690) with which the following actions can be executed: 
   <ul>
-    <li>Cácular del proyecto e imprimir los resultados (del total del SRI, Kf1, Kf2, Kf3) por pantalla.</li> 
-    <li>Exportar los xml del archivo iEPB previamente descargados de la página del SRI2Market.</li> 
-    <li>Generar un nuevo iEPB con nuevos xml con los cambios realizados.</li>
-    <li>Ver la versión del programa.</li>
+    <li>Calculation of the SRI Total Score and the three key functionalities (Kf1, Kf2, Kf3) results and printing them on the screen.</li> 
+    <li>Export the xml files of the SRI assessment, previously downloaded from the SRI2Market application, to the iEPB file.</li> 
+    <li>Generate a new element in the iEPB file including the data of the changes made.</li>
+    <li>Check the version of the tool.</li>
   </ul>
+The SRI Standalone is a tool that will complement the SRI2Market application.
 
 <!-- PROGRAMAS UTILIZADOS -->
 ## Programas utilizados
