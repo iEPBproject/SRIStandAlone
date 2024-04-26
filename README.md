@@ -89,7 +89,7 @@ Dentro de la consola tendremos que escribir el nombre del ejecutable <i>sriStand
    ```
 * Opción <b>-v</b> o <b>--show_version</b>: Con esta opción se imprime por pantalla la versión del programa. No hay que pasarle ningún fichero.
   ```cmd
-   sriStandAlone.exe -x
+   sriStandAlone.exe -v
    ```
 <!-- Contacto -->
 ## Contacto
