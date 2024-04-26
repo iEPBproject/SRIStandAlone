@@ -37,7 +37,6 @@ Es un programa que complementará al la página del SRI2Market, con el cual podr
 ## Programas utilizados
 Estos son los programas que con su ayuda hemos podido desarrollar el software para el funcionamiento del SRIStandAlone.
 * [![Python][Python.py]][Python-url]
-* [![Django][Django.dj]][Django-url]
 
 <!-- PRIMEROS PASOS PARA LA UTILIZACIÓN DEL SRIStandAlone -->
 ## Iniciación
@@ -106,8 +105,6 @@ El contacto de la disponible para posibles errores o dudas que surjan son los si
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [Python.py]: https://img.shields.io/badge/python-000000?style=for-the-badge&logo=pypi&logoColor=white
 [Python-url]: https://www.python.org/downloads/
-[Django.dj]: https://img.shields.io/badge/django-092E20?style=for-the-badge&logo=django&logoColor=white
-[Django-url]: https://www.djangoproject.com/download/
 
 
 
