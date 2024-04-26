@@ -44,9 +44,7 @@ Estos son los programas que con su ayuda hemos podido desarrollar el software pa
 ### Prerequisitos
 Lo primero tendrás que tener descargado el software en el sitio habilitado para la distribución del producto.
 ### Instalación
-Hay que dirigirse a la página "poner nombre de la página" para descargarlo o utilizar el siguiente para la descarga "poner link de descarga".
-Cuando lo descargues te creará una carpeta llamada SRI/SRIStandAlone en el cual se encuentra el ejecutable para poder iniciar el programa.
-
+Para descargarlo hacer doble click en realease y guardarlo en la ubicacion que decida.
 <!-- USO DEL SRIStandAlone -->
 ## USO
 En este apartado vamos a explicar el manejo del programa ya que este tiene una serie de opciones. 
@@ -93,14 +91,6 @@ Dentro de la consola tendremos que escribir el nombre del ejecutable <i>sriStand
   ```cmd
    sriStandAlone.exe -x
    ```
-<!-- CONTRIBUCIONES -->
-## Contribuciones
-<!--Revisar este apartado para reformular o no -->
-Las unicas contribuciones que que se han aportado para desarrollar el programa han sido dos empreses Efinovatic y Cener
-<!-- Licencia -->
-## Licencia
-<!--Revisar este apartado para reformular o no -->
-Poner dueño de la licencia
 <!-- Contacto -->
 ## Contacto
 El contacto de la disponible para posibles errores o dudas que surjan son los siguientes:
