@@ -253,8 +253,8 @@ def escribirXML(rutaArchivoOriginal, rutaArchivoNuevo):
             treeGbXML.write(nuevaRutaGbXML)
             
             #Comprobamos que existe la rua del archivo nuevo si no la creamos
-            if not os.path.exists(rutaArchivoNuevo):
-                nuevaRuta, nuevoArchivo = os.path.split(rutaArchivoNuevo)
+            nuevaRuta, nuevoArchivo = os.path.split(rutaArchivoNuevo)
+            if not os.path.exists(nuevaRuta):
                 os.makedirs(nuevaRuta)
             
             # Creamos el nuevo zip
@@ -295,9 +295,9 @@ def imprimirVersion():
     print(__version__)
      
 if __name__ == '__main__':
-    # importarSriStandAlone(r'C:\Temp\427.iEPB')  
+    importarSriStandAlone(r'C:\Temp\427.iEPB')  
     # imprimirTodosResultadosSri(r'C:\Temp\427.iEPB')
-    # escribirXML(r'C:\Temp\427.iEPB', r'C:\Temp\Prueba2\427-output.iEPB')
+    escribirXML(r'C:\Temp\427.iEPB', r'C:\Temp\90-output.iEPB')
     # extraerArchivos(r'C:\Temp\427.iEPB', r'C:\Temp\427.iEPB')
-    imprimirVersion()
+    # imprimirVersion()
     

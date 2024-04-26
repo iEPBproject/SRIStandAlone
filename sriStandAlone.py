@@ -37,7 +37,7 @@ def main(argv):
     #         escribirResultadosSri(inputfile)
     
     parser = argparse.ArgumentParser(description = 'SRI Stand Alone Applicationl')
-    parser.add_argument('-i','--import_file', type=str, help="Input file", required=True)
+    parser.add_argument('-i','--import_file', type=str, help="Input file")
     parser.add_argument('-o','--output_file', type=str, help="Output file")
     parser.add_argument('-p','--result_file', type=str, help="Print results", nargs='?')
     parser.add_argument('-s','--result_SRI', type=str, help="Print main result only", nargs='?')
@@ -48,105 +48,104 @@ def main(argv):
     parser.add_argument('-v','--show_version', type=str, help="Show version of software", nargs='?')
     
     args = parser.parse_args()
-    
-    if args.output_file:
-        inputfile = args.import_file
-        outputfile = args.output_file
-        importarSriStandAlone(inputfile)
-        print ('iEPB loaded')
-        escribirXML(inputfile, outputfile)
-        
-    elif args.result_file:
-        if args.import_file != args.result_file:
+    if not args.show_version and '-v' in argv or '--show_version' in argv:
+        imprimirVersion()
+    elif args.import_file:
+        if args.output_file:
+            inputfile = args.import_file
+            outputfile = args.output_file
+            importarSriStandAlone(inputfile)
+            print ('iEPB loaded')
+            escribirXML(inputfile, outputfile)
+            
+        elif args.result_file:
+            if args.import_file != args.result_file:
+                importarSriStandAlone(args.import_file)
+                print ('iEPB loaded')
+                print('Error: Input and result files should be the same')
+                sys.exit()
+            else:
+                importarSriStandAlone(args.import_file)
+                print ('iEPB loaded')
+                inputfile = args.result_file
+                imprimirTodosResultadosSri(inputfile)
+        elif not args.result_file and '-p' in argv:
+            args.result_file = args.import_file
             importarSriStandAlone(args.import_file)
             print ('iEPB loaded')
-            print('Error: Input and result files should be the same')
-            sys.exit()
-        else:
-            importarSriStandAlone(args.import_file)
-            print ('iEPB loaded')
-            inputfile = args.result_file
+            inputfile = args.import_file
             imprimirTodosResultadosSri(inputfile)
-    elif not args.result_file and '-p' in argv:
-        args.result_file = args.import_file
-        importarSriStandAlone(args.import_file)
-        print ('iEPB loaded')
-        inputfile = args.import_file
-        imprimirTodosResultadosSri(inputfile)
-        
-    elif args.result_SRI:
-        if args.import_file != args.result_SRI:
-            importarSriStandAlone(args.import_file)
-            print('Error: Input and result files should be the same')
-            sys.exit()
-        else:
+            
+        elif args.result_SRI:
+            if args.import_file != args.result_SRI:
+                importarSriStandAlone(args.import_file)
+                print('Error: Input and result files should be the same')
+                sys.exit()
+            else:
+                importarSriStandAlone(args.import_file)
+                inputfile = args.result_SRI
+                imprimirResultadoSRI(inputfile)
+        elif not args.result_SRI and '-s' in argv:
+            args.result_SRI = args.import_file
             importarSriStandAlone(args.import_file)
             inputfile = args.result_SRI
             imprimirResultadoSRI(inputfile)
-    elif not args.result_SRI and '-s' in argv:
-        args.result_SRI = args.import_file
-        importarSriStandAlone(args.import_file)
-        inputfile = args.result_SRI
-        imprimirResultadoSRI(inputfile)
-         
-    elif args.result_Kf1:
-        if args.import_file != args.result_Kf1:
-            importarSriStandAlone(args.import_file)
-            print('Error: Error: Input and result files should be the same')
-            sys.exit()
-        else:
+             
+        elif args.result_Kf1:
+            if args.import_file != args.result_Kf1:
+                importarSriStandAlone(args.import_file)
+                print('Error: Error: Input and result files should be the same')
+                sys.exit()
+            else:
+                importarSriStandAlone(args.import_file)
+                inputfile = args.result_Kf1
+                imprimirResultadoKf1(inputfile)
+        elif not args.result_Kf1 and '-kf1' in argv:
+            args.result_Kf1 = args.import_file
             importarSriStandAlone(args.import_file)
             inputfile = args.result_Kf1
             imprimirResultadoKf1(inputfile)
-    elif not args.result_Kf1 and '-kf1' in argv:
-        args.result_Kf1 = args.import_file
-        importarSriStandAlone(args.import_file)
-        inputfile = args.result_Kf1
-        imprimirResultadoKf1(inputfile)
-        
-    elif args.result_Kf2:
-        if args.import_file != args.result_Kf2:
-            importarSriStandAlone(args.import_file)
-            print('Error: Error: Input and result files should be the same')
-            sys.exit()
-        else:
+            
+        elif args.result_Kf2:
+            if args.import_file != args.result_Kf2:
+                importarSriStandAlone(args.import_file)
+                print('Error: Error: Input and result files should be the same')
+                sys.exit()
+            else:
+                importarSriStandAlone(args.import_file)
+                inputfile = args.result_Kf2
+                imprimirResultadoKf2(inputfile)
+        elif not args.result_Kf2 and '-kf2' in argv:
+            args.result_Kf2 = args.import_file
             importarSriStandAlone(args.import_file)
             inputfile = args.result_Kf2
             imprimirResultadoKf2(inputfile)
-    elif not args.result_Kf2 and '-kf2' in argv:
-        args.result_Kf2 = args.import_file
-        importarSriStandAlone(args.import_file)
-        inputfile = args.result_Kf2
-        imprimirResultadoKf2(inputfile)
-        
-    elif args.result_Kf3:
-        if args.import_file != args.result_Kf3:
-            importarSriStandAlone(args.import_file)
-            print('Error: Error: Input and result files should be the same')
-            sys.exit()
-        else:
+            
+        elif args.result_Kf3:
+            if args.import_file != args.result_Kf3:
+                importarSriStandAlone(args.import_file)
+                print('Error: Error: Input and result files should be the same')
+                sys.exit()
+            else:
+                importarSriStandAlone(args.import_file)
+                inputfile = args.result_Kf3
+                imprimirResultadoKf3(inputfile)
+        elif not args.result_Kf3 and '-kf3' in argv:
+            args.result_Kf3 = args.import_file
             importarSriStandAlone(args.import_file)
             inputfile = args.result_Kf3
             imprimirResultadoKf3(inputfile)
-    elif not args.result_Kf3 and '-kf3' in argv:
-        args.result_Kf3 = args.import_file
-        importarSriStandAlone(args.import_file)
-        inputfile = args.result_Kf3
-        imprimirResultadoKf3(inputfile)
-    
-    elif args.extract_files:
-        importarSriStandAlone(args.import_file)
-        extraerArchivos(args.import_file, args.extract_files)
-    elif not args.extract_files and '-x' in argv:
-        importarSriStandAlone(args.import_file)
-        args.extract_files = args.import_file
-        extraerArchivos(args.extract_files)
         
-    elif not args.show_version and '-v' in argv or '--show_version' in argv:
-        imprimirVersion()
-    else:
-        importarSriStandAlone(args.import_file)
-        print ('iEPB loaded') 
+        elif args.extract_files:
+            importarSriStandAlone(args.import_file)
+            extraerArchivos(args.import_file, args.extract_files)
+        elif not args.extract_files and '-x' in argv:
+            importarSriStandAlone(args.import_file)
+            args.extract_files = args.import_file
+            extraerArchivos(args.extract_files)
+        else:
+            importarSriStandAlone(args.import_file)
+            print ('iEPB loaded') 
         
     # else:
     #     inputfile = args.import_file
