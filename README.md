@@ -1,38 +1,38 @@
-# SRIStandAlone
+# SRIStandAlone application
 <!-- TABLA DE CONTENIDOS -->
 <details>
-  <summary>TABLA DE CONTENIDOS</summary>
+  <summary>TABLE OF CONTENTS</summary>
   <ol>
     <li>
-      <a href="#sobre-el-sristandalone">Sobre el SRIStandAlone</a>
+      <a href="#About-SRIStandAlone-application">Sobre el SRIStandAlone</a>
       <ul>
         <li><a href="#programas-utilizados">Construido con</a></li>
       </ul>
     </li>
     <li>
-      <a href="#iniciación">Iniciación</a>
+      <a href="#Get-started-with-the-SRIStandAlone-application">Iniciación</a>
       <ul>
-        <li><a href="#prerequisitos">Prerequisitos</a></li>
-        <li><a href="#instalación">Instalación</a></li>
+        <li><a href="#Prerequisites">Prerequisitos</a></li>
+        <li><a href="#Installation">Instalación</a></li>
       </ul>
     </li>
-      <li><a href="#uso">Uso</a></li>
-    <li><a href="#contribuciones">Contribuciones</a></li>
-    <li><a href="#licencia">Licencia</a></li>
-    <li><a href="#Contacto">Contacto</a></li>
+      <li><a href="#Use-of-the-SRIStanAlone-application">Uso</a></li>
+    <li><a href="#contributions">Contribuciones</a></li>
+    <li><a href="#Licence">Licencia</a></li>
+    <li><a href="#Contact">Contacto</a></li>
   </ol>
 </details>
 
 <!-- SOBRE LA SRIStandAlone APP-->
-## Sobre el SRIStandAlone
-The SRI Standalone APP is a tool developed within the framework of the iEPB project (co-funded by the European Union, project number 101120690) with which the following actions can be executed: 
+## About SRIStandAlone application
+The SRIStandalone APP is a tool developed within the framework of the iEPB project (co-funded by the European Union, project number 101120690) with which the following actions can be executed: 
   <ul>
     <li>Calculation of the SRI Total Score and the three key functionalities (Kf1, Kf2, Kf3) results and printing them on the screen.</li> 
     <li>Export the xml files of the SRI assessment, previously downloaded from the SRI2Market application, to the iEPB file.</li> 
     <li>Generate a new element in the iEPB file including the data of the changes made.</li>
     <li>Check the version of the tool.</li>
   </ul>
-The SRI Standalone is a tool that will complement the SRI2Market application.
+The SRIStandalone is a tool that will complement the SRI2Market application.
 
 <!-- PROGRAMAS UTILIZADOS -->
 ## Programas utilizados
@@ -40,13 +40,14 @@ Estos son los programas que con su ayuda hemos podido desarrollar el software pa
 * [![Python][Python.py]][Python-url]
 
 <!-- PRIMEROS PASOS PARA LA UTILIZACIÓN DEL SRIStandAlone -->
-## Iniciación
-### Prerequisitos
-Lo primero tendrás que tener descargado el software en el sitio habilitado para la distribución del producto.
-### Instalación
-Para descargarlo hacer doble click en release y guardarlo en la ubicacion que decida.
+## Get started with the SRIStandAlone application
+### Prerequisites
+First download the software from the site enabled for distribution. 
+### Installation
+To download just double click on release and save it in the location of your choice.
+
 <!-- USO DEL SRIStandAlone -->
-## USO
+## Use of the SRIStanAlone application
 En este apartado vamos a explicar el manejo del programa ya que este tiene una serie de opciones. 
 Para poder inicializar el programa tendremos que dirijirnos a la ubiccación del del ejecutable en el explorador de archivos, 
 cuando nos encontremos ya en el sitio en en la barra de url escribiremos <i>cmd</i> (para abrirnos una consola de comando en la misma ubicación del ejecutable).
@@ -92,7 +93,7 @@ Dentro de la consola tendremos que escribir el nombre del ejecutable <i>sriStand
    sriStandAlone.exe -v
    ```
 <!-- Contacto -->
-## Contacto
+## Contact
 El contacto de la disponible para posibles errores o dudas que surjan son los siguientes:
 * Efinovatic:
   - Teléfono: 948 31 68 29
