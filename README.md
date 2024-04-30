@@ -4,22 +4,22 @@
   <summary>TABLE OF CONTENTS</summary>
   <ol>
     <li>
-      <a href="#About-SRIStandAlone-application">Sobre el SRIStandAlone</a>
+      <a href="#About-SRIStandAlone-application">About SRIStandAlone application</a>
       <ul>
-        <li><a href="#programas-utilizados">Construido con</a></li>
+        <li><a href="#Built-with">Built with</a></li>
       </ul>
     </li>
     <li>
-      <a href="#Get-started-with-the-SRIStandAlone-application">Iniciación</a>
+      <a href="#Get-started-with-the-SRIStandAlone-application">Get started with the SRIStandAlone application</a>
       <ul>
-        <li><a href="#Prerequisites">Prerequisitos</a></li>
-        <li><a href="#Installation">Instalación</a></li>
+        <li><a href="#Prerequisites">Prerequisites</a></li>
+        <li><a href="#Installation">Installation</a></li>
       </ul>
     </li>
       <li><a href="#Use-of-the-SRIStanAlone-application">Uso</a></li>
     <li><a href="#contributions">Contribuciones</a></li>
-    <li><a href="#Licence">Licencia</a></li>
-    <li><a href="#Contact">Contacto</a></li>
+    <li><a href="#Licence">Licence</a></li>
+    <li><a href="#Contact">Contact</a></li>
   </ol>
 </details>
 
@@ -35,8 +35,8 @@ The SRIStandalone APP is a tool developed within the framework of the iEPB proje
 The SRIStandalone is a tool that will complement the SRI2Market application.
 
 <!-- PROGRAMAS UTILIZADOS -->
-## Programas utilizados
-Estos son los programas que con su ayuda hemos podido desarrollar el software para el funcionamiento del SRIStandAlone.
+## Built with
+The software for the operation of the SRIStandAlone application has been developed with the help of the following tools.
 * [![Python][Python.py]][Python-url]
 
 <!-- PRIMEROS PASOS PARA LA UTILIZACIÓN DEL SRIStandAlone -->
@@ -48,59 +48,59 @@ To download just double click on release and save it in the location of your cho
 
 <!-- USO DEL SRIStandAlone -->
 ## Use of the SRIStanAlone application
-En este apartado vamos a explicar el manejo del programa ya que este tiene una serie de opciones. 
-Para poder inicializar el programa tendremos que dirijirnos a la ubiccación del del ejecutable en el explorador de archivos, 
-cuando nos encontremos ya en el sitio en en la barra de url escribiremos <i>cmd</i> (para abrirnos una consola de comando en la misma ubicación del ejecutable).
-Dentro de la consola tendremos que escribir el nombre del ejecutable <i>sriStandAlone.exe</i>, y seguido puede escribir las siguientes opciones:
-* Opción <b>-h</b> o <b>--help</b>: Con esta opción nos desplegará una ayuda con las opciones disponibles del programa y una explicación breve de cada opción.
+This section explains how to use the program and its options. 
+In order to initialize the program we will have to go to the location of the executable in the file explorer, 
+when we are already in the site in the url bar we will write <i>cmd</i> (to open a command console in the same location of the executable).
+Inside the console we will have to type the name of the executable <i>sriStandAlone.exe</i>, and then you can type the following options:
+* Option <b>-h</b> o <b>--help</b>: With this option a help will be displayed with the available options of the program and a brief explanation of each option.
    ```cmd
    sriStandAlone.exe -h
    ```
-* Opción <b>-i</b> o <b>--import_file</b>: Con dicho argumento importaremos los datos del proyecto que aportamos. Este argumento es obligatorio ponerlo con todas las opciones a excepción del la opción <i>-v</i>
+* Option <b>-i</b> o <b>--import_file</b>: This argument is used to import the project data provided. This argument is mandatory with all the options except the <i>-v</i> option.
    ```cmd
    sriStandAlone.exe -i <inputfile>
    ```
-* Opción <b>-o</b> o <b>--output_file</b>: Con esta opcion exportamos otro archivo iEPB calculado en la ruta que el usuario indique.
+* Option <b>-o</b> o <b>--output_file</b>: With this option another calculated iEPB file will be exported to the path specified by the user.
   ```cmd
    sriStandAlone.exe -i <inputfile> -o <outputfile>
    ```
-* Opción <b>-p</b> o <b>--result_file</b>: En esta opción se imprimen todos los resultados por pantalla, además no es obligatorio pasarle ningun archivo
+* Option <b>-p</b> o <b>--result_file</b>: This option prints all the results on the screen, also it is not mandatory to provide any file to it.
   ```cmd
    sriStandAlone.exe -i <inputfile> -p
    ```
-* Opción <b>-s</b> o <b>--result_SRI</b>: Aqui se muestra el resultado total del proyecto (SRI) por pantalla. No es necesario pasarle archivo.
+* Option <b>-s</b> o <b>--result_SRI</b>: Displays the total result of the project (SRI) on the screen. It is not necessary to provide a file.
   ```cmd
    sriStandAlone.exe -i <inputfile> -s
    ```
-* Opción <b>-kf1</b> o <b>--result_Kf1</b>: Imprime por pantalla el resultado total del Energy Performance And Operation (Kf1). No es necesario pasarle archivo.
+* Option <b>-kf1</b> o <b>--result_Kf1</b>: Prints the total 'Energy performance and operation' (Kf1) result on screen. It is not necessary to provide a file.
   ```cmd
    sriStandAlone.exe -i <inputfile> -kf1
    ```
-* Opción <b>-kf2</b> o <b>--result_Kf2</b>: Imprime por pantalla el resultado total del Response To User Needs (Kf2). No es necesario pasarle archivo.
+* Option <b>-kf2</b> o <b>--result_Kf2</b>: Prints the total result of the 'Response to user needs' (Kf2). It is not necessary to provide a file.
   ```cmd
    sriStandAlone.exe -i <inputfile> -kf2
    ```
-* Opción <b>-kf3</b> o <b>--result_Kf3</b>: Imprime por pantalla el resultado total del Energy Flexibility (Kf3). No es necesario pasarle archivo.
+* Option <b>-kf3</b> o <b>--result_Kf3</b>: Prints the total result of the 'Energy flexibility' (Kf3). It is not necessary to provide a file.
   ```cmd
    sriStandAlone.exe -i <inputfile> -kf3
    ```
-* Opción <b>-x</b> o <b>--extract_files</b>: Con este argumento se extraen los xml que se pasan en el argumento <i>-i</i>, el usuario puede pasarle una ubicación, si no la pasa se guardan en el mismo sitio que en el fichero de la opción <i>-i</i>
+* Option <b>-x</b> o <b>--extract_files</b>: With this argument the xml that are given in the <i>-i</i> argument are extracted, the user can provide a location, if not, they are saved in the same place as in the file of the <i>-i</i> option.
   ```cmd
    sriStandAlone.exe -i <inputfile> -x <route_new-file>
    ```
-* Opción <b>-v</b> o <b>--show_version</b>: Con esta opción se imprime por pantalla la versión del programa. No hay que pasarle ningún fichero.
+* Option <b>-v</b> o <b>--show_version</b>: Prints the program version on the screen. No file has to be provided.
   ```cmd
    sriStandAlone.exe -v
    ```
 <!-- Contacto -->
 ## Contact
-El contacto de la disponible para posibles errores o dudas que surjan son los siguientes:
+The following contacts are available for any errors or questions that may arise:
 * Efinovatic:
-  - Teléfono: 948 31 68 29
+  - Phone number: 948 31 68 29
   - E-mail: info@efinovatic.es
 * Cener:
-    - Teléfono: 948 25 28 00
-    - Email: info@cener.com
+  - Phone number: 948 25 28 00
+  <!-- - Email: info@cener.com -->
 
 
 <!-- REFERENCIA A LAS URLS E IMAGENES -->
