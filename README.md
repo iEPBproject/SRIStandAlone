@@ -52,43 +52,43 @@ This section explains how to use the program and its options.
 In order to initialize the program we will have to go to the location of the executable in the file explorer, 
 when we are already in the site in the url bar we will write <i>cmd</i> (to open a command console in the same location of the executable).
 Inside the console we will have to type the name of the executable <i>sriStandAlone.exe</i>, and then you can type the following options:
-* Option <b>-h</b> o <b>--help</b>: With this option a help will be displayed with the available options of the program and a brief explanation of each option.
+* Option <b>-h</b> or <b>--help</b>: With this option a help will be displayed with the available options of the program and a brief explanation of each option.
    ```cmd
    sriStandAlone.exe -h
    ```
-* Option <b>-i</b> o <b>--import_file</b>: This argument is used to import the project data provided. This argument is mandatory with all the options except the <i>-v</i> option.
+* Option <b>-i</b> or <b>--import_file</b>: This argument is used to import the project data provided. This argument is mandatory with all the options except the <i>-v</i> option.
    ```cmd
    sriStandAlone.exe -i <inputfile>
    ```
-* Option <b>-o</b> o <b>--output_file</b>: With this option another calculated iEPB file will be exported to the path specified by the user.
+* Option <b>-o</b> or <b>--output_file</b>: With this option another calculated iEPB file will be exported to the path specified by the user.
   ```cmd
    sriStandAlone.exe -i <inputfile> -o <outputfile>
    ```
-* Option <b>-p</b> o <b>--result_file</b>: This option prints all the results on the screen, also it is not mandatory to provide any file to it.
+* Option <b>-p</b> or <b>--result_file</b>: This option prints all the results on the screen, also it is not mandatory to provide any file to it.
   ```cmd
    sriStandAlone.exe -i <inputfile> -p
    ```
-* Option <b>-s</b> o <b>--result_SRI</b>: Displays the total result of the project (SRI) on the screen. It is not necessary to provide a file.
+* Option <b>-s</b> or <b>--result_SRI</b>: Displays the total result of the project (SRI) on the screen. It is not necessary to provide a file.
   ```cmd
    sriStandAlone.exe -i <inputfile> -s
    ```
-* Option <b>-kf1</b> o <b>--result_Kf1</b>: Prints the total 'Energy performance and operation' (Kf1) result on screen. It is not necessary to provide a file.
+* Option <b>-kf1</b> or <b>--result_Kf1</b>: Prints the total 'Energy performance and operation' (Kf1) result on screen. It is not necessary to provide a file.
   ```cmd
    sriStandAlone.exe -i <inputfile> -kf1
    ```
-* Option <b>-kf2</b> o <b>--result_Kf2</b>: Prints the total result of the 'Response to user needs' (Kf2). It is not necessary to provide a file.
+* Option <b>-kf2</b> or <b>--result_Kf2</b>: Prints the total result of the 'Response to user needs' (Kf2). It is not necessary to provide a file.
   ```cmd
    sriStandAlone.exe -i <inputfile> -kf2
    ```
-* Option <b>-kf3</b> o <b>--result_Kf3</b>: Prints the total result of the 'Energy flexibility' (Kf3). It is not necessary to provide a file.
+* Option <b>-kf3</b> or <b>--result_Kf3</b>: Prints the total result of the 'Energy flexibility' (Kf3). It is not necessary to provide a file.
   ```cmd
    sriStandAlone.exe -i <inputfile> -kf3
    ```
-* Option <b>-x</b> o <b>--extract_files</b>: With this argument the xml that are given in the <i>-i</i> argument are extracted, the user can provide a location, if not, they are saved in the same place as in the file of the <i>-i</i> option.
+* Option <b>-x</b> or <b>--extract_files</b>: With this argument the xml that are given in the <i>-i</i> argument are extracted, the user can provide a location, if not, they are saved in the same place as in the file of the <i>-i</i> option.
   ```cmd
    sriStandAlone.exe -i <inputfile> -x <route_new-file>
    ```
-* Option <b>-v</b> o <b>--show_version</b>: Prints the program version on the screen. No file has to be provided.
+* Option <b>-v</b> or <b>--show_version</b>: Prints the program version on the screen. No file has to be provided.
   ```cmd
    sriStandAlone.exe -v
    ```
