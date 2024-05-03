@@ -96,10 +96,7 @@ Inside the console we will have to type the name of the executable <i>sriStandAl
 ## Contact
 The following contacts are available for any errors or questions that may arise:
 * Efinovatic:
-  - Phone number: 948 31 68 29
   - E-mail: info@efinovatic.es
-* Cener:
-  - Phone number: 948 25 28 00
   <!-- - Email: info@cener.com -->
 
 
