@@ -1,10 +1,6 @@
 # # -\*- coding: utf-8 -\*-
 import copy
 import sys
-# from ckeditor_uploader.widgets import CKEditorUploadingWidget
-# from django import forms
-# from django.contrib.auth.models import User
-# from django.core.validators import MaxValueValidator, MinValueValidator
 
 from librerias.miDjangoModel3.models import ChoiceField, Model, CharField, FloatField, BooleanField, ForeignKey, Manager
 
