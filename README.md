@@ -60,7 +60,7 @@ Inside the console we will have to type the name of the executable <i>sriStandAl
    ```cmd
    sriStandAlone.exe -i <inputfile>
    ```
-* Option <b>-o</b> or <b>--output_file</b>: With this option another calculated iEPB file will be exported to the path specified by the user.
+* Option <b>-o</b> or <b>--output_file</b>: With this option, the SRI calculated of the iEPB file will be recalculated and exported to the path specified by the user.
   ```cmd
    sriStandAlone.exe -i <inputfile> -o <outputfile>
    ```
