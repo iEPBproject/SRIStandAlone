@@ -30,6 +30,10 @@ def exportarZip(rutaZip, rutaXML, rutaGBXML):
     # Create a ZipFile Object
     rutaXMLTemporal, ficheroXML = os.path.split(rutaXML)
     rutaGBXMLTemporal, ficheroGBXML = os.path.split(rutaGBXML)
+    if not rutaZip:
+        rutaZip = rutaXMLTemporal
+
+    # Guardamos los archivos
     with zipfile.ZipFile(rutaZip, 'w') as zip_object:
         # Adding files that need to be zipped
         zip_object.write(rutaXML, arcname = ficheroXML)
@@ -290,14 +294,19 @@ def extraerArchivos(ficheroDescomprimir, rutaDestinoExtraer = None):
     # xmlstr = minidom.parseString(ET.tostring(root)).toprettyxml(indent="    ")
     # with open(rutaArchivoNuevo, "w") as f:
     #     f.write(xmlstr)
-    
+def empaquetarArchivos(ficheroXMLComprimir, ficheroGBXMLComprimir, rutaDestinoGuardar = None):
+    if os.path.exists(ficheroXMLComprimir) and os.path.exists(ficheroGBXMLComprimir):
+        exportarZip(rutaDestinoGuardar, ficheroXMLComprimir, ficheroGBXMLComprimir)
+    else:
+        print('Error alguna ruta de los ficheros a comprimir no existe')
 def imprimirVersion():
     print(__version__)
      
 if __name__ == '__main__':
     importarSriStandAlone(r'C:\Temp\427.iEPB')  
     # imprimirTodosResultadosSri(r'C:\Temp\427.iEPB')
-    escribirXML(r'C:\Temp\427.iEPB', r'C:\Temp\90-output.iEPB')
+    # escribirXML(r'C:\Temp\427.iEPB', r'C:\Temp\90-output.iEPB')
     # extraerArchivos(r'C:\Temp\427.iEPB', r'C:\Temp\427.iEPB')
+    empaquetarArchivos(r'C:\Users\efinovatic\Desktop\Prueba\427.xml', r'C:\Users\efinovatic\Desktop\Prueba\427_gbXML.xml')
     # imprimirVersion()
     
