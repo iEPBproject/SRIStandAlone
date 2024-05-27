@@ -34,6 +34,11 @@ def exportarZip(rutaZip, rutaXML, rutaGBXML):
         arrayAux = ficheroXML.split('.')
         nombreFichero = arrayAux[0]
         rutaZip = os.path.join(rutaXMLTemporal,'{}-package.iEPB'.format(nombreFichero))
+    else:
+        arrayAux = ficheroXML.split('.')
+        nombreFichero = arrayAux[0]
+        rutaZIPTemporal, ficheroZIP = os.path.split(rutaZip)
+        rutaZip = os.path.join(rutaZIPTemporal,'{}-package.iEPB'.format(nombreFichero))
 
     # Guardamos los archivos
     with zipfile.ZipFile(rutaZip, 'w') as zip_object:
@@ -70,7 +75,7 @@ def descomprimirZIP(path, pathDestino = None, extraer = False):
     zip_file.close()
     return rutaXML, rutagbXML
 
-def importarSriStandAlone(nombreArchivo):
+def importarSriStandAlone(nombreArchivo, empaquetar = False):
     if os.path.exists(nombreArchivo):
         rutaXML, rutagbXML = descomprimirZIP(nombreArchivo)
         tree = ET.parse(rutaXML)
@@ -85,7 +90,8 @@ def importarSriStandAlone(nombreArchivo):
         if os.path.exists(rutaXML):os.remove(rutaXML)
     else:
         print('The file does not exist.')
-        sys.exit()
+        if not empaquetar:
+            sys.exit()
     
 def imprimirTodosResultadosSri(rutaArchivo = None):
     if os.path.exists(rutaArchivo):
@@ -309,6 +315,6 @@ if __name__ == '__main__':
     # imprimirTodosResultadosSri(r'C:\Temp\427.iEPB')
     # escribirXML(r'C:\Temp\427.iEPB', r'C:\Temp\90-output.iEPB')
     # extraerArchivos(r'C:\Temp\427.iEPB', r'C:\Temp')
-    empaquetarArchivos(r'C:\Temp\427.xml', r'C:\Temp\427_gbXML.xml')
+    empaquetarArchivos(r'C:\Temp\427.xml', r'C:\Temp\427_gbXML.xml', r'C:\Temp\162.iEPB')
     # imprimirVersion()
     

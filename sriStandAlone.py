@@ -140,14 +140,19 @@ def main(argv):
         elif args.extract_files:
             importarSriStandAlone(args.import_file)
             extraerArchivos(args.import_file, args.extract_files)
+            
         elif not args.extract_files and '-x' in argv:
             importarSriStandAlone(args.import_file)
             args.extract_files = args.import_file
             extraerArchivos(args.extract_files)
             
         elif args.package_files:
-            importarSriStandAlone(args.import_file)
-            empaquetarArchivos(args.package_files[0], args.package_files[1])
+            importarSriStandAlone(args.import_file, True)
+            empaquetarArchivos(args.package_files[0], args.package_files[1], args.import_file)
+            
+        elif not args.package_files and '-e' in args:
+            importarSriStandAlone(args.import_file, True)
+            empaquetarArchivos(args.package_files[0], args.package_files[1], args.import_file)
             
         else:
             importarSriStandAlone(args.import_file)
