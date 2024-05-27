@@ -88,6 +88,10 @@ Inside the console we will have to type the name of the executable <i>sriStandAl
   ```cmd
    sriStandAlone.exe -i <inputfile> -x <route_new-file>
    ```
+* Option <b>-e</b> or <b>--package_files</b>: Con este opcion también es necesario aportar el xml para la opcion <i>-i</i>. La opcion empaqueta los ficheros indicados en un nuevo archivo iEPB. Para dicha opción es necesario indicar la ruta de dos archivos (el fichero xml y el gbxml)
+  ```cmd
+   sriStandAlone.exe -i <inputfile> -e <xmlfile> <gbxmlfile>
+   ```
 * Option <b>-v</b> or <b>--show_version</b>: Prints the program version on the screen. No file has to be provided.
   ```cmd
    sriStandAlone.exe -v
