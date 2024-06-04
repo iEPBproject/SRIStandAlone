@@ -17,7 +17,7 @@
       </ul>
     </li>
     <li><a href="#Use-of-the-SRIStanAlone-application">Use of the SRIStanAlone application</a></li>
-    <li><a href="#Troubleshooting-&-FAQ">Troubleshooting & FAQ</a></li>
+    <li><a href="#troubleshooting--faq">Troubleshooting & FAQ</a></li>
     <li><a href="#contributions">Contributions</a></li>
     <li><a href="#Licence">Licence</a></li>
     <li><a href="#Contact">Contact</a></li>
@@ -118,6 +118,7 @@ The following contacts are available for any errors or questions that may arise:
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [Python.py]: https://img.shields.io/badge/python-000000?style=for-the-badge&logo=pypi&logoColor=white
 [Python-url]: https://www.python.org/downloads/
+[def]: Troubleshooting & FA
 
 
 
