@@ -100,9 +100,10 @@ Inside the console we will have to type the name of the executable <i>sriStandAl
 <!-- Solución de problemas y FAQ del SRIStandAlone -->
 ## Troubleshooting & FAQ
 * Remember that you are running the application on the MS-DOS subsystem and therefore you have to follow its rules, so if any folder in the path you enter consists of two words, e.g. Program Files, the path must be written in quotation marks.
-    (Right) C:\Program Files\SriStandAlone>sristandalone.exe -i "C:\Example Files" -e "C:\Example Files\12.xml" "C:\Example Files\12_gbXML.xml” 
-    (Wrong) C:\Program Files\SriStandAlone>sristandalone.exe -i C:\Example Files -e C:\Example Files\12.xml C:\Example Files\12_gbXML.xml 
-
+    <ul>
+      <li>(Right) C:\Program Files\SriStandAlone>sristandalone.exe -i "C:\Example Files" -e "C:\Example Files\12.xml" "C:\Example Files\12_gbXML.xml” </li>
+      <li>(Wrong) C:\Program Files\SriStandAlone>sristandalone.exe -i C:\Example Files -e C:\Example Files\12.xml C:\Example Files\12_gbXML.xml </li>
+    </ul>
 * For those tool options that integrate file saving (-o, -x, -e ) the new path where the file is to be saved must be free and have write permissions.
 
 <!-- Contacto -->
