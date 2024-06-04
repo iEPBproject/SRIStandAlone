@@ -16,8 +16,9 @@
         <li><a href="#Installation">Installation</a></li>
       </ul>
     </li>
-      <li><a href="#Use-of-the-SRIStanAlone-application">Uso</a></li>
-    <li><a href="#contributions">Contribuciones</a></li>
+    <li><a href="#Use-of-the-SRIStanAlone-application">Use of the SRIStanAlone application</a></li>
+    <li><a href="#Troubleshooting-&-FAQ">Troubleshooting & FAQ</a></li>
+    <li><a href="#contributions">Contributions</a></li>
     <li><a href="#Licence">Licence</a></li>
     <li><a href="#Contact">Contact</a></li>
   </ol>
@@ -42,9 +43,9 @@ The software for the operation of the SRIStandAlone application has been develop
 <!-- PRIMEROS PASOS PARA LA UTILIZACIÓN DEL SRIStandAlone -->
 ## Get started with the SRIStandAlone application
 ### Prerequisites
-First download the software from the site enabled for distribution. 
+First download the software from the site enabled for distribution. To download just double click on release and save it in the location of your choice.
 ### Installation
-To download just double click on release and save it in the location of your choice.
+After running the setupSRIStandAlone1.2.exe file, the application will be installed on your computer in the default path C:\Program Files\SriStandAlone. A folder called "examples" will also be created in the same path where the 12.iEPB file is included (file of the new iEPB format with an example of the SRI assessment included to be read and calculated by the SRIStandAlone app).
 
 <!-- USO DEL SRIStandAlone -->
 ## Use of the SRIStanAlone application
@@ -88,14 +89,22 @@ Inside the console we will have to type the name of the executable <i>sriStandAl
   ```cmd
    sriStandAlone.exe -i <inputfile> -x <route_new-file>
    ```
-* Option <b>-e</b> or <b>--package_files</b>: This option creates a new iEPB file that includes the files defined in the -e section (xml and gbMXL). It is required the option  <i>-i</i> to define the output path file.
+* Option <b>-e</b> or <b>--package_files</b>: This option creates a new iEPB file that includes the files defined in the -e section (xml and gbMXL). The option -o is used to define the output file name. If the -o option is not used, the output file name will be like the first input file name, but with the extension renamed to .iepb.
   ```cmd
-   sriStandAlone.exe -i <inputfile> -e <xmlfile> <gbxmlfile>
+   sriStandAlone.exe -o <outputfile> -e <xmlfile> <gbxmlfile>
    ```
 * Option <b>-v</b> or <b>--show_version</b>: Prints the program version on the screen. No file has to be provided.
   ```cmd
    sriStandAlone.exe -v
    ```
+<!-- Solución de problemas y FAQ del SRIStandAlone -->
+## Troubleshooting & FAQ
+* Remember that you are running the application on the MS-DOS subsystem and therefore you have to follow its rules, so if any folder in the path you enter consists of two words, e.g. Program Files, the path must be written in quotation marks.
+    (Right) C:\Program Files\SriStandAlone>sristandalone.exe -i "C:\Example Files" -e "C:\Example Files\12.xml" "C:\Example Files\12_gbXML.xml” 
+    (Wrong) C:\Program Files\SriStandAlone>sristandalone.exe -i C:\Example Files -e C:\Example Files\12.xml C:\Example Files\12_gbXML.xml 
+
+* For those tool options that integrate file saving (-o, -x, -e ) the new path where the file is to be saved must be free and have write permissions.
+
 <!-- Contacto -->
 ## Contact
 The following contacts are available for any errors or questions that may arise:
