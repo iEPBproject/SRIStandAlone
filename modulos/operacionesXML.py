@@ -33,12 +33,7 @@ def exportarZip(rutaZip, rutaXML, rutaGBXML):
     if not rutaZip:
         arrayAux = ficheroXML.split('.')
         nombreFichero = arrayAux[0]
-        rutaZip = os.path.join(rutaXMLTemporal,'{}-package.iEPB'.format(nombreFichero))
-    else:
-        arrayAux = ficheroXML.split('.')
-        nombreFichero = arrayAux[0]
-        rutaZIPTemporal, ficheroZIP = os.path.split(rutaZip)
-        rutaZip = os.path.join(rutaZIPTemporal,'{}-package.iEPB'.format(nombreFichero))
+        rutaZip = os.path.join(rutaXMLTemporal,'{}.iEPB'.format(nombreFichero))
 
     # Guardamos los archivos
     with zipfile.ZipFile(rutaZip, 'w') as zip_object:
@@ -311,10 +306,10 @@ def imprimirVersion():
     print(__version__)
      
 if __name__ == '__main__':
-    importarSriStandAlone(r'C:\Temp\427.iEPB')  
+    # importarSriStandAlone(r'C:\Temp\427.iEPB')  
     # imprimirTodosResultadosSri(r'C:\Temp\427.iEPB')
     # escribirXML(r'C:\Temp\427.iEPB', r'C:\Temp\90-output.iEPB')
     # extraerArchivos(r'C:\Temp\427.iEPB', r'C:\Temp')
-    empaquetarArchivos(r'C:\Temp\427.xml', r'C:\Temp\427_gbXML.xml', r'C:\Temp\162.iEPB')
+    empaquetarArchivos(r'C:\Temp\427.xml', r'C:\Temp\427_gbXML.xml', r'C:\Temp\Prueba.iEPB')
     # imprimirVersion()
     
