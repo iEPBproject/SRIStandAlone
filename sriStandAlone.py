@@ -167,5 +167,8 @@ if __name__ == "__main__":
     # print(sys.argv[:1])
     # sys.argv.append(r'C:\temp\test.iEPBXML -o')
     # print(sys.argv[1:])
-    main(sys.argv[1:])
+    try:
+        main(sys.argv[1:])
+    except Exception as ex:
+        print(ex)
     # main(r'C:\temp\test.iEPBXML -o')
