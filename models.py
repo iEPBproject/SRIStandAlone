@@ -1,17 +1,28 @@
 # # -\*- coding: utf-8 -\*-
 import copy
+import sys
 
-# from ckeditor_uploader.widgets import CKEditorUploadingWidget
-# from django import forms
-# from django.contrib.auth.models import User
-# from django.core.validators import MaxValueValidator, MinValueValidator
-from tabulate import tabulate
+from librerias.miDjangoModel3.models import ChoiceField, Model, CharField, FloatField, BooleanField, ForeignKey, Manager
 
-import pandas as pd
-
-
-from librerias.miDjangoModel3.models import Model, CharField, FloatField, BooleanField, ForeignKey,Manager
-
+class User(Model):
+    
+    objects = Manager()
+    
+    name = CharField(default = '',
+                     max_length = 1000,
+                     verbose_name = "User-Name")
+                     
+    email = CharField(default = '',
+                      max_length = 1000,
+                      verbose_name = 'User e-mail address')
+                      
+    @classmethod    
+    def creaDesdeXML(cls, element):
+        ns = {'d':"http://www.efinovatic.es/sri"}
+        nuevaInstancia = cls()
+        nuevaInstancia.id = int(element.find('.//d:User__id', ns).text)
+        nuevaInstancia.name = element.find('.//d:User__name', ns).text
+        return nuevaInstancia
 
 class BuildingType(Model):
     objects = Manager()
@@ -19,16 +30,25 @@ class BuildingType(Model):
                             max_length = 100,
                             verbose_name = 'Description')
                             
-    def __str__(self):
-        ''' 
-        Clase BuildindgType
-        '''
-        
-        return f"{self.description}"
+    # def __str__(self):
+    #     ''' 
+    #     Clase BuildindgType
+    #     '''
+    #
+    #     return f"{self.description}"
         
     class Meta:
         verbose_name = 'Buiding Type'
         verbose_name_plural = '11. Buiding Type'
+        
+        
+    @classmethod   
+    def creaDesdeXML(cls, element):
+        ns = {'d':"http://www.efinovatic.es/sri"}
+        nuevaInstancia = cls()
+        nuevaInstancia.id = int(element.attrib['id'])
+        nuevaInstancia.description = element.find('.//d:Description', ns).text
+        return nuevaInstancia
 
 class Country(Model):
     
@@ -38,16 +58,16 @@ class Country(Model):
                        max_length = 1000,
                        verbose_name = "Name")
     
-    heatingMandatory = BooleanField(default = True, verbose_name = "Mandatory Heating Domain", help_text = "Is heating a mandatory domain?")
-    dhwMandatoryForResidential = BooleanField(default = True, verbose_name = "Mandatory DWH for residential Domain", help_text = "Is DHW  a mandatory domain?")
-    dhwMandatoryForTertiary = BooleanField(default = True, verbose_name = "Mandatory DWH for tertiary Domain", help_text = "Is DHW  a mandatory domain?")
-    CoolingMandatory = BooleanField(default = True, verbose_name = "Mandatory Cooling Domain", help_text = "Is Cooling a mandatory domain?")
-    VentilationMandatory = BooleanField(default = True, verbose_name = "Mandatory Ventilation Domain", help_text = "Is Ventilation  a mandatory domain?")
-    LightingMandatory = BooleanField(default = True, verbose_name = "Mandatory Lighting Domain", help_text = "Is Lighting  a mandatory domain?")
-    DynamicBuildingEnvelopeMandatory = BooleanField(default = True, verbose_name = "Mandatory Dynamic Building Envelope Domain", help_text = "Is Dynamic Building Envelope  a mandatory domain?")
-    ElectricityMandatory = BooleanField(default = True, verbose_name = "Mandatory Electricity Domain", help_text = "Is Electricity a mandatory domain?")
-    ElectricVehicleChargingMandatory = BooleanField(default = True, verbose_name = "Mandatory Electric Vehicle Charging Domain", help_text = "Is Electric Vehicle Charging  a mandatory domain?")
-    MonitoringAndControlMandatory = BooleanField(default = True, verbose_name = "Mandatory Monitoring And Control Domain", help_text = "Is Monitoring and Control  a mandatory domain?")    
+    heatingMandatory = BooleanField(default = True, verbose_name = "Mandatory Heating Domain")
+    dhwMandatoryForResidential = BooleanField(default = True, verbose_name = "Mandatory DWH for residential Domain")
+    dhwMandatoryForTertiary = BooleanField(default = True, verbose_name = "Mandatory DWH for tertiary Domain")
+    CoolingMandatory = BooleanField(default = True, verbose_name = "Mandatory Cooling Domain")
+    VentilationMandatory = BooleanField(default = True, verbose_name = "Mandatory Ventilation Domain")
+    LightingMandatory = BooleanField(default = True, verbose_name = "Mandatory Lighting Domain")
+    DynamicBuildingEnvelopeMandatory = BooleanField(default = True, verbose_name = "Mandatory Dynamic Building Envelope Domain")
+    ElectricityMandatory = BooleanField(default = True, verbose_name = "Mandatory Electricity Domain")
+    ElectricVehicleChargingMandatory = BooleanField(default = True, verbose_name = "Mandatory Electric Vehicle Charging Domain")
+    MonitoringAndControlMandatory = BooleanField(default = True, verbose_name = "Mandatory Monitoring And Control Domain")    
     
     domainClassNames = CharField(default = 'A,B,C,D,E,F,G',
                                                         max_length = 1000,
@@ -56,18 +76,38 @@ class Country(Model):
     
     allowUserDefineDomainWeightings = BooleanField(default = False, verbose_name = "Allow user defined domain weightings", )
 
-    def __str__(self):
-        ''' 
-        Clase Country
-        
-        '''
-        return 'Id: {} - {} '.format(self.id, self.name)
+    # def __str__(self):
+    #     ''' 
+    #     Clase Country
+    #
+    #     '''
+    #     return 'Id: {} - {} '.format(self.id, self.name)
 
     class Meta:
         verbose_name = 'Country'
         verbose_name_plural = '6. Country'
         ordering = ('id',)
-
+    @classmethod    
+    def creaDesdeXML(cls, element):
+        ns = {'d':"http://www.efinovatic.es/sri"}
+        nuevaInstancia = cls()
+        id = element.attrib['id']
+        nuevaInstancia.id = int(id)
+        nuevaInstancia.name = element.find('.//d:Name', ns).text
+        nuevaInstancia.heatingMandatory = True if element.find('.//d:HeatingMandatory', ns).text == 'True' else False
+        nuevaInstancia.dhwMandatoryForResidential = True if element.find('.//d:DHWMandatoryForResidential', ns).text == 'True' else False
+        nuevaInstancia.dhwMandatoryForTertiary = True if element.find('.//d:DHWMandatoryForTertiary', ns).text == 'True' else False
+        nuevaInstancia.CoolingMandatory = True if element.find('.//d:CoolingMandatory', ns).text == 'True' else False
+        nuevaInstancia.VentilationMandatory = True if element.find('.//d:VentilationMandatory', ns).text == 'True' else False
+        nuevaInstancia.LightingMandatory = True if element.find('.//d:LightingMandatory', ns).text == 'True' else False
+        nuevaInstancia.DynamicBuildingEnvelopeMandatory = True if element.find('.//d:DynamicBuildingEnvelopeMandatory', ns).text == 'True' else False
+        nuevaInstancia.ElectricityMandatory = True if element.find('.//d:ElectricityMandatory', ns).text == 'True' else False
+        nuevaInstancia.ElectricVehicleChargingMandatory = True if element.find('.//d:ElectricVehicleChargingMandatory', ns).text == 'True' else False
+        nuevaInstancia.MonitoringAndControlMandatory = True if element.find('.//d:MonitoringAndControlMandatory', ns).text == 'True' else False
+        nuevaInstancia.allowUserDefineDomainWeightings = True if element.find('.//d:AllowUserDefineDomainWeightings', ns).text == 'True' else False
+        nuevaInstancia.domainClassNames = element.find('.//d:DomainClassNames', ns).text
+        return nuevaInstancia
+        
 
 class Catalogo(Model):
     
@@ -78,28 +118,24 @@ class Catalogo(Model):
                             verbose_name = "Description")
     
     country = ForeignKey(Country,
-                         blank = True,
                          verbose_name = 'Country',
-                         related_name = 'catalogos',
-                         help_text = 'Multiple selection/deselection: use the CTRL key',)
+                         related_name = 'catalogos',)
                                      
     buildingType = ForeignKey(BuildingType,
-                              blank = True,
                               verbose_name = 'Building Types',
-                              related_name = 'catalogos',
-                              help_text = 'Multiple selection/deselection: use the CTRL key',)
+                              related_name = 'catalogos',)
                   
     class Meta:
         verbose_name = 'Catalogue'
         verbose_name_plural = '1.Catalogue'
         ordering = ('id',)
 
-    def __str__(self):
-        ''' 
-        Clase Catalogo
-        
-        '''
-        return str(self.description)
+    # def __str__(self):
+    #     ''' 
+    #     Clase Catalogo
+    #
+    #     '''
+    #     return str(self.description)
 
     @property
     def tieneDatos(self):
@@ -108,7 +144,7 @@ class Catalogo(Model):
     def delete(self, using=None, keep_parents=False):
         if self.tieneDatos:
             return False
-        return models.Model.delete(self, using=using, keep_parents=keep_parents)
+        return Model.delete(self, using=using, keep_parents=keep_parents)
     def duplicar(self, padre = None): 
         ''' 
         Clase Catalogo
@@ -265,6 +301,18 @@ class Catalogo(Model):
         '''
         impactoMaximo = sum([dominio.impactMaxInformationOccupants for dominio in self.dominios.all()])
         return impactoMaximo
+        
+    @classmethod
+    def creaDesdeXML(cls,catalogoElement):
+        ns = {'d':"http://www.efinovatic.es/sri"}
+        nuevaInstancia = cls()
+        description = catalogoElement.find('.//d:Description',ns)
+        id = int(catalogoElement.attrib['id'])
+        nuevaInstancia.description = description.text
+        nuevaInstancia.id = id
+        
+        return nuevaInstancia
+        
 
 class Climate(Model):
     
@@ -274,17 +322,15 @@ class Climate(Model):
                             max_length = 1000,
                             verbose_name = "Description")
     country = ForeignKey(Country,
-                         blank = True,
                          verbose_name = 'Countries',
-                         related_name = 'climates',
-                         help_text = 'Multiple selection/deselection: use the CTRL key',)
+                         related_name = 'climates',)
 
-    def __str__(self):
-        ''' 
-        Clase Climate
-        
-        '''
-        return 'Id: {} - {} '.format(self.id, self.description)
+    # def __str__(self):
+    #     ''' 
+    #     Clase Climate
+    #
+    #     '''
+    #     return 'Id: {} - {} '.format(self.id, self.description)
 
     class Meta:
         verbose_name = 'Climate'
@@ -312,12 +358,12 @@ class Dominio(Model):
         verbose_name_plural = '2.Domain'
         ordering = ('id',)
 
-    def __str__(self):
-        ''' 
-        Clase Dominio
-        
-        '''
-        return f"{self.description}"
+    # def __str__(self):
+    #     ''' 
+    #     Clase Dominio
+    #
+    #     '''
+    #     return f"{self.description}"
     
     def duplicar(self, padre = None):
         ''' 
@@ -478,67 +524,19 @@ class Dominio(Model):
         
         '''
         impactoMaximo = sum([servicio.impactMaxInformationOccupants for servicio in self.servicios.all()])
-        return impactoMaximo  
-    
-    def getForm(self, proyectoId = None):
-        '''
-        Clase Dominio
-        '''
-        from sri.forms import DominioForm
-        new_fields = {}
-        for servicio in self.servicios.all():
-            choices1 = [] 
-            cont = 0
-            for x in servicio.funcionalidades.all(): choices1.append((x.id, x.description))
-            listadoDatos = Dato.objects.filter(chosenFuncionality__service__id = servicio.id, proyect = proyectoId)
-            porcTotal = 0
-            # if len(listadoDatos) == 0:
-            new_fields['{0}--{1}--{2}'.format(servicio.id, 'Choice', cont) ] = forms.ChoiceField(label = servicio.description,
-                                                                                                 help_text = servicio.description,
-                                                                                                 choices = choices1)
-    
-            new_fields['{0}--{1}--{2}'.format(servicio.id, 'Percentage', cont) ] = forms.FloatField(label = 'Percentage',
-                                                                                                    help_text = servicio.description,
-                                                                                                    initial = 100.0,
-                                                                                                    validators=[MinValueValidator(0.0),MaxValueValidator(100.0, u"Please introduce a lower value")])
-                
-            new_fields['{0}--{1}--{2}'.format(servicio.id, 'Justificacion', cont) ] = forms.CharField(widget = CKEditorUploadingWidget(),
-                                                                                                      label = 'Justification',
-                                                                                                      help_text = servicio.description,
-                                                                                                      required = False)
-            
-            new_fields['{0}--{1}--{2}'.format(servicio.id, 'Comentario', cont) ] = forms.CharField(widget = CKEditorUploadingWidget(),
-                                                                                                   label = 'Comments',
-                                                                                                   help_text = servicio.description,
-                                                                                                   required = False)
-            # else:
-                
-            for dato in listadoDatos:
-                porcTotal += dato.percentage
-                if porcTotal < 100.: 
-                    cont += 1
-                                   
-                    new_fields['{0}--{1}--{2}'.format(servicio.id, 'Choice', cont) ] = forms.ChoiceField(label = servicio.description,
-                                                                                                         help_text = servicio.description,
-                                                                                                         choices = choices1)
-                    
-                    new_fields['{0}--{1}--{2}'.format(servicio.id, 'Percentage', cont) ] = forms.FloatField(label = 'Percentage',
-                                                                                                            help_text = servicio.description,
-                                                                                                            initial = 100 - porcTotal)
-                    
-                    new_fields['{0}--{1}--{2}'.format(servicio.id, 'Justificacion', cont) ] = forms.CharField(widget = CKEditorUploadingWidget(),
-                                                                                                              label = 'Justification',
-                                                                                                              help_text = servicio.description,
-                                                                                                              required = False)
-                    
-                    new_fields['{0}--{1}--{2}'.format(servicio.id, 'Comentario', cont) ] = forms.CharField(widget = CKEditorUploadingWidget(),
-                                                                                                           label = 'Comments',
-                                                                                                           help_text = servicio.description,
-                                                                                                           required = False)
+        return impactoMaximo
         
-        DynamicDominionForm = type('DynamicDominionForm', (DominioForm,), new_fields)
+    @classmethod
+    def creaDesdeXML(cls,domainElement):
+        ns = {'d':"http://www.efinovatic.es/sri"}
+        nuevaInstancia = cls()
+        description = domainElement.find('.//d:Description',ns)
+        id = int(domainElement.attrib['id'])
+        nuevaInstancia.description = description.text
+        nuevaInstancia.id = id
+        nuevaInstancia.nameAttr = domainElement.find('.//d:NameAttr', ns).text
         
-        return DynamicDominionForm
+        return nuevaInstancia  
 
     
 class Servicio(Model):
@@ -562,12 +560,12 @@ class Servicio(Model):
         verbose_name_plural = '3.Service'
         ordering = ('id',)
 
-    def __str__(self):
-        ''' 
-        Clase Servicio
-        
-        '''
-        return str(self.description)
+    # def __str__(self):
+    #     ''' 
+    #     Clase Servicio
+    #
+    #     '''
+    #     return str(self.description)
     
     def duplicar(self, padre = None):
         ''' 
@@ -594,7 +592,8 @@ class Servicio(Model):
         Clase Servicio
         Devuelve los maximos del impacto
         '''
-        impactoMaximo = max([getattr(funcionalidad, '{}Impact'.format(impacto)) for funcionalidad in self.funcionalidades.all()])
+        # impactoMaximo = max([getattr(funcionalidad, '{}Impact'.format(impacto)) for funcionalidad in self.funcionalidades.all()])
+        impactoMaximo = max([getattr(funcionalidad, '{}Impact'.format(impacto)) for funcionalidad in self.funcionalidades])
         return impactoMaximo
     
 #     def getImpactMaxEnergyEfficiency(self, proyecto = None):
@@ -815,6 +814,17 @@ class Servicio(Model):
         else:
             impactoMaximo = max([funcionalidad.informationOccupantsImpact for funcionalidad in self.funcionalidades.all()])
         return impactoMaximo
+        
+    @classmethod
+    def creaDesdeXML(cls,serviceElement):
+        ns = {'d':"http://www.efinovatic.es/sri"}
+        nuevaInstancia = cls()
+        description = serviceElement.find('.//d:Description',ns)
+        id = int(serviceElement.attrib['id'])
+        nuevaInstancia.description = description.text
+        nuevaInstancia.id = id
+        
+        return nuevaInstancia
 
     
 class Funcionalidad(Model):
@@ -854,13 +864,11 @@ class Funcionalidad(Model):
     informationOccupantsImpact = FloatField(default = 0.0,
                                             verbose_name = 'Information to occupants')
                                           
-    en15232Residential = CharField(choices = [('-', '-'),('A', 'A'), ('B', 'B'), ('C', 'C'), ('D', 'D')],
-                                       max_length = 1000,
+    en15232Residential = ChoiceField(choices = [('-', '-'),('A', 'A'), ('B', 'B'), ('C', 'C'), ('D', 'D')],
                                        verbose_name = u"ISO 52120-1:2021 (Residential)",
                                        default = '-')
                                        
-    en15232NonResidential = CharField(choices = [('-', '-'),('A', 'A'), ('B', 'B'), ('C', 'C'), ('D', 'D')],
-                                       max_length = 1000,
+    en15232NonResidential = ChoiceField(choices = [('-', '-'),('A', 'A'), ('B', 'B'), ('C', 'C'), ('D', 'D')],
                                        verbose_name = u"ISO 52120-1:2021 (Non-residential)",
                                        default = '-')
                   
@@ -869,12 +877,12 @@ class Funcionalidad(Model):
         verbose_name_plural = '4.Functionality'
         ordering = ('id',)
 
-    def __str__(self):
-        ''' 
-        Clase Funcionalidad
-        
-        '''
-        return 'Id: {} - {} '.format(self.id, self.description)
+    # def __str__(self):
+    #     ''' 
+    #     Clase Funcionalidad
+    #
+    #     '''
+    #     return 'Id: {} - {} '.format(self.id, self.description)
     
     def duplicar(self, padre = None):
         ''' 
@@ -892,6 +900,25 @@ class Funcionalidad(Model):
 
         self.save()
         return self
+        
+    @classmethod
+    def creaDesdeXML(cls,funcionalidadElement):
+        ns = {'d':"http://www.efinovatic.es/sri"}
+        nuevaInstancia = cls()
+        description = funcionalidadElement.find('.//d:Description',ns)
+        id = int(funcionalidadElement.attrib['id'])
+        nuevaInstancia.description = description.text
+        nuevaInstancia.id = id
+        nuevaInstancia.energyEfficiencyImpact = float(funcionalidadElement.find('.//d:EnergyEfficiencyImpact',ns).text)
+        nuevaInstancia.energyFlexibilityImpact = float(funcionalidadElement.find('.//d:EnergyFlexibilityImpact',ns).text)
+        nuevaInstancia.comfortImpact = float(funcionalidadElement.find('.//d:ComfortImpact',ns).text)
+        nuevaInstancia.convenienceImpact = float(funcionalidadElement.find('.//d:ConvenienceImpact',ns).text)
+        nuevaInstancia.healthAccesibilityImpact = float(funcionalidadElement.find('.//d:HealthAccesibilityImpact',ns).text)
+        nuevaInstancia.maintenanceFaultPredictionImpact = float(funcionalidadElement.find('.//d:MaintenanceFaultPredictionImpact',ns).text)
+        nuevaInstancia.informationOccupantsImpact = float(funcionalidadElement.find('.//d:InformationOccupantsImpact',ns).text)
+        nuevaInstancia.en15232Residential = funcionalidadElement.find('.//d:En15232Residential',ns).text
+        nuevaInstancia.en15232NonResidential = funcionalidadElement.find('.//d:En15232NonResidential',ns).text
+        return nuevaInstancia
 
     
 class ImpactWeightings (Model):
@@ -919,15 +946,12 @@ class ImpactWeightings (Model):
                                       default = 0.0)
     
     kF1_energyPerformanceAndOperation = FloatField(verbose_name = 'KF1: Energy performance',
-                                                   help_text = "Key functionality 1: Energy performance and operation",
                                                    default = 1.0 / 3.0)
     
     kF2_responseToUserNeeds = FloatField(verbose_name = 'KF2: Response to user needs',
-                                         help_text = "Key functionality 1: Response to user needs",
                                          default = 1.0 / 3.0)
     
     kF3_energyFlexibility = FloatField(verbose_name = 'KF3: Energy flexibility',
-                                       help_text = "Key functionality 3: Energy flexibility",
                                        default = 1.0 / 3.0)        
     
     def getLista(self):
@@ -956,12 +980,32 @@ class ImpactWeightings (Model):
         self.save()
         return self
 
-    def __str__(self):
-        ''' 
-        Clase ImpactWeightings
+    # def __str__(self):
+    #     ''' 
+    #     Clase ImpactWeightings
+    #
+    #     '''
+    #     return 'Id: {}'.format(self.id)
         
-        '''
-        return 'Id: {}'.format(self.id)
+    @classmethod
+    def creaDesdeXML(cls, impactWeightingElement):
+        ns = {'d':"http://www.efinovatic.es/sri"}
+        nuevaInstancia = cls()
+        id = int(impactWeightingElement.attrib['id'])
+        nuevaInstancia.id = id
+        
+        nuevaInstancia.energyEfficiency = float(impactWeightingElement.find('.//d:EnergyEfficiency',ns).text)
+        nuevaInstancia.energyFlexibility = float(impactWeightingElement.find('.//d:EnergyFlexibility',ns).text)
+        nuevaInstancia.comfort = float(impactWeightingElement.find('.//d:Comfort',ns).text)
+        nuevaInstancia.convenience = float(impactWeightingElement.find('.//d:Convenience',ns).text)
+        nuevaInstancia.healthAccesibility = float(impactWeightingElement.find('.//d:HealthAccesibility',ns).text)
+        nuevaInstancia.maintenanceFaultPrediction = float(impactWeightingElement.find('.//d:MaintenanceFaultPrediction',ns).text)
+        nuevaInstancia.informationOccupants = float(impactWeightingElement.find('.//d:InformationOccupants',ns).text)
+        nuevaInstancia.kF1_energyPerformanceAndOperation = float(impactWeightingElement.find('.//d:KF1_energyPerformanceAndOperation',ns).text)
+        nuevaInstancia.kF2_responseToUserNeeds = float(impactWeightingElement.find('.//d:KF2_responseToUserNeeds',ns).text)
+        nuevaInstancia.kF3_energyFlexibility = float(impactWeightingElement.find('.//d:KF3_energyFlexibility',ns).text)
+        
+        return nuevaInstancia
         
 class CustomImpactWeightings(Model):
     
@@ -989,15 +1033,12 @@ class CustomImpactWeightings(Model):
                                       default = 0.0)
     
     kF1_energyPerformanceAndOperation = FloatField(verbose_name = 'KF1: Energy performance',
-                                                   help_text = "Key functionality 1: Energy performance and operation",
                                                    default = 1.0 / 3.0)
     
     kF2_responseToUserNeeds = FloatField(verbose_name = 'KF2: Response to user needs',
-                                         help_text = "Key functionality 1: Response to user needs",
                                          default = 1.0 / 3.0)
     
     kF3_energyFlexibility = FloatField(verbose_name = 'KF3: Energy flexibility',
-                                       help_text = "Key functionality 3: Energy flexibility",
                                        default = 1.0 / 3.0)        
     
     def getLista(self):
@@ -1010,8 +1051,8 @@ class CustomImpactWeightings(Model):
                 self.informationOccupants]
 
     class Meta:
-        verbose_name = _('Custom Impact Weighting')
-        verbose_name_plural = _('13.Custom Impact Weighting')
+        verbose_name = 'Custom Impact Weighting'
+        verbose_name_plural = '13.Custom Impact Weighting'
         ordering = ('id',)
         
     def duplicar(self, padre = None):
@@ -1026,11 +1067,11 @@ class CustomImpactWeightings(Model):
         self.save()
         return self
 
-    def __str__(self):
-        ''' 
-        Clase CustomImpactWeightings
-        '''
-        return 'Id: {}'.format(self.id)
+    # def __str__(self):
+    #     ''' 
+    #     Clase CustomImpactWeightings
+    #     '''
+    #     return 'Id: {}'.format(self.id)
 
 class DomainWeigthing(Model):
     
@@ -1041,35 +1082,24 @@ class DomainWeigthing(Model):
                               verbose_name = "Name")
                               
     country = ForeignKey(Country,
-                         blank = True,
                          verbose_name = 'Countries',
-                         related_name = 'domaingWeightings',
-                         help_text = 'Multiple selection/deselection: use the CTRL key',)
+                         related_name = 'domaingWeightings',)
                                      
     catalogo = ForeignKey(Catalogo,
-                          blank = True,
                           verbose_name = 'Catalogue',
-                          related_name = 'domaingWeightings',
-                          help_text = 'Multiple selection/deselection: use the CTRL key',)
+                          related_name = 'domaingWeightings',)
     
     climate = ForeignKey(Climate,
-                         blank = True,
                          verbose_name = 'Climates',
-                         related_name = 'domaingWeightings',
-                         help_text = 'Multiple selection/deselection: use the CTRL key',)
+                         related_name = 'domaingWeightings',)
     
     impactWeighting = ForeignKey(ImpactWeightings,
                          verbose_name = 'Impact Weightings',
-                         related_name = 'impact_weigthing',
-                         blank = True,
-                         null = True,
-                         on_delete = models.DO_NOTHING)
+                         related_name = 'impact_weigthing',)
                          
-    buildingType = ForeignKey(BuildindgType,
-                              blank = True,
+    buildingType = ForeignKey(BuildingType,
                               verbose_name = 'Building Types',
-                              related_name = 'domaingWeightings',
-                              help_text = 'Multiple selection/deselection: use the CTRL key',)
+                              related_name = 'domaingWeightings',)
     
     energyEfficiencyHeating = FloatField(verbose_name = 'Energy efficiency heating',
                                          default = 0.0)
@@ -1254,13 +1284,15 @@ class DomainWeigthing(Model):
     
     informationOccupantsMonitoringAndControl = FloatField(verbose_name = 'Information to occupants Monitoring and Control',
                                                           default = 0.0)
+                                                          
     
-    def __str__(self):
-        ''' 
-        Clase DomainWeigthing
-        
-        '''
-        return 'Id: {} - {} '.format(self.id, self.name)
+    
+    # def __str__(self):
+    #     ''' 
+    #     Clase DomainWeigthing
+    #
+    #     '''
+    #     return 'Id: {} - {} '.format(self.id, self.name)
     
     class Meta:
         verbose_name = 'Domain Weighting'
@@ -1278,6 +1310,117 @@ class DomainWeigthing(Model):
         self.name = self.name + '_copy'
         self.save()
         return self
+        
+    @classmethod
+    def creaDesdeXML(cls,domainWeigthingElement):
+        ns = {'d':"http://www.efinovatic.es/sri"}
+        nuevaInstancia = cls()
+        description = domainWeigthingElement.find('.//d:Name',ns)
+        id = int(domainWeigthingElement.attrib['id'])
+        nuevaInstancia.name = description.text
+        nuevaInstancia.id = id
+        
+        # Para los atributos de Heating en el XML
+        instanciaHeating = domainWeigthingElement.find('.//d:Heating',ns)
+        nuevaInstancia.energyEfficiencyHeating = float(instanciaHeating.find('.//d:EnergyEfficiency', ns).text)
+        nuevaInstancia.energyFlexibilityHeating = float(instanciaHeating.find('.//d:EnergyFlexibility', ns).text)
+        nuevaInstancia.comfortHeating = float(instanciaHeating.find('.//d:Comfort', ns).text)
+        nuevaInstancia.convenienceHeating = float(instanciaHeating.find('.//d:Convenience', ns).text)
+        nuevaInstancia.healthAccesibilityHeating = float(instanciaHeating.find('.//d:HealthAccesibility', ns).text)
+        nuevaInstancia.maintenanceFaultPredictionHeating = float(instanciaHeating.find('.//d:MaintenanceFaultPrediction', ns).text)
+        nuevaInstancia.informationOccupantsHeating = float(instanciaHeating.find('.//d:InformationOccupants', ns).text)        
+        
+        # Para los atributos de Heating en el XML
+        instanciaCooling = domainWeigthingElement.find('.//d:Cooling',ns)
+        nuevaInstancia.energyEfficiencyCooling = float(instanciaCooling.find('.//d:EnergyEfficiency', ns).text)
+        nuevaInstancia.energyFlexibilityCooling = float(instanciaCooling.find('.//d:EnergyFlexibility', ns).text)
+        nuevaInstancia.comfortCooling = float(instanciaCooling.find('.//d:Comfort', ns).text)
+        nuevaInstancia.convenienceCooling = float(instanciaCooling.find('.//d:Convenience', ns).text)
+        nuevaInstancia.healthAccesibilityCooling = float(instanciaCooling.find('.//d:HealthAccesibility', ns).text)
+        nuevaInstancia.maintenanceFaultPredictionCooling = float(instanciaCooling.find('.//d:MaintenanceFaultPrediction', ns).text)
+        nuevaInstancia.informationOccupantsCooling = float(instanciaCooling.find('.//d:InformationOccupants', ns).text)        
+        
+        
+        # Para los atributos de Heating en el XML
+        instanciaDhw = domainWeigthingElement.find('.//d:DHW',ns)
+        nuevaInstancia.energyEfficiencyDhw = float(instanciaDhw.find('.//d:EnergyEfficiency', ns).text)
+        nuevaInstancia.energyFlexibilityDhw = float(instanciaDhw.find('.//d:EnergyFlexibility', ns).text)
+        nuevaInstancia.comfortDhw = float(instanciaDhw.find('.//d:Comfort', ns).text)
+        nuevaInstancia.convenienceDhw = float(instanciaDhw.find('.//d:Convenience', ns).text)
+        nuevaInstancia.healthAccesibilityDhw = float(instanciaDhw.find('.//d:HealthAccesibility', ns).text)
+        nuevaInstancia.maintenanceFaultPredictionDhw = float(instanciaDhw.find('.//d:MaintenanceFaultPrediction', ns).text)
+        nuevaInstancia.informationOccupantsDhw = float(instanciaDhw.find('.//d:InformationOccupants', ns).text)        
+        
+        
+        # Para los atributos de Heating en el XML
+        instanciaVentilation = domainWeigthingElement.find('.//d:Ventilation',ns)
+        nuevaInstancia.energyEfficiencyVentilation = float(instanciaVentilation.find('.//d:EnergyEfficiency', ns).text)
+        nuevaInstancia.energyFlexibilityVentilation = float(instanciaVentilation.find('.//d:EnergyFlexibility', ns).text)
+        nuevaInstancia.comfortVentilation = float(instanciaVentilation.find('.//d:Comfort', ns).text)
+        nuevaInstancia.convenienceVentilation = float(instanciaVentilation.find('.//d:Convenience', ns).text)
+        nuevaInstancia.healthAccesibilityVentilation = float(instanciaVentilation.find('.//d:HealthAccesibility', ns).text)
+        nuevaInstancia.maintenanceFaultPredictionVentilation = float(instanciaVentilation.find('.//d:MaintenanceFaultPrediction', ns).text)
+        nuevaInstancia.informationOccupantsVentilation = float(instanciaVentilation.find('.//d:InformationOccupants', ns).text)        
+        
+        
+        # Para los atributos de Heating en el XML
+        instanciaLighting = domainWeigthingElement.find('.//d:Lighting',ns)
+        nuevaInstancia.energyEfficiencyLighting = float(instanciaLighting.find('.//d:EnergyEfficiency', ns).text)
+        nuevaInstancia.energyFlexibilityLighting = float(instanciaLighting.find('.//d:EnergyFlexibility', ns).text)
+        nuevaInstancia.comfortLighting = float(instanciaLighting.find('.//d:Comfort', ns).text)
+        nuevaInstancia.convenienceLighting = float(instanciaLighting.find('.//d:Convenience', ns).text)
+        nuevaInstancia.healthAccesibilityLighting = float(instanciaLighting.find('.//d:HealthAccesibility', ns).text)
+        nuevaInstancia.maintenanceFaultPredictionLighting = float(instanciaLighting.find('.//d:MaintenanceFaultPrediction', ns).text)
+        nuevaInstancia.informationOccupantsLighting = float(instanciaLighting.find('.//d:InformationOccupants', ns).text)        
+        
+        
+        # Para los atributos de Heating en el XML
+        instanciaElectricity = domainWeigthingElement.find('.//d:Electricity',ns)
+        nuevaInstancia.energyEfficiencyElectricity = float(instanciaElectricity.find('.//d:EnergyEfficiency', ns).text)
+        nuevaInstancia.energyFlexibilityElectricity = float(instanciaElectricity.find('.//d:EnergyFlexibility', ns).text)
+        nuevaInstancia.comfortElectricity = float(instanciaElectricity.find('.//d:Comfort', ns).text)
+        nuevaInstancia.convenienceElectricity = float(instanciaElectricity.find('.//d:Convenience', ns).text)
+        nuevaInstancia.healthAccesibilityElectricity = float(instanciaElectricity.find('.//d:HealthAccesibility', ns).text)
+        nuevaInstancia.maintenanceFaultPredictionElectricity = float(instanciaElectricity.find('.//d:MaintenanceFaultPrediction', ns).text)
+        nuevaInstancia.informationOccupantsElectricity = float(instanciaElectricity.find('.//d:InformationOccupants', ns).text)        
+        
+        
+        # Para los atributos de Heating en el XML
+        instanciaDynamicBuildingEnvelope = domainWeigthingElement.find('.//d:DynamicBuildingEnvelope',ns)
+        nuevaInstancia.energyEfficiencyDynamicBuildingEnvelope = float(instanciaDynamicBuildingEnvelope.find('.//d:EnergyEfficiency', ns).text)
+        nuevaInstancia.energyFlexibilityDynamicBuildingEnvelope = float(instanciaDynamicBuildingEnvelope.find('.//d:EnergyFlexibility', ns).text)
+        nuevaInstancia.comfortDynamicBuildingEnvelope = float(instanciaDynamicBuildingEnvelope.find('.//d:Comfort', ns).text)
+        nuevaInstancia.convenienceDynamicBuildingEnvelope = float(instanciaDynamicBuildingEnvelope.find('.//d:Convenience', ns).text)
+        nuevaInstancia.healthAccesibilityDynamicBuildingEnvelope = float(instanciaDynamicBuildingEnvelope.find('.//d:HealthAccesibility', ns).text)
+        nuevaInstancia.maintenanceFaultPredictionDynamicBuildingEnvelope = float(instanciaDynamicBuildingEnvelope.find('.//d:MaintenanceFaultPrediction', ns).text)
+        nuevaInstancia.informationOccupantsDynamicBuildingEnvelope = float(instanciaDynamicBuildingEnvelope.find('.//d:InformationOccupants', ns).text)        
+        
+        
+        # Para los atributos de Heating en el XML
+        instanciaElectricVehicleCharging = domainWeigthingElement.find('.//d:ElectricVehicleCharging',ns)
+        nuevaInstancia.energyEfficiencyElectricVehicleCharging = float(instanciaElectricVehicleCharging.find('.//d:EnergyEfficiency', ns).text)
+        nuevaInstancia.energyFlexibilityElectricVehicleCharging = float(instanciaElectricVehicleCharging.find('.//d:EnergyFlexibility', ns).text)
+        nuevaInstancia.comfortElectricVehicleCharging = float(instanciaElectricVehicleCharging.find('.//d:Comfort', ns).text)
+        nuevaInstancia.convenienceElectricVehicleCharging = float(instanciaElectricVehicleCharging.find('.//d:Convenience', ns).text)
+        nuevaInstancia.healthAccesibilityElectricVehicleCharging = float(instanciaElectricVehicleCharging.find('.//d:HealthAccesibility', ns).text)
+        nuevaInstancia.maintenanceFaultPredictionElectricVehicleCharging = float(instanciaElectricVehicleCharging.find('.//d:MaintenanceFaultPrediction', ns).text)
+        nuevaInstancia.informationOccupantsElectricVehicleCharging = float(instanciaElectricVehicleCharging.find('.//d:InformationOccupants', ns).text)        
+        
+        
+        # Para los atributos de Heating en el XML
+        instanciaMonitoringAndControl = domainWeigthingElement.find('.//d:MonitoringAndControl',ns)
+        nuevaInstancia.energyEfficiencyMonitoringAndControl = float(instanciaMonitoringAndControl.find('.//d:EnergyEfficiency', ns).text)
+        nuevaInstancia.energyFlexibilityMonitoringAndControl = float(instanciaMonitoringAndControl.find('.//d:EnergyFlexibility', ns).text)
+        nuevaInstancia.comfortMonitoringAndControl = float(instanciaMonitoringAndControl.find('.//d:Comfort', ns).text)
+        nuevaInstancia.convenienceMonitoringAndControl = float(instanciaMonitoringAndControl.find('.//d:Convenience', ns).text)
+        nuevaInstancia.healthAccesibilityMonitoringAndControl = float(instanciaMonitoringAndControl.find('.//d:HealthAccesibility', ns).text)
+        nuevaInstancia.maintenanceFaultPredictionMonitoringAndControl = float(instanciaMonitoringAndControl.find('.//d:MaintenanceFaultPrediction', ns).text)
+        nuevaInstancia.informationOccupantsMonitoringAndControl = float(instanciaMonitoringAndControl.find('.//d:InformationOccupants', ns).text)        
+        
+        
+        instanciaImpactWeighting = ImpactWeightings.creaDesdeXML(domainWeigthingElement.find('.//d:ImpactWeighting', ns))
+        nuevaInstancia.impactWeighting = instanciaImpactWeighting
+        return nuevaInstancia
 
 class CustomDomainWeighting(Model):
     
@@ -1285,37 +1428,27 @@ class CustomDomainWeighting(Model):
     
     customImpactWeighting = ForeignKey(CustomImpactWeightings,
                                        verbose_name = 'Custom Impact Weightings',
-                                       related_name = 'customDomainWeigthing',
-                                       blank = True,
-                                       null = True)
+                                       related_name = 'customDomainWeigthing',)
                          
     user = ForeignKey(User,
                       verbose_name = u"User",
-                      related_name = 'customDomainWeigthing',
-                      blank = True,
-                      null = True)
+                      related_name = 'customDomainWeigthing',)
         
     name = CharField(default = '',
                      max_length = 1000,
                      verbose_name = "Name")
                               
     country = ForeignKey(Country,
-                         blank = True,
                          verbose_name = 'Countries',
-                         related_name = 'customDomainWeigthing',
-                         help_text = 'Multiple selection/deselection: use the CTRL key',)
+                         related_name = 'customDomainWeigthing',)
     
     climate = ForeignKey(Climate,
-                         blank = True,
                          verbose_name = 'Climates',
-                         related_name = 'customDomainWeigthing',
-                         help_text = 'Multiple selection/deselection: use the CTRL key',)
+                         related_name = 'customDomainWeigthing',)
                          
-    buildingType = ForeignKey(BuildindgType,
-                              blank = True,
+    buildingType = ForeignKey(BuildingType,
                               verbose_name = 'Building Types',
-                              related_name = 'customDomainWeigthing',
-                              help_text = 'Multiple selection/unselection: use the CTRL key',)
+                              related_name = 'customDomainWeigthing',)
     
     energyEfficiencyHeating = FloatField(verbose_name = 'Energy efficiency heating',)
 
@@ -1496,12 +1629,12 @@ class CustomDomainWeighting(Model):
         verbose_name_plural = '12. Particular Domain Weighting'
         ordering = ('id',)
         
-    def __str__(self):
-        ''' 
-        Clase CustomDomainWeigthing
-        
-        '''
-        return 'Id: {} - {} '.format(self.id, self.name)
+    # def __str__(self):
+    #     ''' 
+    #     Clase CustomDomainWeigthing
+    #
+    #     '''
+    #     return 'Id: {} - {} '.format(self.id, self.name)
         
     def duplicar(self, padre = None):
         ''' 
@@ -1542,39 +1675,27 @@ class Proyecto(Model):
     
     country = ForeignKey(Country,
                          verbose_name = 'Country',
-                         related_name = 'proyectos',
-                         blank = True,
-                         null = True)
+                         related_name = 'proyectos',)
     
     catalogo = ForeignKey(Catalogo,
                           verbose_name = 'Catalogue',
-                          related_name = 'proyectos',
-                          blank = True,
-                          null = True)
+                          related_name = 'proyectos',)
     
     climate = ForeignKey(Climate,
                          verbose_name = 'Climate',
-                         related_name = 'proyectos',
-                         blank = True,
-                         null = True)
+                         related_name = 'proyectos',)
     
     domainWeigthing = ForeignKey(DomainWeigthing,
                                  verbose_name = 'Default weighting factors',
-                                 related_name = 'proyectos',
-                                 blank = True,
-                                 null = True)
+                                 related_name = 'proyectos',)
                                 
     customDomainWeigthings = ForeignKey(CustomDomainWeighting,
                                         verbose_name = 'Custom Domain Weighting',
-                                        related_name = 'proyecto',
-                                        blank = True,
-                                        null = True)
+                                        related_name = 'proyecto',)
                                 
     buildingType = ForeignKey(BuildingType,
                               verbose_name = 'Building Type',
-                              related_name = 'proyectos',
-                              blank = True,
-                              null = True)
+                              related_name = 'proyectos',)
       
     name = CharField(default = '',
                      max_length = 1000,
@@ -1592,12 +1713,11 @@ class Proyecto(Model):
                       max_length = 1000,
                       verbose_name = 'Telephone Number') 
                       
-    preference = CharField(choices = [('default', 'default'), ('user defined', 'user defined')],
-                                       max_length = 1000,
+    preference = ChoiceField(choices = [('default', 'default'), ('user defined', 'user defined')],
                                        verbose_name = u"Preference",
                                        default = '')
     
-    buildingUsage = CharField(choices = [('', ''),
+    buildingUsage = ChoiceField(choices = [('', ''),
                                          ('residential - single-family-house', 'residential-single-family-house'),
                                          ('residential - small multi-family-house', 'residential - small multi-family-house'),
                                          ('residential - large multi-family-house', 'residential - large multi-family-house'),
@@ -1605,53 +1725,42 @@ class Proyecto(Model):
                                          ('non-residential - office', 'non-residential - office'),
                                          ('non-residential - educational', 'non-residential - educational'),
                                          ('non-residential - healthcare', 'non-residential - healthcare'),                                    
-                                         ('non-residential - other', 'non-residential - other')],                                         
-                              max_length = 1000,
-                              verbose_name = "Building Usage",
-                              default = '')
+                                         ('non-residential - other', 'non-residential - other')],
+                                verbose_name = "Building Usage",
+                                default = '')
     
     
     
-    netFloorAreaOfTheBuilding = FloatField(null = True,
-                                           blank = True,
-                                           verbose_name = 'Net floor area of the building',
+    netFloorAreaOfTheBuilding = FloatField(verbose_name = 'Net floor area of the building',
                                            default = 0.0)
     
-    yearOfConstruction = FloatField(null = True,
-                                    blank = True,
-                                    verbose_name = 'Year of construction',
+    yearOfConstruction = FloatField(verbose_name = 'Year of construction',
                                     default = 0.0)
     
-    buildingState = CharField(choices = [('', ''),
+    buildingState = ChoiceField(choices = [('', ''),
                                          ('Original', 'Original'),
-                                         ('Renovated', 'Renovated')],                                         
-                              max_length = 1000,
-                              verbose_name = u"Building state",
-                              default = '')
+                                         ('Renovated', 'Renovated')],
+                                verbose_name = u"Building state",
+                                default = '')
     
-    assessmentPurpose = CharField(choices = [('Current building state', 'Current building state'),
-                                             ('Improvement package', 'Improvement package')],                                         
-                                  max_length = 1000,
-                                  verbose_name = u"Assessment purpose",
-                                  help_text = u"Data presented in this assessment reflects the current state of the building or a package of measures/recommendations for updating the BACS",
-                                  default = 'Current building state')    
+    assessmentPurpose = ChoiceField(choices = [('Current building state', 'Current building state'),
+                                             ('Improvement package', 'Improvement package')],
+                                    verbose_name = u"Assessment purpose",
+                                    default = 'Current building state')    
     
-    energyClass = CharField(choices = [('-', '-'),
+    energyClass = ChoiceField(choices = [('-', '-'),
                                        ('A','A'),
                                        ('B','B'),
                                        ('C','C'),
                                        ('D','D'),
                                        ('E', 'E'),
                                        ('F', 'F'),
-                                       ('G','G'),],                                         
-                             max_length = 2,
-                             verbose_name = u"Energy class",
-                             help_text = u"Energy Performance Certificate (EPC) label/class",
-                             default = '-')  
+                                       ('G','G'),],
+                               verbose_name = u"Energy class",
+                               default = '-')  
     
     officialTestPhase = BooleanField(default = False, 
-                                     verbose_name = "Official test phase", 
-                                     help_text = "Click if this assessment is part of an official Member State test")      
+                                     verbose_name = "Official test phase",)      
     
     
     descriptionOfBuilding = CharField(default = '',
@@ -1662,66 +1771,102 @@ class Proyecto(Model):
                         max_length = 1000,
                         verbose_name = 'Address')
     
-    combinedHVACPower = CharField(choices = [('>= 290 kW', '>= 290 kW'),
+    combinedHVACPower = ChoiceField(choices = [('>= 290 kW', '>= 290 kW'),
                                              ('70 - 290 kW', '70 - 290 kW'),
                                              ('<= 70 kW', '<= 70 kW'),
                                              ('', '')],
-                                         
-                              max_length = 1000,
-                              verbose_name = u"Effective rated output for HVAC systems",
-                              default = '')    
+                                  verbose_name = u"Effective rated output for HVAC systems",
+                                  default = '')    
     
     
     # Almacenamos estos valores para que sirvan de cache en el benchmarking
-    totalSriScore = FloatField(null = True,
-                               blank = True,
-                               verbose_name = 'Total SRI Score',
+    totalSriScore = FloatField(verbose_name = 'Total SRI Score',
                                default = 0.0)    
     
-    scoreKF1 = FloatField(null = True,
-                          blank = True,
-                          verbose_name = 'Score KF1',
+    scoreKF1 = FloatField(verbose_name = 'Score KF1',
                           default = 0.0)    
 
-    scoreKF2 = FloatField(null = True,
-                          blank = True,
-                          verbose_name = 'Score KF2',
+    scoreKF2 = FloatField(verbose_name = 'Score KF2',
                           default = 0.0)    
 
-    scoreKF3 = FloatField(null = True,
-                          blank = True,
-                          verbose_name = 'Score KF3',
+    scoreKF3 = FloatField(verbose_name = 'Score KF3',
                           default = 0.0)            
     
     
-    Heating = BooleanField(default = True, verbose_name = "Heating", help_text = "Is Heating domain assessable?")
-    Dhw = BooleanField(default = True, verbose_name = "DWH", help_text = "Is DHW domain assessable?")
-    Cooling = BooleanField(default = True, verbose_name = "Cooling", help_text = "Is Cooling domain assessable?")
-    Ventilation = BooleanField(default = True, verbose_name = "Ventilation", help_text = "Is Ventilation domain assessable?")
-    Lighting = BooleanField(default = True, verbose_name = "Lighting", help_text = "Is Lighting domain assessable?")
-    DynamicBuildingEnvelope = BooleanField(default = True, verbose_name = "Dynamic Building Envelope", help_text = "Is Dynamic Building Envelope domain assessable?")
-    Electricity = BooleanField(default = True, verbose_name = "Electricity", help_text = "Is Electricity domain assessable?")
-    ElectricVehicleCharging = BooleanField(default = True, verbose_name = "Electric Vehicle Charging", help_text = "Is Electric Vehicle Charging domain assessable?")
-    MonitoringAndControl = BooleanField(default = True, verbose_name = "Monitoring And Control", help_text = "Is Monitoring and Control domain assessable?")
-    customDomain = BooleanField(default = False, verbose_name = "Custom Domain Weighting", help_text = "Prefer to customize domain weightings?")
+    Heating = BooleanField(default = True, verbose_name = "Heating")
+    Dhw = BooleanField(default = True, verbose_name = "DWH")
+    Cooling = BooleanField(default = True, verbose_name = "Cooling")
+    Ventilation = BooleanField(default = True, verbose_name = "Ventilation")
+    Lighting = BooleanField(default = True, verbose_name = "Lighting")
+    DynamicBuildingEnvelope = BooleanField(default = True, verbose_name = "Dynamic Building Envelope")
+    Electricity = BooleanField(default = True, verbose_name = "Electricity")
+    ElectricVehicleCharging = BooleanField(default = True, verbose_name = "Electric Vehicle Charging")
+    MonitoringAndControl = BooleanField(default = True, verbose_name = "Monitoring And Control")
+    customDomain = BooleanField(default = False, verbose_name = "Custom Domain Weighting")
     
     @classmethod
     def creaDesdeXML(cls,projectElement):
-        ns = {'d':"http://www.gbxml.org/schema"}
+        ns = {'d':"http://www.efinovatic.es/sri"}
         nuevaInstancia = cls()
-        nameElement = projectElement.find('d:name',ns)
-        nuevaInstancia.name = nameElement.text         
+        try:
+            # Obtener el ID numérico desde buildingIdRef
+            building_id_ref = projectElement.attrib['buildingIdRef']  # "Building_12"
+            nuevaInstancia.id = int(building_id_ref.split('_')[-1])
+        except (ValueError, IndexError):
+            print(f"Warning: Could not parse ID from {building_id_ref}")
+            nuevaInstancia.id = 0  # o algún valor por defecto
+        nuevaInstancia.assessmentPurpose = projectElement.find('d:AssessmentPurpose',ns).text
+        nuevaInstancia.organisation = projectElement.find('d:Organisation',ns).text
+        nuevaInstancia.email = projectElement.find('d:EmailAdress',ns).text
+        nuevaInstancia.telephoneNumber = projectElement.find('d:TelephoneNumber',ns).text
+        nuevaInstancia.buildingState = projectElement.find('d:BuildingState',ns).text
+        nuevaInstancia.combinedHVACPower = projectElement.find('d:EffectiveRatedOutputHVACSystem',ns).text
+        nuevaInstancia.country = Country.creaDesdeXML(projectElement.find('.//d:Country', ns))
+        nuevaInstancia.user = User.creaDesdeXML(projectElement)
+        nuevaInstancia.buildingType = BuildingType.creaDesdeXML(projectElement.find('.//d:BuildingType', ns))
         
-        print(projectElement,projectElement.attrib)
+        for domainWeigthingElement in projectElement.findall('.//d:DomainWeigthing', ns):
+            nuevaInstancia.domainWeigthing = DomainWeigthing.creaDesdeXML(domainWeigthingElement)
+            
+        
         for catalogueElement in projectElement.findall('.//d:Catalogue',ns):
-            print("\t",catalogueElement,catalogueElement.attrib)
-            description = catalogueElement.find('.//d:description',ns)
-            print("\t\t",description.text)
+            description = catalogueElement.find('.//d:Description',ns)
+            nuevaInstancia.catalogo = Catalogo.creaDesdeXML(catalogueElement)
+            nuevaInstancia.catalogo.country = nuevaInstancia.country
             for domainElement in catalogueElement.findall('.//d:Domain',ns):
-                print("\t\t\t",domainElement,domainElement.attrib)
-                description = domainElement.find('.//d:description',ns)
-                print("\t\t\t\t",description.text)        
+                nuevaInstanciaDominio = Dominio.creaDesdeXML(domainElement)
+                nuevaInstanciaDominio.catalogo = nuevaInstancia.catalogo
+                description = domainElement.find('.//d:Description',ns)
+                for serviceElement in domainElement.findall('.//d:Service',ns):
+                    nuevaInstanciaService = Servicio.creaDesdeXML(serviceElement)
+                    nuevaInstanciaService.dominio = nuevaInstanciaDominio
+                    description = serviceElement.find('.//d:Description',ns)
+                    for funcionalitiesElement in serviceElement.findall('.//d:Functionality', ns):
+                        nuevaInstanciaFunctionality = Funcionalidad.creaDesdeXML(funcionalitiesElement)
+                        nuevaInstanciaFunctionality.service = nuevaInstanciaService
+                        description = funcionalitiesElement.find('.//d:Description',ns)
+                        
+        assessableDomainsElement = projectElement.find('.//d:AssessableDomains', ns)
+        nuevaInstancia.Heating = True if assessableDomainsElement.find('.//d:Heating', ns).text == 'True' else False
+        nuevaInstancia.Dhw = True if assessableDomainsElement.find('.//d:DHW', ns).text == 'True' else False
+        nuevaInstancia.Cooling = True if assessableDomainsElement.find('.//d:Cooling', ns).text == 'True' else False
+        nuevaInstancia.Ventilation = True if assessableDomainsElement.find('.//d:Ventilation', ns).text == 'True' else False
+        nuevaInstancia.Lighting = True if assessableDomainsElement.find('.//d:Lighting', ns).text == 'True' else False
+        nuevaInstancia.DynamicBuildingEnvelope = True if assessableDomainsElement.find('.//d:DynamicBuildingEnvelope', ns).text == 'True' else False
+        nuevaInstancia.Electricity = True if assessableDomainsElement.find('.//d:Electricity', ns).text == 'True' else False
+        nuevaInstancia.ElectricVehicleCharging = True if assessableDomainsElement.find('.//d:ElectricVehicleCharging', ns).text == 'True' else False
+        nuevaInstancia.MonitoringAndControl = True if assessableDomainsElement.find('.//d:MonitoringAndControl', ns).text == 'True' else False
         
+        for datumElement in projectElement.findall('.//d:Datum', ns):
+            nuevaInstanciaDato = Dato.creaDesdeXML(datumElement)
+            nuevaInstanciaDato.proyect = nuevaInstancia
+            
+        # ¡¡¡ELIMINAR ESTAS LÍNEAS!!!
+        # resultsElement = projectElement.find('.//d:Results', ns)
+        # nuevaInstancia.totalSriScore = float(resultsElement.find('.//d:TotalSriScore', ns).text)
+        # nuevaInstancia.scoreKF1 = float(resultsElement.find('.//d:ScoreKF1', ns).text)
+        # nuevaInstancia.scoreKF2 = float(resultsElement.find('.//d:ScoreKF2', ns).text)
+        # nuevaInstancia.scoreKF3 = float(resultsElement.find('.//d:ScoreKF3', ns).text)
                
         return nuevaInstancia
     
@@ -1730,12 +1875,12 @@ class Proyecto(Model):
         verbose_name_plural = '10. Project'
         ordering = ('id',)
     
-    def __str__(self):
-        ''' 
-        Clase Proyecto
-        
-        '''
-        return 'Project:' + '{}'.format(self.id) + ' - {}'.format(self.name)
+    # def __str__(self):
+    #     ''' 
+    #     Clase Proyecto
+    #
+    #     '''
+    #     return 'Project:' + '{}'.format(self.id) + ' - {}'.format(self.name)
     
     def duplicar(self):
         ''' 
@@ -1760,18 +1905,12 @@ class Proyecto(Model):
     # def puntuaciónTotal(self): # TODO: Falta de echar un vistazo porque las puntuaciones van ponderadas
     #     total = self.catalogo.impactMaxEnergyEfficiency + self.catalogo.impactMaxEnergyFlexibility + self.catalogo.impactMaxConvenience + self.catalogo.impactMaxComfort + self.catalogo.impactMaxHealthAccesibility + self.catalogo.impactMaxMaintenanceFaultPrediction + self.catalogo.impactMaxInformationOccupants
     #     return total 
-    @property
-    def iconosPresentes(self):
-        listaIconos = [] 
-        for dominio in self.catalogo.dominios.all():
-            if getattr(self, dominio.nameAttr):
-                listaIconos.append(dominio.icono)
-        return listaIconos
+
         
     @property
     def dominiosPresentes(self):
         listaDominios = [] 
-        for dominio in self.catalogo.dominios.all():
+        for dominio in self.catalogo.dominios:
             if getattr(self, dominio.nameAttr):
                 listaDominios.append(dominio)
         return listaDominios
@@ -1787,7 +1926,8 @@ class Proyecto(Model):
     @property
     def listadoNombreDominios(self):
         listadoNombreDominios = []
-        for dominio in self.catalogo.dominios.all():
+        # for dominio in self.catalogo.dominios.all():
+        for dominio in self.catalogo.dominios:
             if getattr(self, dominio.nameAttr):
                 listadoNombreDominios.append(dominio.description)
         return listadoNombreDominios
@@ -1795,7 +1935,8 @@ class Proyecto(Model):
     @property
     def listadoNombreDominiosMostrar(self):
         listadoNombreDominios = []
-        for dominio in self.catalogo.dominios.all():
+        # for dominio in self.catalogo.dominios.all():
+        for dominio in self.catalogo.dominios:
             if getattr(self, dominio.nameAttr):
                 listadoNombreDominios.append(dominio.description)
         return listadoNombreDominios
@@ -2258,19 +2399,19 @@ class Proyecto(Model):
             tabla.append(fila)
         return tabla
 
-    def tablaImpactosPD(self, tablaBruta):
-        ''' 
-        Clase Proyecto
-        Dominios filas
-        '''
-        # impactos = set([x[0] for x in tablaBruta])
-        
-        tabla = self.tablaImpactos(tablaBruta)
-            
-        df = pd.DataFrame(tabla, columns = self.listadoNombreImpactosMostrar, index = self.listadoNombreDominiosMostrar)
-    
-        print(tabulate(df, headers = 'keys', tablefmt = 'psql'))  
-        return df    
+    # def tablaImpactosPD(self, tablaBruta):
+    #     ''' 
+    #     Clase Proyecto
+    #     Dominios filas
+    #     '''
+    #     # impactos = set([x[0] for x in tablaBruta])
+    #
+    #     tabla = self.tablaImpactos(tablaBruta)
+    #
+    #     df = pd.DataFrame(tabla, columns = self.listadoNombreImpactosMostrar, index = self.listadoNombreDominiosMostrar)
+    #
+    #     print(tabulate(df, headers = 'keys', tablefmt = 'psql'))  
+    #     return df    
     
     def getClase(self, totalImpactScore):
         if self.country:
@@ -2323,16 +2464,16 @@ class Proyecto(Model):
             tabla.append(fila)
         return tabla
         
-    def tablaImpactosMaximosPD(self, tablaBruta):
-        ''' 
-        Clase Proyecto
-        Dominios filas
-        '''
-        tabla = self.tablaImpactosMaximos(tablaBruta)
-        df = pd.DataFrame(tabla, columns = self.listadoNombreImpactosMostrar, index = self.listadoNombreDominiosMostrar)
-    
-        print(tabulate(df, headers = 'keys', tablefmt = 'psql'))
-        return df
+    # def tablaImpactosMaximosPD(self, tablaBruta):
+    #     ''' 
+    #     Clase Proyecto
+    #     Dominios filas
+    #     '''
+    #     tabla = self.tablaImpactosMaximos(tablaBruta)
+    #     df = pd.DataFrame(tabla, columns = self.listadoNombreImpactosMostrar, index = self.listadoNombreDominiosMostrar)
+    #
+    #     print(tabulate(df, headers = 'keys', tablefmt = 'psql'))
+    #     return df
     
     
     def tablaScoresDetallados(self, tablaBruta):
@@ -2366,43 +2507,43 @@ class Proyecto(Model):
         #
         #     impactScores.append("{:0.0f}".format(puntuacionPonderadaPorDominio / puntuacionMaximaPonderadaPorDominio * 100.0) if puntuacionMaximaPonderadaPorDominio else '-')                   
         
-    def tablaScoresDetalladosPD(self, tablaBruta):
-        ''' 
-        Clase Proyecto
-        Dominios filas
-        '''        
-        print("Detailed scores")
-        tabla = self.tablaScoresDetallados(tablaBruta)    
-        tablaFormateada = []
-        for fila in tabla:
-            filaFormateada = []
-            sumaPonderada = 0.0
-            sumaPesos = 0.0
-            for elemento,peso in zip(fila,self.impactWeightings) :
-                filaFormateada.append("{:0.0f}%".format(elemento) if elemento != None else '-')
-                if elemento != None:
-                    sumaPonderada += elemento * peso
-                    sumaPesos += peso
-            impactoPorDominio = sumaPonderada / sumaPesos if sumaPesos else 0.0
-            filaFormateada.append("{:0.0f}%".format(impactoPorDominio) if impactoPorDominio else '-')
-                
-                    
-            tablaFormateada.append(filaFormateada)
-        
-        df = pd.DataFrame(tablaFormateada, columns = self.listadoNombreImpactosMostrar + ['Domain SRI'], index = self.listadoNombreDominiosMostrar)
-        print(tabulate(df, headers = 'keys', tablefmt = 'psql'))
-        return df
+    # def tablaScoresDetalladosPD(self, tablaBruta):
+    #     ''' 
+    #     Clase Proyecto
+    #     Dominios filas
+    #     '''        
+    #     print("Detailed scores")
+    #     tabla = self.tablaScoresDetallados(tablaBruta)    
+    #     tablaFormateada = []
+    #     for fila in tabla:
+    #         filaFormateada = []
+    #         sumaPonderada = 0.0
+    #         sumaPesos = 0.0
+    #         for elemento,peso in zip(fila,self.impactWeightings) :
+    #             filaFormateada.append("{:0.0f}%".format(elemento) if elemento != None else '-')
+    #             if elemento != None:
+    #                 sumaPonderada += elemento * peso
+    #                 sumaPesos += peso
+    #         impactoPorDominio = sumaPonderada / sumaPesos if sumaPesos else 0.0
+    #         filaFormateada.append("{:0.0f}%".format(impactoPorDominio) if impactoPorDominio else '-')
+    #
+    #
+    #         tablaFormateada.append(filaFormateada)
+    #
+    #     df = pd.DataFrame(tablaFormateada, columns = self.listadoNombreImpactosMostrar + ['Domain SRI'], index = self.listadoNombreDominiosMostrar)
+    #     print(tabulate(df, headers = 'keys', tablefmt = 'psql'))
+    #     return df
         
      
-    def repAuxialiaryTable(self):
-            
-        df = pd.DataFrame([self.getListaPuntuacionPonderada(self.calculoMatrizImpacto()),
-                            self.getListaPuntuacionPonderadaMaxima(self.calculoMatrizImpacto()),
-                            self.impactWeightings], columns = self.listadoNombreImpactosMostrar, index = ['Impact scores weighted by domain', 'Maximum impact scores weighted by domain', 'Impact Weightings'])
-        
-        print("Auxiliary table with scores weighted by domain")    
-        print(tabulate(df, headers = 'keys', tablefmt = 'psql'))
-        return df
+    # def repAuxialiaryTable(self):
+    #
+    #     df = pd.DataFrame([self.getListaPuntuacionPonderada(self.calculoMatrizImpacto()),
+    #                         self.getListaPuntuacionPonderadaMaxima(self.calculoMatrizImpacto()),
+    #                         self.impactWeightings], columns = self.listadoNombreImpactosMostrar, index = ['Impact scores weighted by domain', 'Maximum impact scores weighted by domain', 'Impact Weightings'])
+    #
+    #     print("Auxiliary table with scores weighted by domain")    
+    #     print(tabulate(df, headers = 'keys', tablefmt = 'psql'))
+    #     return df
 
     def listaAggregatedScores(self):
         
@@ -2423,7 +2564,12 @@ class Proyecto(Model):
          
         '''
     
-        listadoDatos = self.datos.all()
+        # listadoDatos = self.datos.all()
+        try:
+            listadoDatos = self.datos
+        except:
+            print('No hay datos para porder realizar los calculos necesarios')
+            sys.exit()
         evaluacionImpactos = {}
         evaluacionImpactosMaximos = {}
         evaluacionPesos = {}
@@ -2433,7 +2579,11 @@ class Proyecto(Model):
         for nombreImpacto in self.listadoNombreImpactos:
             # print(f"Impacto: {nombreImpacto}")
             for dominio in self.dominiosPresentes:
-                listadoDatosDominio = [x for x in listadoDatos if x.chosenFuncionality.service.dominio == dominio and x.percentage > 0.0]
+                try:
+                    listadoDatosDominio = [x for x in listadoDatos if x.chosenFuncionality.service.dominio == dominio and x.percentage > 0.0]
+                except:
+                    print('Error: No existen servicios o hay algún servicio que no existe')
+                    sys.exit() 
                 listadoPreguntas = []
                 listadoMaximos = []
                 evaluacionImpactos[nombreImpacto] = [dato.impact(nombreImpacto) for dato in listadoDatosDominio]
@@ -2504,20 +2654,21 @@ class Proyecto(Model):
         matrizImpactos = self.calculoMatrizImpacto()
         calculado = False
         if matrizImpactos:
-            tablaImpactosResultado = self.tablaImpactosPD(matrizImpactos)
-            tablaImpactoMaximosResultado = self.tablaImpactosMaximosPD(matrizImpactos)
-            tablaScores = self.tablaScoresDetalladosPD(matrizImpactos)
+            # tablaImpactosResultado = self.tablaImpactosPD(matrizImpactos)
+            # tablaImpactoMaximosResultado = self.tablaImpactosMaximosPD(matrizImpactos)
+            # tablaScores = self.tablaScoresDetalladosPD(matrizImpactos)
 
-            listaImpactScores = self.representacionTablaImpactScore()
+            # listaImpactScores = self.representacionTablaImpactScore()
             totalSri = self.getTotalSRI()
-            tablaAuxiliary = self.repAuxialiaryTable()
+            # tablaAuxiliary = self.repAuxialiaryTable()
             listaAggregatedScores = self.listaAggregatedScores()
             letraCalificacion = self.getClase(totalSri)
             resultadoResidential = self.getNotaResidentialAndNonResidential(matrizImpactos)
             dicc15232Residential = self.getDicc15232Residential(matrizImpactos)
             dicc15232NonResidential = self.getDicc15232NonResidential(matrizImpactos)
             calculado = True       
-            return [calculado, tablaImpactosResultado, tablaImpactoMaximosResultado, tablaScores, tablaAuxiliary, listaImpactScores, listaAggregatedScores, totalSri, letraCalificacion, resultadoResidential, dicc15232Residential, dicc15232NonResidential]
+            # return [calculado, tablaImpactosResultado, tablaImpactoMaximosResultado, tablaScores, tablaAuxiliary, listaImpactScores, listaAggregatedScores, totalSri, letraCalificacion, resultadoResidential, dicc15232Residential, dicc15232NonResidential]
+            return [calculado, listaAggregatedScores, totalSri, letraCalificacion, resultadoResidential, dicc15232Residential, dicc15232NonResidential]
         else:
             return [calculado, ]
 
@@ -2532,9 +2683,7 @@ class Dato(Model):
     
     proyect = ForeignKey(Proyecto,
                          verbose_name = 'Project',
-                         related_name = 'datos',
-                         null = True,
-                         blank = True)
+                         related_name = 'datos',)
     
     comments = CharField(default = '',
                          max_length = 5000,
@@ -2554,12 +2703,12 @@ class Dato(Model):
         verbose_name_plural = '5.Data'
         ordering = ('id',)
         
-    def __str__(self):
-        ''' 
-        Clase Dato
-        
-        '''
-        return '{2}: {0}, {3}: {1}'.format(self.proyect.id, self.chosenFuncionality.id, 'Project', 'Functionality')
+    # def __str__(self):
+    #     ''' 
+    #     Clase Dato
+    #
+    #     '''
+    #     return '{2}: {0}, {3}: {1}'.format(self.proyect.id, self.chosenFuncionality.id, 'Project', 'Functionality')
         
     def duplicar(self, padre = None):
         ''' 
@@ -2596,16 +2745,18 @@ class Dato(Model):
             peso = 0.0
         return peso
     
-class User(Model):
-    
-    objects = Manager()
-    
-    name = CharField(default = '',
-                     max_length = 1000,
-                     verbose_name = "User-Name")
-                     
-    email = CharField(default = '',
-                      max_length = 1000,
-                      verbose_name = 'User e-mail address')
-                     
+    @classmethod
+    def creaDesdeXML(cls, dataElement):
+        ns = {'d':"http://www.efinovatic.es/sri"}
+        nuevaInstancia = cls()
+        nuevaInstancia.id = int(dataElement.attrib['id'])
+        nuevaInstancia.chosenFuncionality = Funcionalidad.objects.get(id = int(dataElement.find('.//d:ChosenFuncionality', ns).text))
+        nuevaInstancia.comments =  dataElement.find('.//d:Comments', ns).text if dataElement.find('.//d:Comments', ns).text else ''
+        nuevaInstancia.justification =  dataElement.find('.//d:Justification', ns).text if dataElement.find('.//d:Justification', ns).text else ''
+        nuevaInstancia.percentage = float(dataElement.find('.//d:Percentage', ns).text)
+        
+        return nuevaInstancia
+        
+        
+        
     
